@@ -65,6 +65,7 @@ SESSION_COOKIE_HTTPONLY = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
+FRONTEND_URL = 'http://localhost:3000'
 
 
 MIDDLEWARE = [
@@ -163,3 +164,10 @@ SESSION_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SECURE = True  # Requires HTTPS in production
 CSRF_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_SECURE = True
+# settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'your-email'
+EMAIL_HOST_PASSWORD = 'yourpass'  # Use an App Password if using Gmail

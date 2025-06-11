@@ -1,4 +1,13 @@
 import os
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.core.mail import send_mail
+from django.utils.crypto import get_random_string
+from django.urls import reverse
+from .models import PasswordResetCode
+from django.contrib.auth.models import User
+from django.conf import settings
 from django.db.models import Avg, Count
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
@@ -22,6 +31,14 @@ from .serializers import (
     UserSerializer, CategorySerializer, ProductSerializer,
     CartSerializer, OrderSerializer, ReviewSerializer
 )
+from django.core.mail import send_mail
+from django.utils import timezone
+from django.contrib.auth import get_user_model
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+from rest_framework import status
+from .models import PasswordResetCode
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
 from .models import Cart
@@ -371,3 +388,49 @@ class ReviewViewSet(viewsets.ModelViewSet):
             user=self.request.user if self.request.user.is_authenticated else None,
             product=product
         )
+
+class ForgotPasswordView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        email = request.data.get('email')
+        if not email:
+            return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.get(email=email)
+            PasswordResetCode.objects.filter(user=user).delete()  # Xóa mã cũ nếu tồn tại
+            code = get_random_string(length=32)  # Tạo mã ngẫu nhiên bảo mật
+            reset_code = PasswordResetCode.objects.create(user=user, code=code)
+            # Sửa reset_url để trỏ đến frontend
+            reset_url = f"{settings.FRONTEND_URL}/reset-password?code={code}"
+            send_mail(
+                'Đặt lại mật khẩu',
+                f'Nhấp vào liên kết sau để đặt lại mật khẩu của bạn: {reset_url}',
+                settings.EMAIL_HOST_USER,
+                [email],
+                fail_silently=False,
+            )
+        except User.DoesNotExist:
+            pass  # Không báo lỗi để tránh tiết lộ thông tin tài khoản
+
+        return Response({"message": "Nếu tài khoản tồn tại, liên kết đặt lại mật khẩu đã được gửi đến email của bạn."})
+
+class ResetPasswordView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        code = request.data.get('code')
+        new_password = request.data.get('new_password')
+        if not code or not new_password:
+            return Response({"error": "Mã và mật khẩu mới là bắt buộc"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            reset_code = PasswordResetCode.objects.get(code=code, expires_at__gt=timezone.now())
+            user = reset_code.user
+            user.set_password(new_password)
+            user.save()
+            reset_code.delete()  # Xóa mã sau khi sử dụng
+            return Response({"message": "Mật khẩu đã được đặt lại thành công."})
+        except PasswordResetCode.DoesNotExist:
+            return Response({"error": "Mã không hợp lệ hoặc đã hết hạn."}, status=status.HTTP_400_BAD_REQUEST)

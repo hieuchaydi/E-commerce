@@ -4,7 +4,8 @@ from .views import (
     ProductImageUploadView, UserViewSet, CategoryViewSet, ProductViewSet,
     CartViewSet, OrderViewSet, ReviewViewSet,
     LoginView, LogoutView, RegisterView,
-    CurrentUserView, AdminStatsView, ClearCartView
+    CurrentUserView, AdminStatsView, ClearCartView,
+    ForgotPasswordView, ResetPasswordView
 )
 from django.conf import settings
 from django.conf.urls.static import static
@@ -22,6 +23,9 @@ urlpatterns = [
     path('auth/register/', RegisterView.as_view(), name='register'),
     path('auth/logout/', LogoutView.as_view(), name='logout'),
     path('auth/user/', CurrentUserView.as_view(), name='current-user'),
+    path('auth/forgot-password/', ForgotPasswordView.as_view(), name='forgot-password'),
+    
+    path('auth/reset-password/', ResetPasswordView.as_view(), name='reset-password'),
     path('admin/stats/', AdminStatsView.as_view(), name='admin-stats'),
     path('products/<int:product_pk>/reviews/', 
          ReviewViewSet.as_view({'get': 'list', 'post': 'create'}), 

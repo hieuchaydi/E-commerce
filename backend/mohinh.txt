@@ -22,3 +22,15 @@ backend/
 venv\Scripts\activate
 cd shopee_clone_frontend
 python -m venv env
+asgiref==3.8.1
+Django==5.2.2
+django-cors-headers==4.7.0
+django-extensions==4.1
+django-filter==25.1
+djangorestframework==3.16.0
+djangorestframework_simplejwt==5.5.0
+drf-nested-routers==0.94.2
+pillow==11.2.1
+PyJWT==2.9.0
+sqlparse==0.5.3
+tzdata==2025.2

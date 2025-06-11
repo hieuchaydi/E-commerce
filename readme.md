@@ -1,84 +1,152 @@
-# 🛒 Shopee Clone - E-commerce Website
+# E-commerce
 
-Shopee Clone là một dự án thương mại điện tử mô phỏng nền tảng Shopee, được xây dựng với **Django** cho backend và **React** cho frontend. Dự án hỗ trợ xác thực người dùng với hai vai trò (Seller và Customer), quản lý sản phẩm, giỏ hàng, đơn hàng, đánh giá sản phẩm, và các chức năng dành cho quản trị viên.
+**E-commerce project** with **Frontend (ReactJS)** and **Backend (Django)**.
 
 ---
 
-## 🚀 Tính Năng Chính
+## ⚙️ Main Features
 
-### Người Dùng
-- ✅ **Đăng ký** với hai vai trò: **Seller** (người bán) hoặc **Customer** (khách hàng)
-- ✅ Đăng nhập, đăng xuất
-- 👤 Xem và chỉnh sửa thông tin người dùng hiện tại
-- 🔐 Xác thực bằng token, lưu trữ trong localStorage
+### Frontend (ReactJS)
+- User registration, login, and logout
+- Product catalog and product details
+- Product search
+- Add/edit/remove products in the cart
+- Order checkout
+- Modern, responsive UI
 
-### Sản Phẩm
-- 📦 Tạo, cập nhật, xóa sản phẩm (dành cho Seller)
-- 🖼️ Tải lên hình ảnh sản phẩm
-- 📂 Phân loại sản phẩm theo danh mục
-- 🔍 Tìm kiếm sản phẩm theo từ khóa
-- 🌟 Hiển thị sản phẩm nổi bật và toàn bộ sản phẩm trong carousel có thể cuộn
+### Backend (Django)
+- RESTful API for users, products, and orders
+- Authentication with JWT
+- User role management (user/admin)
+- Order management
+- Product image upload
 
-### Giỏ Hàng
-- ➕ Thêm sản phẩm vào giỏ hàng
-- 🔄 Cập nhật số lượng sản phẩm
-- ❌ Xóa sản phẩm hoặc xóa toàn bộ giỏ hàng
-- 🛒 Chuyển hướng đến giỏ hàng sau khi thêm sản phẩm
+---
 
-### Đơn Hàng
-- 🧾 Tạo đơn hàng từ giỏ hàng
-- 🔄 Cập nhật trạng thái đơn hàng (dành cho Seller/Admin)
-- 📜 Xem lịch sử đơn hàng
+## 🚀 Installation
 
-### Đánh Giá
-- 🌟 Gửi đánh giá sản phẩm (1–5 sao, kèm bình luận)
-- ✏️ Chỉnh sửa hoặc xóa đánh giá (nếu là người gửi)
-- 📊 Hiển thị thống kê đánh giá (trung bình, phân bố sao)
+### 1. Backend
+
+```bash
+cd backend
+python -m venv env
+source env/bin/activate      # Windows: .\env\Scripts\activate
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver
+```
+
+### 2. Frontend
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+---
+
+## 🔐 Environment
+
+Create a `.env` file for both frontend and backend:
+
+- `REACT_APP_API_URL=http://localhost:8000/api/`
+- `SECRET_KEY=...`
+- `DEBUG=True`
+
+---
+
+## 📌 Notes
+
+- Backend uses Django REST Framework.
+- Frontend can be deployed on Vercel or Netlify.
+- Backend can be deployed on Render, Railway, or VPS.
+
+---
+
+## 📧 Contact
+
+Nguyễn Văn Hiếu - [GitHub](https://github.com/Hieuchaydi) 🛒E-commerce Website
+
+e-commerce-website is an e-commerce project that replicates the e-commerce-website platform, built with **Django** for the backend and **React** for the frontend. The project supports user authentication with two roles (Seller and Customer), product management, shopping cart, orders, product reviews, and admin functionalities.
+
+---
+
+## 🚀 Main Features
+
+### User
+- ✅ **Register** with two roles: **Seller** or **Customer**
+- ✅ Login, logout
+- 👤 View and edit current user information
+- 🔐 Token-based authentication, stored in localStorage
+
+### Product
+- 📦 Create, update, delete products (for Sellers)
+- 🖼️ Upload product images
+- 📂 Categorize products by category
+- 🔍 Search products by keyword
+- 🌟 Display featured and all products in a scrollable carousel
+
+### Shopping Cart
+- ➕ Add products to cart
+- 🔄 Update product quantity
+- ❌ Remove individual products or clear entire cart
+- 🛒 Redirect to cart after adding product
+
+### Orders
+- 🧾 Create order from cart
+- 🔄 Update order status (for Seller/Admin)
+- 📜 View order history
+
+### Reviews
+- 🌟 Submit product review (1–5 stars, with comments)
+- ✏️ Edit or delete reviews (if you are the author)
+- 📊 Display review statistics (average, star distribution)
 
 ### Seller
-- 🏪 Quản lý sản phẩm của mình (tạo, cập nhật, xóa)
-- 📦 Xem và xử lý đơn hàng liên quan
+- 🏪 Manage own products (create, update, delete)
+- 📦 View and process related orders
 
-### Quản Trị Viên
-- 👥 Quản lý danh sách người dùng (Seller và Customer)
-- 📦 Quản lý toàn bộ sản phẩm và đơn hàng trong hệ thống
-- 📊 Xem thống kê hệ thống (số lượng người dùng, đơn hàng, sản phẩm)
+### Admin
+- 👥 Manage user list (Sellers and Customers)
+- 📦 Manage all products and orders in the system
+- 📊 View system statistics (number of users, orders, products)
 
-### Giao Diện
-- 🕒 Hiển thị thời gian thực theo múi giờ Việt Nam (ICT, UTC+07:00) với định dạng tiếng Việt
-- 🎠 Carousel sản phẩm mượt mà với nút điều hướng trái/phải
-- 🖼️ Hero slider quảng cáo trên trang chủ
-- 📱 Responsive design cho mobile, tablet, và desktop
+### UI
+- 🕒 Display real-time Vietnam time (ICT, UTC+07:00) in Vietnamese format
+- 🎠 Smooth product carousel with left/right navigation buttons
+- 🖼️ Hero slider advertisements on the homepage
+- 📱 Responsive design for mobile, tablet, and desktop
 
 ---
 
-## 🏗️ Cài Đặt
+## 🏗️ Setup
 
-### Yêu Cầu
-- Python 3.8+ (cho backend)
-- Node.js 16+ (cho frontend)
-- PostgreSQL hoặc SQLite (cho database)
+### Requirements
+- Python 3.8+ (for backend)
+- Node.js 16+ (for frontend)
+- PostgreSQL or SQLite (for database)
 
-### 1. Sao Chép Repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/your-username/shopee-clone.git
 cd shopee-clone
 ```
 
-### 2. Cài Đặt Backend (Django)
+### 2. Backend Setup (Django)
 
 ```bash
 cd backend
 pip install -r requirements.txt
 python manage.py migrate
-python manage.py createsuperuser # (Tùy chọn) Tạo tài khoản admin
+python manage.py createsuperuser # (Optional) Create admin account
 python manage.py runserver
 ```
 
-- Backend sẽ chạy tại: `http://localhost:8000`
+- Backend will run at: `http://localhost:8000`
 
-### 3. Cài Đặt Frontend (React)
+### 3. Frontend Setup (React)
 
 ```bash
 cd ../shopee_clone_frontend
@@ -86,32 +154,32 @@ npm install
 npm start
 ```
 
-- Frontend sẽ chạy tại: `http://localhost:3000`
+- Frontend will run at: `http://localhost:3000`
 
-### 4. Cấu Hình Môi Trường
-- Backend: Tạo file `.env` trong thư mục `backend` với các biến:
+### 4. Environment Configuration
+- Backend: Create a `.env` file in the `backend` folder with the following variables:
   ```env
   SECRET_KEY=your_django_secret_key
   DEBUG=True
-  DATABASE_URL=sqlite:///db.sqlite3 # hoặc postgresql://user:password@localhost:5432/dbname
+  DATABASE_URL=sqlite:///db.sqlite3 # or postgresql://user:password@localhost:5432/dbname
   ```
-- Frontend: Tạo file `.env` trong thư mục `shopee_clone_frontend`:
+- Frontend: Create a `.env` file in `shopee_clone_frontend`:
   ```env
   REACT_APP_API_URL=http://localhost:8000/api/
   ```
 
 ---
 
-## 🗂️ Cấu Trúc Backend (Django)
+## 🗂️ Backend Structure (Django)
 
 ### Models
-- `User`: Người dùng (Seller hoặc Customer, tích hợp với Django auth)
-- `Category`: Danh mục sản phẩm
-- `Product`: Sản phẩm (tên, giá, mô tả, hình ảnh, danh mục, tồn kho)
-- `Cart`: Giỏ hàng của người dùng
-- `Order`: Đơn hàng
-- `OrderItem`: Mục trong đơn hàng
-- `Review`: Đánh giá sản phẩm
+- `User`: User (Seller or Customer, integrated with Django auth)
+- `Category`: Product category
+- `Product`: Product (name, price, description, image, category, stock)
+- `Cart`: User's shopping cart
+- `Order`: Order
+- `OrderItem`: Item in an order
+- `Review`: Product review
 
 ### Views
 - **Auth**: `LoginView`, `RegisterView`, `LogoutView`, `CurrentUserView`
@@ -129,7 +197,7 @@ npm start
 
 ---
 
-## 🧩 Cấu Trúc Frontend (React)
+## 🧩 Frontend Structure (React)
 
 ### Components
 - **Common**: `Button`, `Card`, `Navbar`, `StarRating`
@@ -138,112 +206,199 @@ npm start
 - **Cart**: `CartItem`, `CartSummary`
 
 ### Pages
-- **Auth**: `Login`, `Register` (lựa chọn vai trò Seller hoặc Customer)
-- **Products**: `Home` (carousel sản phẩm, thời gian Việt Nam), `ProductDetail` (chi tiết sản phẩm, đánh giá)
+- **Auth**: `Login`, `Register` (choose Seller or Customer role)
+- **Products**: `Home` (product carousel, Vietnam time), `ProductDetail` (product details, reviews)
 - **Cart**: `Cart`, `Checkout`
 - **Orders**: `OrderHistory`
 - **Seller**: `SellerDashboard`, `ProductManagement`
 - **Admin**: `AdminDashboard`
 
-### Thư Viện
-- **Axios**: Gửi request tới API
-- **React Router**: Điều hướng giữa các trang
-- **Context API**: Quản lý trạng thái giỏ hàng (`CartContext`) và xác thực (`AuthContext`)
+### Libraries
+- **Axios**: For API requests
+- **React Router**: For page navigation
+- **Context API**: Manage cart state (`CartContext`) and authentication (`AuthContext`)
 
 ---
 
-## 📡 Một Số Endpoint Chính
+## 📡 Key API Endpoints
 
 ### 🔐 Auth
-- `POST /auth/register/`: Đăng ký (chọn vai trò: Seller hoặc Customer)
-- `POST /auth/login/`: Đăng nhập
-- `POST /auth/logout/`: Đăng xuất
-- `GET /auth/user/`: Lấy thông tin người dùng hiện tại
+- `POST /auth/register/`: Register (choose role: Seller or Customer)
+- `POST /auth/login/`: Login
+- `POST /auth/logout/`: Logout
+- `GET /auth/user/`: Get current user info
 
 ### 🛍️ Products
-- `GET /products/`: Lấy danh sách sản phẩm (hỗ trợ tìm kiếm qua query `?search=`)
-- `POST /products/`: Tạo sản phẩm mới (dành cho Seller)
-- `PUT /products/{id}/`: Cập nhật sản phẩm (dành cho Seller)
-- `DELETE /products/{id}/`: Xóa sản phẩm (dành cho Seller)
-- `POST /products/{id}/upload_image/`: Tải ảnh sản phẩm (dành cho Seller)
+- `GET /products/`: Get product list (supports searching with `?search=`)
+- `POST /products/`: Create new product (for Sellers)
+- `PUT /products/{id}/`: Update product (for Sellers)
+- `DELETE /products/{id}/`: Delete product (for Sellers)
+- `POST /products/{id}/upload_image/`: Upload product image (for Sellers)
 
 ### 🛒 Cart
-- `GET /cart/`: Lấy giỏ hàng của người dùng
-- `POST /cart/`: Thêm sản phẩm vào giỏ
-- `PUT /cart/{id}/`: Cập nhật số lượng sản phẩm
-- `DELETE /cart/{id}/`: Xóa sản phẩm khỏi giỏ
-- `DELETE /cart/clear/`: Xóa toàn bộ giỏ hàng
+- `GET /cart/`: Get user's cart
+- `POST /cart/`: Add product to cart
+- `PUT /cart/{id}/`: Update product quantity in cart
+- `DELETE /cart/{id}/`: Remove product from cart
+- `DELETE /cart/clear/`: Clear entire cart
 
 ### 📦 Orders
-- `POST /orders/`: Tạo đơn hàng từ giỏ
-- `GET /orders/`: Lấy lịch sử đơn hàng
-- `PUT /orders/{id}/status/`: Cập nhật trạng thái đơn hàng (Seller/Admin)
+- `POST /orders/`: Create order from cart
+- `GET /orders/`: Get order history
+- `PUT /orders/{id}/status/`: Update order status (Seller/Admin)
 
 ### 🌟 Reviews
-- `GET /reviews/product/{id}/`: Lấy đánh giá của sản phẩm
-- `POST /reviews/`: Gửi đánh giá (hỗ trợ khách không đăng nhập với `guest_name`)
-- `PUT /reviews/{id}/`: Cập nhật đánh giá
-- `DELETE /reviews/{id}/`: Xóa đánh giá
+- `GET /reviews/product/{id}/`: Get product reviews
+- `POST /reviews/`: Submit review (supports guest review with `guest_name`)
+- `PUT /reviews/{id}/`: Update review
+- `DELETE /reviews/{id}/`: Delete review
 
 ### ⚙️ Admin
-- `GET /admin/stats/`: Thống kê hệ thống (số người dùng, đơn hàng, sản phẩm)
-- `GET /admin/users/`: Danh sách người dùng
-- `PUT /admin/users/{id}/`: Cập nhật thông tin người dùng
-- `DELETE /admin/users/{id}/`: Xóa người dùng
+- `GET /admin/stats/`: System statistics (users, orders, products)
+- `GET /admin/users/`: List of users
+- `PUT /admin/users/{id}/`: Update user info
+- `DELETE /admin/users/{id}/`: Delete user
 
 ---
 
-## 🔐 Xác Thực
+## 🔐 Authentication
 
-- **Backend**: Sử dụng Django Token Authentication
-- **Frontend**: Lưu token trong `localStorage`
+- **Backend**: Uses Django Token Authentication
+- **Frontend**: Stores token in `localStorage`
 - **Axios Interceptor**:
-  - Gắn token vào header của mỗi request
-  - Xử lý lỗi `401` để chuyển hướng đến trang đăng nhập
-- **Vai trò**: 
-  - **Seller**: Quản lý sản phẩm và đơn hàng của mình
-  - **Customer**: Mua sắm, đánh giá sản phẩm
-  - **Admin**: Quản lý toàn hệ thống (người dùng, sản phẩm, đơn hàng)
+  - Attaches token to every request header
+  - Handles `401` errors by redirecting to login page
+- **Roles**:
+  - **Seller**: Manage own products and orders
+  - **Customer**: Shop and review products
+  - **Admin**: Manage the entire system (users, products, orders)
 
 ---
 
-## 🖼️ Giao Diện Trang Chủ
+## 🖼️ Homepage UI
 
-![Trang chủ Shopee Clone](assets/homepage.png)
+![Shopee Clone Homepage](assets/homepage.png)
 
-- **Thời gian thực**: Hiển thị giờ Việt Nam (VD: "04:15 CH (UTC+07) VN vào Thứ Hai, 09 Tháng Sáu, 2025")
-- **Carousel sản phẩm**: Hiển thị tất cả sản phẩm trong "Sản phẩm" và 3 sản phẩm nổi bật trong "Sản phẩm nổi bật"
-- **Hero slider**: Quảng cáo với 3 hình ảnh, tự động chuyển đổi mỗi 5 giây
-- **Responsive**: Tối ưu cho mobile, tablet, desktop
+- **Real-time clock**: Displays Vietnam time (e.g., "04:15 PM (UTC+07) VN on Monday, June 9th, 2025")
+- **Product carousel**: Shows all products in "Products" and 3 featured products in "Featured Products"
+- **Hero slider**: Rotates 3 advertisement images automatically every 5 seconds
+- **Responsive**: Optimized for mobile, tablet, desktop
 
-## 🖼️ Giao Diện Chi Tiết Sản Phẩm
+## 🖼️ Product Detail UI
 
-![Chi tiết sản phẩm Shopee Clone](assets/product-detail.png)
+![Shopee Clone Product Detail](assets/product-detail.png)
 
-- Hiển thị thông tin sản phẩm (tên, giá, danh mục, mô tả)
-- Hiển thị đánh giá trung bình và phân bố sao
-- Form gửi đánh giá (hỗ trợ khách không đăng nhập)
-- Nút "Thêm vào giỏ hàng" với chuyển hướng đến giỏ hàng
-
----
-
-## 🤝 Đóng Góp
-
-1. Fork repository
-2. Tạo branch mới: `git checkout -b feature/ten-tinh-nang`
-3. Commit thay đổi: `git commit -m 'Thêm tính năng XYZ'`
-4. Push lên branch: `git push origin feature/ten-tinh-nang`
-5. Tạo Pull Request trên GitHub
+- Shows product information (name, price, category, description)
+- Displays average rating and star distribution
+- Review submission form (supports guest review)
+- "Add to Cart" button with redirect to cart
 
 ---
 
-## 📄 Giấy Phép
+## 🤝 Contributing
 
-Dự án được cấp phép theo [MIT License](LICENSE). Bạn được tự do sử dụng, sao chép, sửa đổi và phân phối mã nguồn theo các điều khoản của giấy phép MIT.
+1. Fork the repository
+2. Create a new branch: `git checkout -b feature/feature-name`
+3. Commit your changes: `git commit -m 'Add feature XYZ'`
+4. Push to your branch: `git push origin feature/feature-name`
+5. Create a Pull Request on GitHub
 
 ---
 
-## 📞 Liên Hệ
+## 📄 License
 
-- Email: your-email@example.com
-- GitHub: [your-username](https://github.com/your-username)
+This project is licensed under the [MIT License](LICENSE). You are free to use, copy, modify, and distribute this code under the terms of the MIT license.
+
+---
+
+# 📚 Project Documentation
+
+## Python
+- [Official Python Documentation](https://docs.python.org/3/)
+- [Python Tutorial (W3Schools)](https://www.w3schools.com/python/)
+- [Real Python Tutorials](https://realpython.com/)
+
+## Django
+- [Official Django Documentation](https://docs.djangoproject.com/en/stable/)
+- [Django REST framework](https://www.django-rest-framework.org/)
+- [Django Girls Tutorial](https://tutorial.djangogirls.org/)
+
+## React
+- [Official React Documentation](https://react.dev/learn)
+- [React Tutorial (W3Schools)](https://www.w3schools.com/react/)
+- [React Router Docs](https://reactrouter.com/en/main)
+
+## CSS
+- [MDN CSS Reference](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference)
+- [CSS Tricks](https://css-tricks.com/)
+- [W3Schools CSS Tutorial](https://www.w3schools.com/css/)
+
+## TailwindCSS
+- [Official TailwindCSS Documentation](https://tailwindcss.com/docs/)
+- [Tailwind Play (Playground)](https://play.tailwindcss.com/)
+- [Tailwind Cheat Sheet](https://nerdcave.com/tailwind-cheat-sheet)
+
+---
+# Sending Email with Gmail App Password in Django
+
+This guide explains how to configure Django to send emails using Gmail’s SMTP server with a 16-character App Password.
+
+## 1. Enable 2-Step Verification on Your Google Account
+
+You **must** enable 2-Step Verification on your Google account before using App Passwords.
+
+- Visit [Google Account Security](https://myaccount.google.com/security).
+- Under **How you sign in to Google**, click **2-Step Verification** and follow the steps to enable it.
+
+## 2. Generate a 16-Character App Password
+
+1. After enabling 2-Step Verification, return to [Google Account Security](https://myaccount.google.com/security).
+2. In the **2-Step Verification** section, scroll down and click **App Passwords**.
+3. Sign in again if prompted.
+4. Under **Select app**, choose **Mail** (or “Other” and type a name, e.g., “Django”).
+5. Under **Select device**, choose your device or “Other”.
+6. Click **Generate**.
+7. Copy the 16-character password shown (e.g., `imcb kuss kuca abur`). You will **only see it once**.
+
+## 3. Gmail SMTP Settings Example (`settings.py`)
+
+```python
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'hieu12@gmail.com'           # Your Gmail address
+EMAIL_HOST_PASSWORD = 'imcb kuss kuca abur'    # Your 16-character app password
+```
+
+> **Note:** Replace `hieu12@gmail.com` and `imcb kuss kuca abur` with your own Gmail address and App Password and this is my example.
+
+> **Never share your app password publicly. Store it securely.**
+
+## 4. Usage Example in Django
+
+You can now send emails from your Django application:
+
+```python
+from django.core.mail import send_mail
+
+send_mail(
+    'Subject here',
+    'Here is the message.',
+    'hieu12@gmail.com',  # From email
+    ['recipient@example.com'],  # To email
+    fail_silently=False,
+)
+```
+
+## 5. Notes
+
+- **App Passwords** are not your normal Google password; use the 16-character code.
+- If you lose your app password or need to revoke it, return to the App Passwords page to manage or generate a new one.
+- If you use environment variables or a `.env` file, do **not** hardcode sensitive information in your codebase.
+
+## References
+
+- [Google: Sign in using App Passwords](https://support.google.com/accounts/answer/185833)
+- [Django Email Documentation](https://docs.djangoproject.com/en/stable/topics/email/)
+> Thank you for checking out my project
