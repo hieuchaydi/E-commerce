@@ -3,9 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ordersAPI } from '../../api/api';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/common/Button';
-import './OrderDetail.css';
+import './OrderStatus.css';
 
-const OrderDetail = () => {
+const OrderStatus = () => {
   const { id } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -57,38 +57,22 @@ const OrderDetail = () => {
     }
   };
 
-  const getStatusText = (status) => {
-    switch (status?.toLowerCase()) {
-      case 'pending':
-        return 'Chờ xử lý';
-      case 'processing':
-        return 'Đang xử lý';
-      case 'shipped':
-        return 'Đang giao hàng';
-      case 'completed':
-        return 'Đã hoàn thành';
-      case 'cancelled':
-        return 'Đã hủy';
-      default:
-        return 'Không xác định';
-    }
-  };
+  const getStatusSteps = (status) => {
+    const steps = [
+      { status: 'pending', label: 'Chờ xử lý', completed: false },
+      { status: 'processing', label: 'Đang xử lý', completed: false },
+      { status: 'shipped', label: 'Đang giao hàng', completed: false },
+      { status: 'completed', label: 'Đã hoàn thành', completed: false },
+    ];
 
-  const getStatusColor = (status) => {
-    switch (status?.toLowerCase()) {
-      case 'pending':
-        return 'text-yellow-500';
-      case 'processing':
-        return 'text-blue-500';
-      case 'shipped':
-        return 'text-purple-500';
-      case 'completed':
-        return 'text-green-600';
-      case 'cancelled':
-        return 'text-gray-500';
-      default:
-        return 'text-gray-500';
-    }
+    let reached = true;
+    return steps.map((step) => {
+      if (step.status === status.toLowerCase()) {
+        reached = false;
+        return { ...step, completed: true, active: true };
+      }
+      return { ...step, completed: reached };
+    });
   };
 
   if (!user) {
@@ -108,37 +92,30 @@ const OrderDetail = () => {
     return <div className="text-center py-6 text-gray-600">Không tìm thấy đơn hàng.</div>;
   }
 
+  const statusSteps = getStatusSteps(order.status);
+
   return (
-    <div className="order-detail-page container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    <div className="order-status-page container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
       <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6 text-center">
-        Chi Tiết Đơn Hàng #{order.id}
+        Trạng Thái Đơn Hàng #{order.id}
       </h2>
       {success && <div className="success-message text-green-600 text-center mb-4">{success}</div>}
       <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md">
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold text-gray-700">Thông Tin Đơn Hàng</h3>
-          <p>Ngày đặt: {new Date(order.created_at).toLocaleString('vi-VN')}</p>
-          <p>Trạng thái: <span className={getStatusColor(order.status)}>{getStatusText(order.status)}</span></p>
-          <p>Tổng tiền: ${Number(order.total_price || 0).toFixed(2)}</p>
-          <p>Phương thức thanh toán: Thanh toán khi nhận hàng (COD)</p> {/* Hardcode COD */}
-          <p>Địa chỉ giao hàng: {order.shipping_address}</p>
-        </div>
-
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold text-gray-700">Sản Phẩm</h3>
-          {order.items.map((item) => (
-            <div key={item.id} className="flex justify-between items-center border-b py-2">
-              <div>
-                <p className="font-medium">{item.product.name}</p>
-                <p className="text-sm text-gray-600">Số lượng: {item.quantity}</p>
-                <p className="text-sm text-gray-600">Đơn giá: ${Number(item.price).toFixed(2)}</p>
+        <h3 className="text-lg font-semibold text-gray-700 mb-4">Theo Dõi Giao Hàng</h3>
+        <div className="status-timeline">
+          {statusSteps.map((step, index) => (
+            <div
+              key={step.status}
+              className={`status-step ${step.completed ? 'completed' : ''} ${step.active ? 'active' : ''}`}
+            >
+              <div className="status-icon">
+                {step.completed ? '✔' : index + 1}
               </div>
-              <p className="font-medium">${(Number(item.price) * item.quantity).toFixed(2)}</p>
+              <div className="status-label">{step.label}</div>
             </div>
           ))}
         </div>
-
-        <div className="flex justify-between items-center">
+        <div className="mt-6 flex justify-between items-center">
           <Button
             variant="primary"
             size="small"
@@ -156,17 +133,10 @@ const OrderDetail = () => {
               {loading ? 'Đang xử lý...' : 'Hủy Đơn Hàng'}
             </Button>
           )}
-          <Button
-            variant="success"
-            size="small"
-            onClick={() => navigate(`/order-status/${order.id}`)}
-          >
-            Xem Trạng Thái Giao Hàng
-          </Button>
         </div>
       </div>
     </div>
   );
 };
 
-export default OrderDetail;
+export default OrderStatus;

@@ -1,17 +1,68 @@
-/* src/components/products/ProductList.css */
-
-.product-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  padding: 20px;
-  background-color: #f9f9f9;
+.product-list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
 }
 
-.product-list .loading,
-.product-list .empty {
-  font-size: 1.2rem;
-  color: #555;
-  margin: 40px auto;
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+  background-color: #f9fafb;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.filter-input, .filter-select {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  flex: 1;
+  min-width: 120px;
+}
+
+.filter-input:focus, .filter-select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+.reset-button {
+  padding: 8px 16px;
+  background-color: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background-color 0.2s;
+}
+
+.reset-button:hover {
+  background-color: #dc2626;
+}
+
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.loading, .error, .no-products {
+  text-align: center;
+  font-size: 1rem;
+  color: #6b7280;
+  padding: 24px;
+}
+
+@media (max-width: 640px) {
+  .filters {
+    flex-direction: column;
+  }
+
+  .filter-input, .filter-select {
+    width: 100%;
+  }
 }

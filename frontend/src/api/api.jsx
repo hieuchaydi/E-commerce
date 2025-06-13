@@ -65,7 +65,7 @@ export const authAPI = {
     setAuthToken(token);
     localStorage.setItem('role', role);
     localStorage.setItem('user_id', user_id);
-    console.log('Logged in:', { role, user_id }); // Debug
+    console.log('Logged in:', { role, user_id });
     return res;
   },
   register: async (data) => {
@@ -75,14 +75,14 @@ export const authAPI = {
     setAuthToken(token);
     localStorage.setItem('role', user.role);
     localStorage.setItem('user_id', user.id);
-    console.log('Registered:', { role: user.role, user_id: user.id }); // Debug
+    console.log('Registered:', { role: user.role, user_id: user.id });
     return res;
   },
   logout: async () => {
     try {
       const res = await api.post('/auth/logout/');
       setAuthToken(null);
-      console.log('Logged out'); // Debug
+      console.log('Logged out');
       return res;
     } catch (error) {
       setAuthToken(null);
@@ -189,6 +189,15 @@ export const ordersAPI = {
       throw err;
     }
   },
+  updateOrderStatus: async (id, data) => {
+    try {
+      const res = await api.patch(`/orders/${id}/status/`, data);
+      return res.data;
+    } catch (err) {
+      console.error('Update order status failed:', err.response?.data || err.message);
+      throw err;
+    }
+  },
   updatePaymentStatus: async (id, status) => {
     try {
       const res = await api.patch(`/orders/${id}/payment/`, { status });
@@ -198,7 +207,6 @@ export const ordersAPI = {
       throw err;
     }
   },
-  updateOrderStatus: (id, data) => api.patch(`/orders/${id}/`, data),
 };
 
 export const reviewsAPI = {

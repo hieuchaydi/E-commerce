@@ -1,68 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .profile-container {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+  @apply max-w-5xl mx-auto p-4 relative z-10;
+}
+
+.profile-container h1 {
+  @apply text-2xl font-bold text-e2e8f0 mb-4 z-10;
 }
 
 .profile-content {
-  display: flex;
-  gap: 2rem;
+  @apply flex flex-col lg:flex-row gap-6 bg-1e293b p-6 rounded-xl shadow-md z-10;
 }
 
-.profile-info,
-.password-change {
-  flex: 1;
-  background: #f9f9f9;
-  padding: 1.5rem;
-  border-radius: 8px;
+.profile-info, .password-change {
+  @apply w-full lg:w-1/2 z-10;
 }
 
-h1 {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-h2 {
-  margin-bottom: 1rem;
+.profile-info h2, .password-change h2 {
+  @apply text-xl font-semibold text-e2e8f0 mb-4 z-10;
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  @apply mb-4 z-10;
 }
 
 .form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
+  @apply block text-4a5568 font-medium mb-2 z-10;
 }
 
-.form-group input,
-.form-group textarea {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.form-group input, .form-group textarea {
+  @apply w-full p-2 bg-0f172a border border-e2e8f0 rounded-lg text-e2e8f0 focus:border-a855f7 focus:ring-2 ring-a855f7/50 transition-all duration-300 z-10;
 }
 
-.form-actions {
-  display: flex;
-  gap: 1rem;
+.form-actions button {
+  @apply p-2 bg-a855f7 text-white rounded-lg cursor-pointer mr-2 transition-all duration-300 hover:bg-c084fc hover:shadow-lg hover:shadow-a855f7/50 disabled:bg-4b5563 disabled:cursor-not-allowed z-10;
 }
 
-button {
-  padding: 0.5rem 1rem;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.profile-info p {
+  @apply text-718096 mb-2 z-10;
 }
 
-button:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-button[type="button"] {
-  background: #6c757d;
+.profile-info button {
+  @apply mt-4 p-2 bg-ec4899 text-white rounded-lg cursor-pointer transition-all duration-300 hover:bg-f472b6 hover:shadow-lg hover:shadow-ec4899/50 z-10;
 }

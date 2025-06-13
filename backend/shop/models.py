@@ -125,6 +125,7 @@ class Order(models.Model):
         default='pending'
     )
     shipping_address = models.TextField(blank=True, null=True)
+    payment_method = models.CharField(max_length=50, default='COD', blank=True, null=True)  # Allow null temporarily
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -133,7 +134,6 @@ class Order(models.Model):
     
     class Meta:
         ordering = ['-created_at']
-
 
 class OrderItem(models.Model):
     order = models.ForeignKey(

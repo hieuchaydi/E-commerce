@@ -1,88 +1,146 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 .navbar {
-  @apply sticky top-0 z-30;
-  background: var(--card-bg);
-  backdrop-filter: blur(15px);
-  box-shadow: var(--glow-shadow);
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
 }
 
 .navbar-logo {
-  @apply text-2xl sm:text-3xl font-bold;
-  background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: glow 2s ease-in-out infinite alternate;
+  text-decoration: none;
+  font-weight: bold;
+  color: #2563eb;
+  transition: color 0.3s ease;
 }
 
-.navbar-search-input {
-  @apply w-full px-4 py-2 rounded-l-lg text-sm bg-[var(--bg-secondary)] text-[var(--text-primary)];
-  border: 2px solid var(--accent-primary);
-  transition: box-shadow 0.3s ease;
+.navbar-logo:hover {
+  color: #1d4ed8;
 }
 
-.navbar-search-input:focus {
-  @apply outline-none;
-  box-shadow: 0 0 15px var(--accent-primary);
+.navbar-search {
+  max-width: 400px;
 }
 
-.navbar-search-button {
-  @apply px-4 rounded-r-lg bg-[var(--accent-primary)] text-white;
-  transition: background 0.3s ease;
+.navbar-search input {
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem 0 0 0.375rem;
+  transition: border-color 0.3s ease;
 }
 
-.navbar-search-button:hover {
-  @apply bg-[var(--accent-secondary)];
+.navbar-search input:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+
+.navbar-search button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 0 0.375rem 0.375rem 0;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-search button:hover {
+  background-color: #1d4ed8;
+}
+
+.navbar-menu {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .nav-link {
-  @apply text-[var(--text-secondary)] text-sm sm:text-base font-medium relative;
+  text-decoration: none;
+  color: #4b5563;
+  font-weight: 500;
   transition: color 0.3s ease;
 }
 
 .nav-link:hover {
-  @apply text-[var(--accent-primary)];
-  text-shadow: 0 0 10px var(--accent-primary);
+  color: #2563eb;
 }
 
 .user-section {
-  @apply flex items-center gap-3 bg-[var(--bg-secondary)] rounded-full px-4 py-2;
-}
-
-.user-info {
-  @apply text-sm text-[var(--text-secondary)];
-}
-
-.user-info strong {
-  @apply text-[var(--text-primary)];
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: #f3f4f6;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
 }
 
 .logout-btn {
-  @apply text-sm text-[var(--text-secondary)] hover:text-[var(--accent-error)] font-medium;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #4b5563;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.logout-btn:hover {
+  color: #ef4444;
+}
+
+.login-link, .register-link {
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
 }
 
 .login-link {
-  @apply text-[var(--accent-primary)] border-2 border-[var(--accent-primary)] rounded-full px-4 py-2 text-sm;
-  transition: all 0.3s ease;
+  color: #2563eb;
+  border: 1px solid #2563eb;
 }
 
 .login-link:hover {
-  @apply bg-[rgba(124,58,237,0.1)];
+  background-color: #eff6ff;
 }
 
 .register-link {
-  @apply bg-[var(--accent-primary)] text-white rounded-full px-4 py-2 text-sm;
-  transition: all 0.3s ease;
+  background-color: #2563eb;
+  color: white;
 }
 
 .register-link:hover {
-  @apply bg-[var(--accent-secondary)];
+  background-color: #1d4ed8;
 }
 
-.theme-toggle {
-  @apply text-2xl p-2 rounded-full bg-[var(--bg-secondary)] hover:bg-[var(--accent-primary)] hover:text-white;
-  transition: all 0.3s ease;
+@media (max-width: 640px) {
+  .navbar-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 20;
+    transition: all 0.3s ease;
+  }
+
+  .navbar-search {
+    display: none;
+  }
+
+  .navbar-menu.hidden {
+    display: none;
+  }
+
+  .navbar-menu.flex {
+    display: flex;
+  }
 }

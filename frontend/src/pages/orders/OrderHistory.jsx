@@ -21,19 +21,25 @@ const OrderHistory = () => {
   }, [user]);
 
   useEffect(() => {
+    // Làm mới danh sách khi có state từ checkout
+    if (user && location.state?.success) {
+      fetchOrders();
+    }
+    // Reset success message sau 3 giây
     if (success) {
       const timer = setTimeout(() => setSuccess(null), 3000);
       return () => clearTimeout(timer);
     }
-  }, [success]);
+  }, [user, location.state]);
 
   const fetchOrders = async () => {
     try {
       setLoading(true);
       setError(null);
       const response = await ordersAPI.getOrders();
-      if (Array.isArray(response.data)) {
-        setOrders(response.data);
+      console.log('Orders response:', response); // Ghi log response trực tiếp
+      if (Array.isArray(response)) {
+        setOrders(response);
       } else {
         setError('Dữ liệu đơn hàng không hợp lệ.');
       }
@@ -74,10 +80,11 @@ const OrderHistory = () => {
   return (
     <div className="order-history-page container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
       <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6 text-center">Lịch Sử Đơn Hàng</h2>
-      {success && <div className="success-message">{success}</div>}
-      {error && <div className="error-message">{error}</div>}
+      {success && <div className="success-message text-green-600 text-center">{success}</div>}
       {loading ? (
         <div className="text-center py-4 sm:py-6 text-gray-600">Đang tải...</div>
+      ) : error ? (
+        <div className="text-center py-4 sm:py-6 text-red-500">{error}</div>
       ) : orders.length === 0 ? (
         <div className="text-center py-4 sm:py-6 text-gray-600">Bạn chưa có đơn hàng nào.</div>
       ) : (

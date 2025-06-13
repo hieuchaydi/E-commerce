@@ -16,12 +16,12 @@ const Navbar = () => {
       try {
         await cartAPI.clearCart();
       } catch (cartError) {
-        console.error('Lỗi xóa giỏ hàng:', cartError);
+        console.error('Error clearing cart:', cartError);
       }
       logout();
       navigate('/login', { replace: true });
     } catch (error) {
-      console.error('Lỗi đăng xuất:', error);
+      console.error('Logout error:', error);
       navigate('/login', { replace: true });
     }
   };
@@ -30,7 +30,6 @@ const Navbar = () => {
     e.preventDefault();
     if (searchTerm.trim()) {
       navigate(`/?search=${encodeURIComponent(searchTerm)}`);
-      setSearchTerm('');
     }
   };
 
@@ -51,18 +50,18 @@ const Navbar = () => {
           <form onSubmit={handleSearch} className="flex">
             <input
               type="text"
-              placeholder="Tìm kiếm sản phẩm..."
+              placeholder="Search products..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-l-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              aria-label="Tìm kiếm sản phẩm"
+              aria-label="Search products"
             />
             <button
               type="submit"
-              className="bg-gray-100 border border-gray-300 border-l-0 rounded-r-md px-4 hover:bg-blue-500 hover:text-white transition-colors"
-              aria-label="Tìm kiếm"
+              className="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600 transition-colors"
+              disabled={!searchTerm.trim()}
             >
-              <i className="search-icon">🔍</i>
+              Tìm
             </button>
           </form>
         </div>
@@ -87,18 +86,37 @@ const Navbar = () => {
             isMenuOpen ? 'flex' : 'hidden'
           }`}
         >
+          {isMenuOpen && (
+            <form onSubmit={handleSearch} className="w-full mb-4 sm:hidden flex">
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                aria-label="Search products on mobile"
+              />
+              <button
+                type="submit"
+                className="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600 transition-colors"
+                disabled={!searchTerm.trim()}
+              >
+                Tìm
+              </button>
+            </form>
+          )}
           <Link to="/" className="nav-link text-gray-600 hover:text-blue-500 text-sm sm:text-base font-medium">
-            Trang chủ
+            Home
           </Link>
           {user ? (
             <>
               {user.role === 'customer' && (
                 <>
                   <Link to="/cart" className="nav-link text-gray-600 hover:text-blue-500 text-sm sm:text-base font-medium">
-                    Giỏ hàng
+                    Cart
                   </Link>
                   <Link to="/orders" className="nav-link text-gray-600 hover:text-blue-500 text-sm sm:text-base font-medium">
-                    Đơn hàng
+                    Order History
                   </Link>
                 </>
               )}
@@ -107,7 +125,7 @@ const Navbar = () => {
                   to="/seller/products"
                   className="nav-link text-gray-600 hover:text-blue-500 text-sm sm:text-base font-medium"
                 >
-                  Quản lý sản phẩm
+                  Product Management
                 </Link>
               )}
               {user.role === 'admin' && (
@@ -115,35 +133,35 @@ const Navbar = () => {
                   to="/admin/dashboard"
                   className="nav-link text-gray-600 hover:text-blue-500 text-sm sm:text-base font-medium"
                 >
-                  Bảng điều khiển
+                  Dashboard
                 </Link>
               )}
               <div className="user-section flex items-center gap-3 bg-gray-100 rounded-full px-3 py-1">
                 <span className="user-info text-sm text-gray-600">
-                  Xin chào, <strong className="text-gray-800">{user.username}</strong> ({user.role})
+                  Hello, <strong className="text-gray-800">{user.username}</strong> ({user.role})
                 </span>
                 <Link to="/profile" className="nav-link text-sm text-gray-600 hover:text-blue-500 font-medium">
-                  Hồ sơ
+                  Profile
                 </Link>
                 <button
                   onClick={handleLogout}
                   className="logout-btn text-sm text-gray-600 hover:text-red-500 font-medium"
-                  aria-label="Đăng xuất"
+                  aria-label="Logout"
                 >
-                  Đăng xuất
+                  Logout
                 </button>
               </div>
             </>
           ) : (
             <div className="auth-links flex flex-col sm:flex-row gap-2">
               <Link to="/login" className="login-link text-blue-500 border border-blue-500 rounded-full px-4 py-2 hover:bg-blue-50 text-sm">
-                Đăng nhập
+                Login
               </Link>
               <Link
                 to="/register"
                 className="register-link bg-blue-500 text-white rounded-full px-4 py-2 hover:bg-blue-600 text-sm"
               >
-                Đăng ký
+                Register
               </Link>
             </div>
           )}

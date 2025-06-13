@@ -72,14 +72,13 @@ class OrderItemSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
     user = UserSerializer(read_only=True)
-    total_price = serializers.FloatField()  # Ensure total_price is serialized as a number
+    total_price = serializers.FloatField()
+    payment_method = serializers.CharField(read_only=True)  # Make read-only
 
     class Meta:
         model = Order
-        fields = ['id', 'user', 'total_price', 'status', 'shipping_address', 
-                  'created_at', 'updated_at', 'items']
-        read_only_fields = ['user', 'total_price', 'created_at', 'updated_at']
-
+        fields = ['id', 'user', 'total_price', 'status', 'shipping_address', 'payment_method', 'created_at', 'updated_at', 'items']
+        read_only_fields = ['user', 'total_price', 'created_at', 'updated_at', 'payment_method']
 
 
 

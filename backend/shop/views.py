@@ -66,36 +66,30 @@ class IsOrderRelatedToSellerOrAdmin(BasePermission):
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all().select_related('category', 'seller')
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]  # Chỉ yêu cầu đăng nhập cho các hành động chỉnh sửa
-
-    def get_permissions(self):
-        if self.action in ['create', 'update', 'partial_update', 'destroy']:
-            return [IsSellerOrAdmin(), IsProductOwnerOrAdmin()]
-        return super().get_permissions()
+    permission_classes = [AllowAny]  # Cho phép truy cập công khai
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['category']
+    search_fields = ['name', 'description']
+    ordering_fields = ['price', 'created_at', 'sold_count']
+    ordering = ['-created_at']
 
     def get_queryset(self):
         queryset = super().get_queryset()
         if self.request.user.is_authenticated and self.request.user.role == 'seller':
             return queryset.filter(seller=self.request.user)
+
+        min_price = self.request.query_params.get('min_price')
+        max_price = self.request.query_params.get('max_price')
+        min_rating = self.request.query_params.get('min_rating')
+
+        if min_price:
+            queryset = queryset.filter(price__gte=min_price)
+        if max_price:
+            queryset = queryset.filter(price__lte=max_price)
+        if min_rating:
+            queryset = queryset.annotate(avg_rating=Avg('reviews__rating')).filter(avg_rating__gte=min_rating)
+
         return queryset
-
-    def perform_create(self, serializer):
-        category_id = self.request.data.get('category_id')
-        if not category_id:
-            raise serializers.ValidationError("category_id is required.")
-        category = get_object_or_404(Category, id=category_id)
-        serializer.save(seller=self.request.user, category=category)
-
-    def perform_update(self, serializer):
-        instance = self.get_object()
-        if self.request.user.role != 'admin' and instance.seller != self.request.user:
-            raise serializers.ValidationError("Bạn không có quyền cập nhật sản phẩm này.")
-        category_id = self.request.data.get('category_id')
-        if category_id:
-            category = get_object_or_404(Category, id=category_id)
-            serializer.save(category=category)
-        else:
-            serializer.save()
 
 class LoginView(ObtainAuthToken):
     permission_classes = [AllowAny]
@@ -300,7 +294,8 @@ class OrderViewSet(viewsets.ModelViewSet):
         order = Order.objects.create(
             user=request.user,
             total_price=total_price,
-            shipping_address=request.data.get('shipping_address', '')
+            shipping_address=request.data.get('shipping_address', ''),
+            payment_method='COD',  # Hardcode to COD since only COD is used
         )
         for item in cart_items:
             OrderItem.objects.create(
@@ -313,13 +308,17 @@ class OrderViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(order)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    @action(detail=True, methods=['put'])
-    def status(self, request, pk=None):
+    @action(detail=True, methods=['patch'], url_path='status')
+    def update_status(self, request, pk=None):
         order = self.get_object()
         new_status = request.data.get('status')
         if new_status not in dict(Order.STATUS_CHOICES):
             return Response({'error': 'Trạng thái không hợp lệ'}, status=status.HTTP_400_BAD_REQUEST)
-        if self.request.user.role == 'admin' or order.items.filter(product__seller=self.request.user).exists():
+        if order.status == 'cancelled':
+            return Response({'error': 'Đơn hàng đã bị hủy, không thể cập nhật trạng thái.'}, status=status.HTTP_400_BAD_REQUEST)
+        if order.status in ['completed', 'shipped'] and new_status == 'cancelled':
+            return Response({'error': 'Không thể hủy đơn hàng đã giao hoặc hoàn thành.'}, status=status.HTTP_400_BAD_REQUEST)
+        if self.request.user.role == 'admin' or order.user == self.request.user or order.items.filter(product__seller=self.request.user).exists():
             order.status = new_status
             order.save()
             return Response({'status': order.status})
