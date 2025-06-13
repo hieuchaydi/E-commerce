@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.auth-page {
+  @apply flex min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100;
+}
+
+.auth-container {
+  @apply flex w-full max-w-md mx-auto my-8 p-6 bg-white rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl;
+}
+
+.forgot-password-link {
+  @apply text-center mt-4;
+}
+
+.forgot-password-link a {
+  @apply text-blue-600 font-medium hover:underline transition-colors duration-200;
+}

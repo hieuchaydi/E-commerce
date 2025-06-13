@@ -1,0 +1,129 @@
+/* ProductManagement.css */
+.product-management {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.page-header h2 {
+  font-size: 1.8rem;
+  color: #333;
+}
+
+.success-message {
+  color: #2e7d32;
+  background-color: #e8f5e9;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.error-message {
+  color: #d32f2f;
+  background-color: #fce4e4;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.loading {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #555;
+  margin: 2rem 0;
+}
+
+.products-table {
+  overflow-x: auto;
+}
+
+.products-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.products-table th,
+.products-table td {
+  padding: 0.8rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.products-table th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+  color: #333;
+}
+
+.products-table .id-column {
+  width: 60px;
+}
+
+.products-table .product-image {
+  border-radius: 4px;
+}
+
+.products-table .product-image.error {
+  opacity: 0.5;
+}
+
+.products-table .actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.no-products {
+  text-align: center;
+  padding: 2rem;
+  color: #777;
+}
+
+@media (max-width: 768px) {
+  .products-table table {
+    display: block;
+  }
+
+  .products-table thead {
+    display: none;
+  }
+
+  .products-table tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 1rem;
+  }
+
+  .products-table td {
+    display: block;
+    text-align: right;
+    position: relative;
+    padding-left: 50%;
+  }
+
+  .products-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 1rem;
+    font-weight: 600;
+    color: #555;
+  }
+
+  .products-table .actions {
+    justify-content: flex-end;
+  }
+}

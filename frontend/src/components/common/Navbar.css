@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.navbar {
+  @apply sticky top-0 z-30;
+  background: var(--card-bg);
+  backdrop-filter: blur(15px);
+  box-shadow: var(--glow-shadow);
+}
+
+.navbar-logo {
+  @apply text-2xl sm:text-3xl font-bold;
+  background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+.navbar-search-input {
+  @apply w-full px-4 py-2 rounded-l-lg text-sm bg-[var(--bg-secondary)] text-[var(--text-primary)];
+  border: 2px solid var(--accent-primary);
+  transition: box-shadow 0.3s ease;
+}
+
+.navbar-search-input:focus {
+  @apply outline-none;
+  box-shadow: 0 0 15px var(--accent-primary);
+}
+
+.navbar-search-button {
+  @apply px-4 rounded-r-lg bg-[var(--accent-primary)] text-white;
+  transition: background 0.3s ease;
+}
+
+.navbar-search-button:hover {
+  @apply bg-[var(--accent-secondary)];
+}
+
+.nav-link {
+  @apply text-[var(--text-secondary)] text-sm sm:text-base font-medium relative;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  @apply text-[var(--accent-primary)];
+  text-shadow: 0 0 10px var(--accent-primary);
+}
+
+.user-section {
+  @apply flex items-center gap-3 bg-[var(--bg-secondary)] rounded-full px-4 py-2;
+}
+
+.user-info {
+  @apply text-sm text-[var(--text-secondary)];
+}
+
+.user-info strong {
+  @apply text-[var(--text-primary)];
+}
+
+.logout-btn {
+  @apply text-sm text-[var(--text-secondary)] hover:text-[var(--accent-error)] font-medium;
+}
+
+.login-link {
+  @apply text-[var(--accent-primary)] border-2 border-[var(--accent-primary)] rounded-full px-4 py-2 text-sm;
+  transition: all 0.3s ease;
+}
+
+.login-link:hover {
+  @apply bg-[rgba(124,58,237,0.1)];
+}
+
+.register-link {
+  @apply bg-[var(--accent-primary)] text-white rounded-full px-4 py-2 text-sm;
+  transition: all 0.3s ease;
+}
+
+.register-link:hover {
+  @apply bg-[var(--accent-secondary)];
+}
+
+.theme-toggle {
+  @apply text-2xl p-2 rounded-full bg-[var(--bg-secondary)] hover:bg-[var(--accent-primary)] hover:text-white;
+  transition: all 0.3s ease;
+}

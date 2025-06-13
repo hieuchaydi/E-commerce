@@ -1,0 +1,23 @@
+.order-confirmation {
+  @apply max-w-xl mx-auto mt-12 p-8 bg-white rounded-xl shadow-sm border border-gray-100 text-center;
+}
+
+.confirmation-title {
+  @apply text-3xl font-bold text-gray-800 mb-4;
+}
+
+.confirmation-icon {
+  @apply text-6xl text-green-500 mb-4;
+}
+
+.confirmation-message {
+  @apply text-gray-600 leading-7 mb-6 text-base;
+}
+
+.confirmation-button {
+  @apply px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full font-semibold text-base shadow-md transition-all duration-300;
+}
+
+.confirmation-button:hover {
+  @apply translate-y-[-3px] shadow-lg;
+}

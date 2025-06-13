@@ -1,0 +1,108 @@
+.auth-form-container {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+  padding: 2rem 1rem;
+}
+
+.auth-form-card {
+  width: 100%;
+  max-width: 520px;
+  margin: auto;
+  padding: 2.5rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.auth-form-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #2d3748;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.form-group {
+  position: relative;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: #4a5568;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: #f8fafc;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+
+.auth-button {
+  padding: 1rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.auth-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+.auth-switch {
+  text-align: center;
+  margin-top: 1.75rem;
+  color: #718096;
+  font-size: 0.95rem;
+}
+
+.auth-switch a {
+  color: #4299e1;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.auth-switch a:hover {
+  color: #3182ce;
+  text-decoration: underline;
+}
+
+.error-message {
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  background: #fff5f5;
+  border-left: 4px solid #e53e3e;
+  border-radius: 6px;
+  color: #e53e3e;
+  font-size: 0.95rem;
+}

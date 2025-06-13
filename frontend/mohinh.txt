@@ -1,0 +1,262 @@
+src/
+├── api/                 # API calls
+│   └── api.js
+├── assets/              # Static assets
+│   ├── images/
+│   └── styles/
+├── components/          # Reusable components
+│   ├── common/
+│   │   ├── Button.jsx
+│   │   ├── Card.jsx
+│   │   └── Navbar.jsx
+│   ├── auth/
+│   │   ├── LoginForm.jsx
+│   │   └── RegisterForm.jsx
+│   ├── products/
+│   │   ├── ProductCard.jsx
+│   │   └── ProductList.jsx
+│   └── cart/
+│       ├── CartItem.jsx
+│       └── CartSummary.jsx
+|
+|────── OrderConfirmation.jsx
+├── context/            # Context providers
+│   ├── AuthContext.jsx
+│   └── CartContext.jsx
+├── pages/              # Page components
+│   ├── auth/
+│   │   ├── Login.jsx
+│   │   └── Register.jsx
+│   ├── products/
+│   │   ├── Home.jsx
+│   │   └── ProductDetail.jsx
+│   ├── cart/
+│   │   ├── Cart.jsx
+│   │   └── Checkout.jsx
+│   ├── orders/
+│   │   └── OrderHistory.jsx
+│   ├── seller/
+│   │   ├── SellerDashboard.jsx
+│   │   └── ProductManagement.jsx
+│   └── admin/
+│       └── AdminDashboard.jsx
+├── App.jsx
+└── index.jsx
+
+
+
+
+import React, { useState, useEffect, useRef } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { productsAPI, getMediaUrl } from '../../api/api';
+import { useCart } from '../../context/CartContext';
+import './Home.css';
+
+const Home = () => {
+  const [bestSellers, setBestSellers] = useState([]);
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const [searchParams] = useSearchParams();
+  const searchTerm = searchParams.get('search');
+  const { addToCart } = useCart();
+  const navigate = useNavigate();
+
+  const bestSellersRef = useRef(null);
+  const featuredRef = useRef(null);
+  const sliderRef = useRef(null);
+
+  // Define the images for the hero slider
+  const sliderImages = [
+  encodeURI('/media/products/tải_xuống.jpg'),
+  '/media/products/OSK.jpg',
+  '/media/products/thilonluoc.jpg',
+];
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const params = {};
+        if (searchTerm) params.search = searchTerm;
+
+        const response = await productsAPI.getProducts(params);
+        const productsData = response.data.results || response.data || [];
+
+        const productMap = {
+          'galuoc.jpg': 'Gà luộc',
+          'thitlonluoc.jpg': 'Thịt lợn luộc',
+          'thitlonluc_0DWjB4k.jpg': 'Thịt lợn luộc (biến thể)',
+          'OSK.jpg': 'Xôi',
+          'tải xuống.jpg': 'Sản phẩm tải xuống',
+          'GALUOC.jpg': 'Gà luộc (biến thể)',
+        };
+
+        const enrichedProducts = productsData.map(product => ({
+          ...product,
+          image: product.image || `/media/products/${Object.keys(productMap).find(key => productMap[key].toLowerCase() === (product.name || '').toLowerCase()) || 'thitlonluoc.jpg'}`,
+        }));
+
+        const priorityProducts = enrichedProducts.filter(product =>
+          ['Gà luộc', 'Thịt lợn luộc', 'Xôi'].includes(product.name)
+        );
+        const otherProducts = enrichedProducts.filter(product =>
+          !['Gà luộc', 'Thịt lợn luộc', 'Xôi'].includes(product.name)
+        ).sort((a, b) => (b.price || 0) - (a.price || 0));
+
+        const combinedBestSellers = [...priorityProducts, ...otherProducts].slice(0, 4);
+        setBestSellers(combinedBestSellers);
+        setFeaturedProducts(otherProducts.slice(4, 7));
+      } catch (err) {
+        setError(err.response?.data?.message || 'Lỗi tải sản phẩm');
+        console.error('Lỗi tải sản phẩm:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+
+    const autoSlide = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % sliderImages.length);
+    }, 5000);
+
+    return () => clearInterval(autoSlide);
+  }, [searchTerm, sliderImages.length]);
+
+  const renderProductCard = (product) => {
+    const reviews = product.reviews || [];
+    const averageRating = reviews.length > 0 
+      ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+      : null;
+
+    const productImage = product.image ? getMediaUrl(product.image) : getMediaUrl('/media/products/thitlonluoc.jpg');
+
+    const handleAddToCart = async () => {
+      try {
+        await addToCart(product.id, 1); // Add product with quantity 1
+        navigate('/cart'); // Navigate to cart page
+      } catch (error) {
+        console.error('Failed to add to cart:', error);
+        setError('Thêm vào giỏ hàng thất bại. Vui lòng thử lại.');
+      }
+    };
+
+    const handleProductClick = () => {
+      navigate(`/product/${product.id}`); // Navigate to ProductDetail page
+    };
+
+    return (
+      <div className="product-card" key={product.id}>
+        <img
+          src={productImage}
+          alt={product.name || 'Sản phẩm'}
+          className="product-image"
+          onError={(e) => { e.target.src = getMediaUrl('/media/products/thitlonluoc.jpg'); }}
+          onClick={handleProductClick} // Navigate to ProductDetail on image click
+          style={{ cursor: 'pointer' }}
+        />
+        <div className="product-info">
+          <h3 
+            className="product-name" 
+            onClick={handleProductClick} // Navigate to ProductDetail on name click
+            style={{ cursor: 'pointer' }}
+          >
+            {product.name}
+          </h3>
+          {averageRating && (
+            <div className="rating">Đánh giá: {averageRating}★</div>
+          )}
+          <div className="price">${(product.price || 0).toFixed(2)}</div>
+          <button 
+            className="add-to-cart-btn"
+            onClick={handleAddToCart}
+            disabled={loading}
+          >
+            {loading ? 'Đang tải...' : 'Thêm vào giỏ'}
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  const scroll = (ref, direction) => {
+    if (ref.current) {
+      const scrollAmount = direction === 'left' ? -320 : 320;
+      ref.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const goToSlide = (index) => {
+    setCurrentSlide(index);
+  };
+
+  return (
+    <div className="home-page">
+      <div className="hero-slider" ref={sliderRef} onMouseEnter={() => {}} onMouseLeave={() => {}}>
+        <div className="slider-content" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+          {sliderImages.map((image, index) => (
+            <div
+              className="slide"
+              key={index}
+              style={{ backgroundImage: `url(${getMediaUrl(image)})` }}
+            >
+              <div className="slide-overlay"></div>
+            </div>
+          ))}
+        </div>
+        <div className="slider-dots">
+          {sliderImages.map((_, index) => (
+            <span
+              key={index}
+              className={`dot ${currentSlide === index ? 'active' : ''}`}
+              onClick={() => goToSlide(index)}
+            />
+          ))}
+        </div>
+      </div>
+
+      {[
+        { title: 'Sản phẩm', products: bestSellers, ref: bestSellersRef },
+        { title: 'Sản phẩm nổi bật', products: featuredProducts, ref: featuredRef }
+      ].map((section, index) => (
+        <div className="section" key={index}>
+          <h2 className="section-title">{section.title}</h2>
+          <div className="carousel-wrapper">
+            <button 
+              className="carousel-btn prev" 
+              onClick={() => scroll(section.ref, 'left')}
+              aria-label="Previous"
+            >
+              ‹
+            </button>
+            <div className="carousel-track" ref={section.ref}>
+              {loading ? (
+                <div className="loading-state">Đang tải...</div>
+              ) : error ? (
+                <div className="error-state">{error}</div>
+              ) : section.products.length === 0 ? (
+                <div className="no-results">Không có sản phẩm</div>
+              ) : (
+                section.products.map(renderProductCard)
+              )}
+            </div>
+            <button 
+              className="carousel-btn next" 
+              onClick={() => scroll(section.ref, 'right')}
+              aria-label="Next"
+            >
+              ›
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default Home;

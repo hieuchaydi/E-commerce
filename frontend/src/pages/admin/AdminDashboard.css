@@ -1,0 +1,27 @@
+.admin-dashboard {
+  padding: 20px;
+  background-color: #fafafa;
+}
+
+.admin-dashboard h1 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.admin-dashboard .stats {
+  display: flex;
+  gap: 20px;
+}
+
+.admin-dashboard .stat-item {
+  background-color: white;
+  padding: 15px;
+  flex: 1;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.admin-dashboard .stat-item h3 {
+  margin-bottom: 10px;
+}

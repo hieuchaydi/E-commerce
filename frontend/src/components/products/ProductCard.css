@@ -1,0 +1,103 @@
+.product-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.product-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.product-info {
+  padding: 15px;
+}
+
+.product-name {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.product-name a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.product-name a:hover {
+  color: #1976d2;
+}
+
+.product-price {
+  font-weight: bold;
+  color: #388e3c;
+  margin-bottom: 8px;
+}
+
+.product-category {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.product-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+.product-image img {
+  max-width: 100%;
+  max-height: 400px; /* tùy chỉnh theo ý bạn */
+  object-fit: contain;
+  display: block; /* tránh khoảng trắng dưới ảnh */
+  margin: 0 auto; /* căn giữa */
+}
+.card {
+  @apply bg-white rounded-lg shadow-md p-4 flex flex-col items-center;
+  @apply hover:shadow-lg transition-shadow duration-300 ease-in-out;
+  @apply cursor-pointer;
+}
+
+.card img {
+  @apply w-full h-48 object-cover rounded-md mb-4;
+}
+
+.card h3 {
+  @apply text-lg font-semibold text-gray-900 mb-2 text-center;
+}
+
+.card p.price {
+  @apply text-blue-600 font-bold text-xl;
+}
+
+.card p.description {
+  @apply text-gray-600 text-sm text-center line-clamp-3;
+}
+
+.card button {
+  @apply mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition;
+}
+.product-card {
+  @apply bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 p-4;
+}
+
+.product-image {
+  @apply rounded-lg mb-4 w-full h-40 object-cover;
+}
+
+.product-title {
+  @apply text-lg font-semibold text-gray-800 mb-2;
+}
+
+.product-desc {
+  @apply text-gray-500 mb-3 text-sm;
+}
+
+.product-button {
+  @apply w-full py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-all duration-300;
+}

@@ -1,0 +1,17 @@
+/* src/components/products/ProductList.css */
+
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.product-list .loading,
+.product-list .empty {
+  font-size: 1.2rem;
+  color: #555;
+  margin: 40px auto;
+}

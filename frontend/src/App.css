@@ -1,0 +1,103 @@
+/* styles.css */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* === Components Custom Styles === */
+
+/* Trang chủ sản phẩm */
+.product-card {
+  @apply bg-white rounded-lg shadow hover:shadow-md transition p-4;
+}
+
+.product-image {
+  @apply rounded mb-4 w-full h-40 object-cover;
+}
+
+.product-title {
+  @apply text-lg font-semibold mb-2;
+}
+
+.product-desc {
+  @apply text-gray-500 mb-3;
+}
+
+.product-button {
+  @apply w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-700;
+}
+
+/* Form đăng nhập */
+.login-form {
+  @apply max-w-md mx-auto p-8 bg-white rounded-lg shadow-md mt-10;
+}
+
+.input-label {
+  @apply block mb-2 font-semibold text-gray-700;
+}
+
+.input-field {
+  @apply w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 outline-none;
+}
+
+.login-button {
+  @apply w-full bg-blue-600 text-white py-3 rounded font-semibold hover:bg-blue-700 transition;
+}
+
+/* Giỏ hàng */
+.cart-container {
+  @apply max-w-4xl mx-auto mt-10 p-4;
+}
+
+.cart-item {
+  @apply flex items-center border-b pb-4;
+}
+
+.cart-img {
+  @apply w-16 h-16 object-cover rounded mr-4;
+}
+
+.cart-summary {
+  @apply bg-white rounded-lg shadow-md p-6 mt-6;
+}
+
+.cart-checkout-btn {
+  @apply w-full bg-green-600 text-white py-3 rounded font-bold hover:bg-green-700 transition;
+}
+
+/* Thanh toán */
+.checkout-container {
+  @apply max-w-5xl mx-auto p-6 mt-10;
+}
+
+.checkout-form {
+  @apply flex-1 bg-white rounded-lg shadow-md p-6;
+}
+
+.checkout-label {
+  @apply block font-medium mb-2;
+}
+
+.checkout-input {
+  @apply w-full p-3 border border-gray-300 rounded;
+}
+
+.checkout-textarea {
+  @apply w-full p-3 border border-gray-300 rounded min-h-[100px];
+}
+
+.checkout-btn {
+  @apply w-full bg-blue-600 text-white py-3 rounded font-semibold hover:bg-blue-700 transition;
+}
+
+.order-summary {
+  @apply flex-1 bg-white rounded-lg shadow-md p-6;
+}
+
+.summary-item {
+  @apply flex justify-between;
+}
+
+.summary-total {
+  @apply flex justify-between font-bold border-t pt-3;
+}

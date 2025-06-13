@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+  }
+}
+
+.checkout-page {
+  @apply bg-gray-100 min-h-screen py-8 font-sans;
+}
+
+.checkout-container {
+  @apply max-w-6xl mx-auto px-4 flex flex-col md:flex-row gap-8;
+}
+
+.order-summary {
+  @apply bg-white p-6 rounded-lg shadow-md w-full md:w-1/2;
+}
+
+.order-summary h3 {
+  @apply text-2xl font-bold text-gray-800 mb-4;
+}
+
+.cart-item {
+  @apply flex justify-between text-gray-700 mb-2;
+}
+
+.summary-row {
+  @apply flex justify-between text-gray-700 mb-2;
+}
+
+.summary-row.total {
+  @apply font-bold text-lg mt-4 border-t pt-2;
+}
+
+.shipping-form {
+  @apply bg-white p-6 rounded-lg shadow-md w-full md:w-1/2;
+}
+
+.shipping-form h3 {
+  @apply text-2xl font-bold text-gray-800 mb-4;
+}
+
+.form-group {
+  @apply mb-6;
+}
+
+.form-group label {
+  @apply block text-gray-700 font-semibold mb-2;
+}
+
+.form-group textarea {
+  @apply w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500;
+  @apply resize-y min-h-[100px] max-h-[200px];
+}
+
+.error-message {
+  @apply text-red-500 text-center mb-4;
+}
+
+button {
+  @apply w-full px-4 py-3 bg-green-600 text-white font-semibold rounded-md;
+  @apply hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200;
+}
+
+button:disabled {
+  @apply bg-gray-400 cursor-not-allowed hover:bg-gray-400;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .checkout-container {
+    @apply flex-col;
+  }
+
+  .order-summary,
+  .shipping-form {
+    @apply w-full;
+  }
+
+  .form-group textarea {
+    @apply min-h-[80px];
+  }
+
+  button {
+    @apply py-2 text-sm;
+  }
+}
+
+@media (min-width: 1024px) {
+  .checkout-container {
+    @apply px-6;
+  }
+
+  .order-summary,
+  .shipping-form {
+    @apply p-8;
+  }
+
+  .form-group textarea {
+    @apply p-4;
+  }
+}

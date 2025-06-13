@@ -1,0 +1,135 @@
+/* src/pages/auth/AuthPages.css */
+
+.auth-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 30px 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.auth-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+.auth-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-container label {
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #555;
+}
+
+.auth-container input[type="text"],
+.auth-container input[type="email"],
+.auth-container input[type="password"] {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.auth-container button {
+  padding: 10px;
+  background-color: #3b82f6;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.auth-container button:hover {
+  background-color: #2563eb;
+}
+
+.auth-error {
+  color: red;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+.auth-page {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to bottom right, #ebf4ff, #e0e7ff);
+  padding: 1rem;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 400px;
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.auth-container h2 {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+}
+
+.auth-container label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.25rem;
+}
+
+.auth-container input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1rem;
+}
+
+.auth-container button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.auth-container button:disabled {
+  background-color: #93c5fd;
+}
+
+.auth-container .error {
+  color: #dc2626;
+  margin-bottom: 1rem;
+}
+
+.auth-container .success {
+  color: #16a34a;
+  margin-bottom: 1rem;
+}
+
+.forgot-password-link {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.forgot-password-link a {
+  color: #2563eb;
+  text-decoration: underline;
+  font-size: 0.875rem;
+}

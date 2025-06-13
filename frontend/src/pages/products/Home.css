@@ -1,0 +1,269 @@
+/* src/pages/products/Home.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .scrollbar-custom {
+    scrollbar-width: thin;
+    scrollbar-color: #f472b6 #f1f1f1;
+  }
+  .scrollbar-custom::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+  }
+  .scrollbar-custom::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    background: #f472b6;
+    border-radius: 3px;
+  }
+  .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+    background: #ec4899;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.home-page {
+  @apply bg-gray-50 min-h-screen font-sans;
+}
+
+.current-date-time {
+  @apply text-black text-center py-4 text-lg font-medium; /* Thay text-gray-800 */
+}
+
+.hero-slider {
+  @apply relative w-full max-w-5xl mx-auto mb-10 overflow-hidden rounded-2xl shadow-2xl bg-white;
+}
+
+.slider-content {
+  @apply flex transition-transform duration-700 ease-in-out h-full will-change-transform;
+}
+
+.slide {
+  @apply w-full flex-shrink-0 flex items-center justify-center relative aspect-[4/3];
+}
+
+.slide img {
+  @apply w-full h-full object-cover rounded-lg shadow-md;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.slide img:hover {
+  transform: scale(1.1);
+  opacity: 0.95;
+}
+
+.slide-overlay {
+  @apply absolute inset-0 bg-gray-500/40;
+}
+
+.slider-dots {
+  @apply absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-4 z-10;
+}
+
+.dot {
+  @apply w-4 h-4 bg-white/80 rounded-full cursor-pointer transition-all duration-300;
+}
+
+.dot.active {
+  @apply bg-pink-600 scale-125 shadow-md;
+}
+
+.dot:hover {
+  @apply bg-pink-500 scale-110;
+}
+
+.filters {
+  @apply flex flex-wrap gap-1.5 px-4 sm:px-6 mb-6 max-w-5xl mx-auto;
+}
+
+.filter-input,
+.filter-select {
+  @apply px-1.5 py-1 border border-gray-300 rounded-md text-xs w-24 sm:w-28 bg-white focus:outline-none focus:ring-1 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200;
+}
+
+.filter-input::placeholder {
+  @apply text-black text-xs; /* Thay text-gray-500 */
+}
+
+.reset-button {
+  @apply px-2 py-1 bg-pink-500 text-white rounded-md font-medium text-xs w-16 sm:w-20 hover:bg-pink-600 focus:outline-none focus:ring-1 focus:ring-pink-500 focus:ring-offset-1 transition-all duration-200;
+}
+
+.section {
+  @apply py-8 px-4 sm:px-6 bg-white mx-auto max-w-[95%] lg:max-w-7xl rounded-xl shadow-lg mb-10;
+}
+
+.section-title {
+  @apply text-2xl sm:text-3xl font-bold text-black mb-6 text-center; /* Thay text-gray-900 */
+}
+
+.carousel-wrapper {
+  @apply relative overflow-x-hidden;
+}
+
+.carousel-track {
+  @apply flex gap-3 sm:gap-4 overflow-x-auto scroll-smooth scrollbar-custom;
+  scroll-snap-type: x mandatory;
+  will-change: scroll-position;
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+}
+
+.product-card {
+  @apply bg-white rounded-lg shadow-md p-3 sm:p-4 flex flex-col items-center min-w-[160px] max-w-[160px] sm:min-w-[180px] sm:max-w-[180px];
+  @apply transition-all duration-300;
+  animation: slideUp 0.6s ease-out forwards;
+}
+
+.product-card:hover {
+  @apply shadow-xl scale-105;
+}
+
+.product-image {
+  @apply w-full h-full object-cover rounded-md;
+}
+
+.product-image:hover {
+  @apply opacity-95;
+}
+
+.product-info {
+  @apply flex flex-col items-center w-full;
+}
+
+.product-name {
+  @apply text-sm sm:text-base font-semibold text-black mb-1 sm:mb-2 text-center line-clamp-2; /* Thay text-gray-900 */
+}
+
+.rating {
+  @apply text-xs sm:text-sm text-pink-500 mb-1 sm:mb-2;
+}
+
+.sold {
+  @apply text-xs sm:text-sm text-black mb-1 sm:mb-2; /* Thay text-gray-700 */
+}
+
+.price {
+  @apply text-base sm:text-lg font-bold text-green-600 mb-2 sm:mb-3;
+}
+
+.add-to-cart-btn {
+  @apply w-full px-2 sm:px-3 py-1.5 sm:py-2 bg-pink-500 text-white rounded-md font-medium text-xs sm:text-sm;
+  @apply hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2;
+  @apply transition-all duration-200;
+}
+
+.carousel-btn {
+  @apply absolute top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 bg-white/95 text-black rounded-full flex items-center justify-center; /* Thay text-gray-800 */
+  @apply hover:bg-pink-500 hover:text-white hover:scale-110 transition-all duration-300 z-20;
+  @apply focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2;
+}
+
+.carousel-btn.prev {
+  @apply left-2 sm:left-4;
+}
+
+.carousel-btn.next {
+  @apply right-2 sm:right-4;
+}
+
+.loading-state,
+.error-state,
+.no-results {
+  @apply text-center py-6 text-black w-full text-sm sm:text-base; /* Thay text-gray-700 */
+}
+
+.error-state {
+  @apply text-red-500;
+}
+
+.placeholder .product-image,
+.placeholder .product-info div {
+  @apply bg-gray-200 animate-pulse rounded;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .hero-slider {
+    @apply aspect-[4/3];
+  }
+
+  .slide img {
+    @apply w-full h-full;
+  }
+
+  .slider-dots {
+    @apply bottom-4 space-x-3;
+  }
+
+  .dot {
+    @apply w-3 h-3;
+  }
+
+  .section-title {
+    @apply text-xl;
+  }
+
+  .carousel-btn {
+    @apply w-8 h-8 text-sm;
+  }
+
+  .filters {
+    @apply flex-col gap-1;
+  }
+
+  .filter-input,
+  .filter-select {
+    @apply px-1 py-0.5 text-xs w-full;
+  }
+
+  .reset-button {
+    @apply px-1.5 py-0.5 w-full;
+  }
+}
+
+@media (min-width: 768px) {
+  .product-card {
+    @apply min-w-[200px] max-w-[200px];
+  }
+
+  .product-name {
+    @apply text-base;
+  }
+
+  .price {
+    @apply text-lg;
+  }
+}
+
+@media (min-width: 1024px) {
+  .product-card {
+    @apply min-w-[220px] max-w-[220px] p-5;
+  }
+
+  .product-name {
+    @apply text-lg;
+  }
+
+  .price {
+    @apply text-xl;
+  }
+
+  .carousel-btn {
+    @apply w-14 h-14 text-lg;
+  }
+}

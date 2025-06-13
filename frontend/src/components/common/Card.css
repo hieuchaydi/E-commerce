@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.card {
+  @apply bg-[var(--card-bg)] rounded-2xl p-4 sm:p-6 flex flex-col;
+  backdrop-filter: blur(15px);
+  box-shadow: var(--glow-shadow);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  animation: float 6s ease-in-out infinite;
+}
+
+.card:hover {
+  @apply translate-y-[-8px];
+  box-shadow: 0 0 30px var(--accent-primary), 0 0 50px var(--accent-secondary);
+}
+
+.card-image {
+  @apply w-full h-48 object-cover rounded-lg mb-4;
+}
+
+.card-content {
+  @apply flex flex-col gap-2;
+}
+
+.card-title {
+  @apply text-xl sm:text-2xl font-bold;
+  background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: glow 2s ease-in-out infinite alternate;
+}

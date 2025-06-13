@@ -1,0 +1,52 @@
+.order-history {
+  padding: 20px;
+  background-color: #fff;
+}
+
+.order-history h2 {
+  margin-bottom: 20px;
+}
+
+.order-history table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.order-history th,
+.order-history td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+.order-history th {
+  background-color: #f4f4f4;
+  text-align: left;
+}
+
+.order-history tr:hover {
+  background-color: #f9f9f9;
+}
+.order-history {
+  @apply p-6 bg-white rounded-lg shadow-md max-w-5xl mx-auto;
+}
+
+.order-history h2 {
+  @apply text-3xl font-bold mb-8;
+}
+
+.order-history table {
+  @apply w-full border-collapse;
+}
+
+.order-history th,
+.order-history td {
+  @apply p-4 border-b border-gray-200 text-left;
+}
+
+.order-history th {
+  @apply bg-gray-100 font-semibold;
+}
+
+.order-history tbody tr:hover {
+  @apply bg-gray-50;
+}
