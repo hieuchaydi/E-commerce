@@ -1,7 +1,9 @@
 
+from sympy import Sum
 from rest_framework import serializers
 from .models import User, Category, Product, Cart, Order, OrderItem, Review
-from django.db.models import Avg, Count
+from django.db.models import Avg, Count, Sum
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -17,31 +19,33 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ['id', 'name']
 
+from rest_framework import serializers
+from .models import Product, Category
+
+
 class ProductSerializer(serializers.ModelSerializer):
-    category = CategorySerializer(read_only=True)
-    category_id = serializers.PrimaryKeyRelatedField(
-        queryset=Category.objects.all(), source='category', write_only=True
-    )
-    seller = UserSerializer(read_only=True)
-    price = serializers.FloatField()
-    avg_rating = serializers.SerializerMethodField()  # Thêm trường đánh giá trung bình
-    sold_count = serializers.SerializerMethodField()  # Thêm trường số lượng bán
+    price = serializers.FloatField()  # Không cần source='price'
+    avg_rating = serializers.SerializerMethodField()
+    sold_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'description', 'price', 'quantity', 'image', 
-                  'category', 'category_id', 'seller', 'created_at', 'updated_at',
-                  'avg_rating', 'sold_count']
-        read_only_fields = ['seller']
+        fields = ['id', 'name', 'price', 'quantity', 'category', 'image', 'description', 'seller', 'avg_rating', 'sold_count']
 
     def get_avg_rating(self, obj):
-        # Tính đánh giá trung bình từ reviews
-        avg = obj.reviews.aggregate(Avg('rating'))['rating__avg']
-        return round(avg, 1) if avg else 0.0
+        try:
+            avg = obj.reviews.aggregate(avg_rating=Avg('rating'))['avg_rating']
+            return round(avg, 2) if avg is not None else 0.0
+        except Exception as e:
+            print(f"Error in get_avg_rating: {e}")
+            return 0.0
 
     def get_sold_count(self, obj):
-        # Tính tổng số lượng bán từ OrderItem
-        return obj.orderitem_set.aggregate(Count('quantity'))['quantity__count'] or 0
+        try:
+            return obj.orderitem_set.aggregate(total_sold=Sum('quantity'))['total_sold'] or 0
+        except Exception as e:
+            print(f"Error in get_sold_count: {e}")
+            return 0
 
 class CartSerializer(serializers.ModelSerializer):
     product = ProductSerializer(read_only=True)

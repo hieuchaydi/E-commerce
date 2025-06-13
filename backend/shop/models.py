@@ -159,13 +159,15 @@ class OrderItem(models.Model):
 
 class Review(models.Model):
     user = models.ForeignKey(
-        User, 
-        on_delete=models.CASCADE,
+        User,
+        on_delete=models.SET_NULL,  # Cho phép null khi user bị xóa
+        null=True,  # Hỗ trợ guest reviews
+        blank=True,
         related_name='reviews'
     )
     product = models.ForeignKey(
-        Product, 
-        on_delete=models.CASCADE, 
+        Product,
+        on_delete=models.CASCADE,
         related_name='reviews'
     )
     rating = models.PositiveIntegerField(
@@ -178,12 +180,12 @@ class Review(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     
     class Meta:
-        unique_together = ('user', 'product')
         verbose_name = 'Product Review'
         verbose_name_plural = 'Product Reviews'
     
     def __str__(self):
-        return f"{self.rating}★ review by {self.user.username} for {self.product.name}"
+        reviewer = self.user.username if self.user else "Guest"
+        return f"{self.rating}★ review by {reviewer} for {self.product.name}"
 class Review(models.Model):
     user = models.ForeignKey(
         User,
