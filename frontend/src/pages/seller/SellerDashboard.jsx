@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { productsAPI, ordersAPI } from '../../api/api';
 import { Link } from 'react-router-dom';
-import Button from '../../components/common/Button';
+
 import './SellerDashboard.css';
 
 const SellerDashboard = () => {

@@ -106,17 +106,17 @@ const Navbar = () => {
             </form>
           )}
           <Link to="/" className="nav-link text-gray-600 hover:text-blue-500 text-sm sm:text-base font-medium">
-            Home
+            Trang chủ
           </Link>
           {user ? (
             <>
               {user.role === 'customer' && (
                 <>
                   <Link to="/cart" className="nav-link text-gray-600 hover:text-blue-500 text-sm sm:text-base font-medium">
-                    Cart
+                    Giỏ hàng
                   </Link>
                   <Link to="/orders" className="nav-link text-gray-600 hover:text-blue-500 text-sm sm:text-base font-medium">
-                    Order History
+                    Đơn hàng
                   </Link>
                 </>
               )}
@@ -125,7 +125,7 @@ const Navbar = () => {
                   to="/seller/products"
                   className="nav-link text-gray-600 hover:text-blue-500 text-sm sm:text-base font-medium"
                 >
-                  Product Management
+                  Quản lý sản phẩm
                 </Link>
               )}
               {user.role === 'admin' && (
@@ -133,35 +133,35 @@ const Navbar = () => {
                   to="/admin/dashboard"
                   className="nav-link text-gray-600 hover:text-blue-500 text-sm sm:text-base font-medium"
                 >
-                  Dashboard
+                  Bảng điều khiển quản trị
                 </Link>
               )}
               <div className="user-section flex items-center gap-3 bg-gray-100 rounded-full px-3 py-1">
                 <span className="user-info text-sm text-gray-600">
-                  Hello, <strong className="text-gray-800">{user.username}</strong> ({user.role})
+                  xin chào, <strong className="text-gray-800">{user.username}</strong> ({user.role})
                 </span>
                 <Link to="/profile" className="nav-link text-sm text-gray-600 hover:text-blue-500 font-medium">
-                  Profile
+                  trang cá nhân
                 </Link>
                 <button
                   onClick={handleLogout}
                   className="logout-btn text-sm text-gray-600 hover:text-red-500 font-medium"
                   aria-label="Logout"
                 >
-                  Logout
+                  Đăng xuất
                 </button>
               </div>
             </>
           ) : (
             <div className="auth-links flex flex-col sm:flex-row gap-2">
               <Link to="/login" className="login-link text-blue-500 border border-blue-500 rounded-full px-4 py-2 hover:bg-blue-50 text-sm">
-                Login
+                Đăng nhập
               </Link>
               <Link
                 to="/register"
                 className="register-link bg-blue-500 text-white rounded-full px-4 py-2 hover:bg-blue-600 text-sm"
               >
-                Register
+                Đăng ký
               </Link>
             </div>
           )}

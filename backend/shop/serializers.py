@@ -31,6 +31,7 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id', 'name', 'price', 'quantity', 'category', 'image', 'description', 'seller', 'avg_rating', 'sold_count']
+        read_only_fields = ['seller']  # Đặt seller là read-only
 
     def get_avg_rating(self, obj):
         try:
@@ -46,6 +47,7 @@ class ProductSerializer(serializers.ModelSerializer):
         except Exception as e:
             print(f"Error in get_sold_count: {e}")
             return 0
+
 
 class CartSerializer(serializers.ModelSerializer):
     product = ProductSerializer(read_only=True)

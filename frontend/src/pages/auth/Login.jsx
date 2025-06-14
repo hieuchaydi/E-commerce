@@ -9,7 +9,7 @@ const Login = () => {
       <div className="auth-container">
         <LoginForm />
         <div className="forgot-password-link">
-          <Link to="/forgot-password">Quên mật khẩu?</Link>
+          <Link to="/forgot-password"></Link>
         </div>
       </div>
     </div>

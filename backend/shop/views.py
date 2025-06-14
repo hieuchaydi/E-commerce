@@ -46,7 +46,8 @@ from .serializers import ProductSerializer
 
 class IsSellerOrAdmin(permissions.BasePermission):
     def has_permission(self, request, view):
-        if request.method in permissions.SAFE_METHODS:  # GET
+        print('User:', request.user, 'Role:', request.user.role if request.user.is_authenticated else 'None')
+        if request.method in permissions.SAFE_METHODS:
             return request.user.is_authenticated
         return request.user.is_authenticated and request.user.role in ['seller', 'admin']
 
@@ -55,6 +56,9 @@ class IsProductOwnerOrAdmin(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return request.user.is_authenticated
         return request.user.role == 'admin' or obj.seller == request.user
+    
+    
+    
 class IsOrderRelatedToSellerOrAdmin(BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.user.role == 'admin':
@@ -63,15 +67,30 @@ class IsOrderRelatedToSellerOrAdmin(BasePermission):
             # Kiểm tra xem đơn hàng có chứa sản phẩm của seller không
             return obj.items.filter(product__seller=request.user).exists()
         return obj.user == request.user
+    
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all().select_related('category', 'seller')
     serializer_class = ProductSerializer
-    permission_classes = [AllowAny]  # Cho phép truy cập công khai
+    permission_classes = [IsSellerOrAdmin]  # Chỉ seller hoặc admin được phép tạo/sửa sản phẩm
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['category']
     search_fields = ['name', 'description']
     ordering_fields = ['price', 'created_at', 'sold_count']
     ordering = ['-created_at']
+
+    def create(self, request, *args, **kwargs):
+        print('Dữ liệu nhận được:', request.data)
+        serializer = self.get_serializer(data=request.data)
+        if not serializer.is_valid():
+            print('Lỗi xác thực:', serializer.errors)
+            return Response(serializer.errors, status=400)
+        # Khi serializer hợp lệ, lưu dữ liệu và trả về phản hồi
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def perform_create(self, serializer):
+        serializer.save(seller=self.request.user)  # Tự động gán seller từ request.user
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -90,7 +109,7 @@ class ProductViewSet(viewsets.ModelViewSet):
             queryset = queryset.annotate(avg_rating=Avg('reviews__rating')).filter(avg_rating__gte=min_rating)
 
         return queryset
-
+    
 class LoginView(ObtainAuthToken):
     permission_classes = [AllowAny]
 
