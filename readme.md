@@ -20,7 +20,6 @@
 - User role management (user/admin)
 - Order management
 - Product image upload
-
 ---
 
 ## 🚀 Installation
