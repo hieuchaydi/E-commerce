@@ -34,3 +34,15 @@ pillow==11.2.1
 PyJWT==2.9.0
 sqlparse==0.5.3
 tzdata==2025.2
+
+
+2025-06-14T16:03:51Z INF +--------------------------------------------------------------------------------------------+
+2025-06-14T16:03:51Z INF |  Your quick Tunnel has been created! Visit it at (it may take some time to be reachable):
+
+
+  |
+2025-06-14T16:03:51Z INF |  https://either-candles-warned-nest.trycloudflare.com                                      |
+2025-06-14T16:03:51Z INF +--------------------------------------------------------------------------------------------+
+PS C:\Users\FPT\Desktop\shopee_clone_backend> cd backend
+PS C:\Users\FPT\Desktop\shopee_clone_backend\backend> .\env\Scripts\Activate
+(env) PS C:\Users\FPT\Desktop\shopee_clone_backend\backend> cloudflared tunnel --url http://localhost:8000

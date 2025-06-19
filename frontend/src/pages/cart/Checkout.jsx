@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import { ordersAPI } from '../../api/api';
 import Button from '../../components/common/Button';
 import './Checkout.css';
+import { toast, ToastContainer } from 'react-toastify';
 
 const Checkout = () => {
   const { cartItems, clearCart, error: cartError } = useCart();
@@ -16,26 +17,42 @@ const Checkout = () => {
     address: '',
     city: '',
     country: 'Vietnam',
+    discount_code: '',
   });
   const [localError, setLocalError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [discountAmount, setDiscountAmount] = useState(0);
 
   const subtotal = cartItems.reduce(
     (sum, item) => sum + Number(item.product.price || 0) * item.quantity,
     0
   );
   const tax = subtotal * 0.1;
-  const total = subtotal + tax;
+  const total = subtotal + tax - discountAmount;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleApplyDiscount = async () => {
+    try {
+      const response = await ordersAPI.validateDiscountCode(formData.discount_code, subtotal);
+      setDiscountAmount(Number(response.discount_amount || 0));
+
+      setLocalError('');
+      toast.success(`Áp dụng mã giảm giá thành công! Giảm: $${response.discount_amount.toFixed(2)}`);
+    } catch (err) {
+      toast.warning(err.response?.data?.error || 'Mã giảm giá không hợp lệ');
+      
+      setLocalError(err.message || 'Mã giảm giá không hợp lệ');
+      setDiscountAmount(0);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Kiểm tra user và token
     console.log('User:', user);
     console.log('Token:', localStorage.getItem('token'));
     if (!user) {
@@ -47,13 +64,11 @@ const Checkout = () => {
       return;
     }
 
-    // Kiểm tra thông tin giao hàng
     if (!formData.full_name || !formData.phone || !formData.address || !formData.city || !formData.country) {
       setLocalError('Vui lòng nhập đầy đủ thông tin giao hàng.');
       return;
     }
 
-    // Kiểm tra giỏ hàng
     console.log('Cart Items:', cartItems);
     if (cartItems.length === 0) {
       setLocalError('Giỏ hàng trống.');
@@ -68,14 +83,15 @@ const Checkout = () => {
       const orderData = {
         shipping_address: shippingAddressString,
         payment_method: 'COD',
+        discount_code: formData.discount_code,
         items: cartItems.map((item) => ({
           product_id: item.product.id,
           quantity: item.quantity,
           price: Number(item.product.price || 0),
         })),
-        total_price: total, // Đổi thành total_price để khớp với backend
+        total_price: total,
       };
-      console.log('Order Data:', orderData); // Log dữ liệu gửi đi
+      console.log('Order Data:', orderData);
       const order = await ordersAPI.createOrder(orderData);
       await clearCart();
       navigate(`/orders/${order.id}`, { state: { success: 'Đặt hàng thành công!' } });
@@ -97,6 +113,7 @@ const Checkout = () => {
 
   return (
     <div className="checkout-page container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <ToastContainer/>
       <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6 text-center">Thanh Toán</h2>
       {localError && <div className="error-message">{localError}</div>}
       <div className="checkout-container grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
@@ -168,6 +185,28 @@ const Checkout = () => {
             />
           </div>
           <div className="form-group">
+            <label htmlFor="discount_code">Mã Giảm Giá</label>
+            <div className="flex">
+              <input
+                type="text"
+                id="discount_code"
+                name="discount_code"
+                value={formData.discount_code}
+                onChange={handleChange}
+                placeholder="Nhập mã giảm giá"
+                className="input-field flex-grow"
+              />
+              <Button
+                type="button"
+                variant="primary"
+                onClick={handleApplyDiscount}
+                className="ml-2"
+              >
+                Áp dụng
+              </Button>
+            </div>
+          </div>
+          <div className="form-group">
             <h4 className="text-base sm:text-lg font-medium text-gray-700 mb-2">Phương Thức Thanh Toán</h4>
             <label className="flex items-center gap-2">
               <input type="radio" name="payment_method" value="COD" checked disabled className="text-pink-500" />
@@ -205,6 +244,12 @@ const Checkout = () => {
                 <span>Thuế (10%)</span>
                 <span>${tax.toFixed(2)}</span>
               </div>
+              {discountAmount > 0 && (
+                <div className="summary-row">
+                  <span>Giảm giá</span>
+                  <span>-${discountAmount.toFixed(2)}</span>
+                </div>
+              )}
               <div className="summary-row total font-semibold text-base sm:text-lg">
                 <span>Tổng cộng</span>
                 <span>${total.toFixed(2)}</span>

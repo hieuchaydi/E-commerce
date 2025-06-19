@@ -277,7 +277,7 @@ npm start
 
 ## 🖼️ Homepage UI
 
-![Shopee Clone Homepage](assets/homepage.png)
+![Shopee Clone Homepage](assets/home.png)
 
 - **Real-time clock**: Displays Vietnam time (e.g., "04:15 PM (UTC+07) VN on Monday, June 9th, 2025")
 - **Product carousel**: Shows all products in "Products" and 3 featured products in "Featured Products"
@@ -286,7 +286,7 @@ npm start
 
 ## 🖼️ Product Detail UI
 
-![Shopee Clone Product Detail](assets/product-detail.png)
+![Shopee Clone voucher](assets/add-voucher.png)
 
 - Shows product information (name, price, category, description)
 - Displays average rating and star distribution
@@ -294,6 +294,7 @@ npm start
 - "Add to Cart" button with redirect to cart
 
 ---
+![Shopee Clone create voucher](assets/create-voucher.png)
 
 ## 🤝 Contributing
 

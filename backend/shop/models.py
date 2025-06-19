@@ -4,7 +4,6 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 
-
 class User(AbstractUser):
     ROLES = (
         ('customer', 'Customer'),
@@ -17,7 +16,6 @@ class User(AbstractUser):
     
     def __str__(self):
         return self.username
-
 
 class PasswordResetCode(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reset_codes')
@@ -33,13 +31,11 @@ class PasswordResetCode(models.Model):
     def __str__(self):
         return f"Reset code for {self.user.username}"
 
-
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
     
     def __str__(self):
         return self.name
-
 
 class Product(models.Model):
     name = models.CharField(max_length=200)
@@ -71,7 +67,6 @@ class Product(models.Model):
     class Meta:
         ordering = ['-created_at']
 
-
 class Cart(models.Model):
     user = models.ForeignKey(
         User, 
@@ -100,7 +95,37 @@ class Cart(models.Model):
     def total_price(self):
         return self.product.price * self.quantity
 
+class DiscountCode(models.Model):
+    code = models.CharField(max_length=50, unique=True)
+    discount_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    is_active = models.BooleanField(default=True)
+    valid_from = models.DateTimeField(default=timezone.now)
+    valid_until = models.DateTimeField()
+    is_first_order_only = models.BooleanField(default=False)
+    min_order_value = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    max_usage = models.PositiveIntegerField(default=0)  # 0 means unlimited
+    usage_count = models.PositiveIntegerField(default=0)
 
+    def is_valid(self, user, order_total):
+        if not self.is_active:
+            return False
+        if timezone.now() < self.valid_from or timezone.now() > self.valid_until:
+            return False
+        if order_total < self.min_order_value:
+            return False
+        if self.max_usage > 0 and self.usage_count >= self.max_usage:
+            return False
+        if self.is_first_order_only:
+            return not Order.objects.filter(user=user, status__in=['completed', 'shipped']).exists()
+        return True
+
+    def save(self, *args, **kwargs):
+        if not self.valid_until:
+            self.valid_until = timezone.now() + timedelta(hours=1)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.code} - {self.discount_amount}"
 class Order(models.Model):
     STATUS_CHOICES = (
         ('pending', 'Pending'),
@@ -119,13 +144,24 @@ class Order(models.Model):
         max_digits=10, 
         decimal_places=2
     )
+    discount_code = models.ForeignKey(
+        DiscountCode, 
+        null=True, 
+        blank=True, 
+        on_delete=models.SET_NULL
+    )
+    discount_amount = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2, 
+        default=0
+    )
     status = models.CharField(
         max_length=20, 
         choices=STATUS_CHOICES, 
         default='pending'
     )
     shipping_address = models.TextField(blank=True, null=True)
-    payment_method = models.CharField(max_length=50, default='COD', blank=True, null=True)  # Allow null temporarily
+    payment_method = models.CharField(max_length=50, default='COD', blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -156,12 +192,11 @@ class OrderItem(models.Model):
         verbose_name = 'Order Item'
         verbose_name_plural = 'Order Items'
 
-
 class Review(models.Model):
     user = models.ForeignKey(
         User,
-        on_delete=models.SET_NULL,  # Cho phép null khi user bị xóa
-        null=True,  # Hỗ trợ guest reviews
+        on_delete=models.SET_NULL,
+        null=True,
         blank=True,
         related_name='reviews'
     )
@@ -180,36 +215,6 @@ class Review(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     
     class Meta:
-        verbose_name = 'Product Review'
-        verbose_name_plural = 'Product Reviews'
-    
-    def __str__(self):
-        reviewer = self.user.username if self.user else "Guest"
-        return f"{self.rating}★ review by {reviewer} for {self.product.name}"
-class Review(models.Model):
-    user = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,  # Changed from CASCADE to SET_NULL
-        null=True,  # Allow null for unauthenticated users
-        blank=True,
-        related_name='reviews'
-    )
-    product = models.ForeignKey(
-        Product,
-        on_delete=models.CASCADE,
-        related_name='reviews'
-    )
-    rating = models.PositiveIntegerField(
-        validators=[
-            MinValueValidator(1),
-            MaxValueValidator(5)
-        ]
-    )
-    comment = models.TextField()
-    created_at = models.DateTimeField(default=timezone.now)
-    
-    class Meta:
-        # Remove unique_together to allow multiple guest reviews
         verbose_name = 'Product Review'
         verbose_name_plural = 'Product Reviews'
     

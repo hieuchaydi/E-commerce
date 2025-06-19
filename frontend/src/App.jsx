@@ -90,7 +90,7 @@ function App() {
             } />
             <Route path="/profile" element={
               <ProtectedRoute>
-                <Profile />
+                <Profile /> 
               </ProtectedRoute>
             } />
             <Route path="/login" element={<Login />} />

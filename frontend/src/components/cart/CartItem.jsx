@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useCart } from '../../context/CartContext';
 import { getMediaUrl } from '../../api/api';
 import Button from '../common/Button';
+import { toast } from 'react-toastify';
 import './CartItem.css';
 
 const CartItem = ({ item }) => {

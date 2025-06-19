@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-jex_^s576i%e3cut1m_r%vjb*(_unxt2*q!d))7xnd7#q$p#^c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -40,7 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'rest_framework.authtoken',
-    'shop',
+    'shop.apps.ShopConfig',  # Hoặc 'shop' nếu không dùng AppConfig
     'django_extensions',
     'django_filters',
 ]
@@ -56,17 +57,21 @@ REST_FRAMEWORK = {
 }
 
 # Cấu hình CSRF
-CSRF_COOKIE_SAMESITE = 'Lax'
+
 SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_HTTPONLY = False  # Cho phép JavaScript truy cập
 SESSION_COOKIE_HTTPONLY = True
-
+CSRF_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SECURE = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 FRONTEND_URL = 'http://localhost:3000'
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://juvenile-expo-went-law.trycloudflare.com"
+]
+# CORS settings
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -135,12 +140,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+
 
 USE_I18N = True
 
 USE_TZ = True
 
+TIME_ZONE = 'Asia/Ho_Chi_Minh'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
@@ -162,12 +168,11 @@ SIMPLE_JWT = {
 CORS_ALLOW_CREDENTIALS = True
 SESSION_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SECURE = True  # Requires HTTPS in production
-CSRF_COOKIE_SAMESITE = 'None'
-CSRF_COOKIE_SECURE = True
+
 # settings.py
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'hieu123npm@gmail.com'
-EMAIL_HOST_PASSWORD = 'imcb kuss kucy abur'  # Use an App Password if using Gmail
+EMAIL_HOST_PASSWORD = 'kkgv rena cxxr ieyt'  

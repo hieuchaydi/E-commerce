@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
     ProductImageUploadView, UserViewSet, CategoryViewSet, ProductViewSet,
-    CartViewSet, OrderViewSet, ReviewViewSet,
+    CartViewSet, OrderViewSet, ReviewViewSet, DiscountCodeViewSet,
     LoginView, LogoutView, RegisterView,
     CurrentUserView, AdminStatsView, ClearCartView,
     ForgotPasswordView, ResetPasswordView, ChangePasswordView
@@ -17,6 +17,7 @@ router.register(r'products', ProductViewSet)
 router.register(r'cart', CartViewSet, basename='cart')
 router.register(r'orders', OrderViewSet, basename='orders')
 router.register(r'reviews', ReviewViewSet, basename='reviews')
+router.register(r'discounts', DiscountCodeViewSet, basename='discount')
 
 urlpatterns = [
     path('auth/login/', LoginView.as_view(), name='login'),

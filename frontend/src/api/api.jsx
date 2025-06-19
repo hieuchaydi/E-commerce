@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8000/api';
-const MEDIA_URL = 'http://localhost:8000/media';
 
+const API_URL = 'http://localhost:8000/api';
+const MEDIA_URL = 'http://localhost:8000/media'; 
 export const getMediaUrl = (path) => {
   if (!path) return '/images/placeholder.jpg';
   if (path.startsWith('http') || path.startsWith('//')) return path;
@@ -205,6 +205,14 @@ export const ordersAPI = {
     } catch (err) {
       console.error('Update payment status failed:', err.response?.data || err.message);
       throw err;
+    }
+  },
+  validateDiscountCode: async (code, orderTotal) => {
+    try {
+      const res = await api.post('/discounts/validate/', { code, order_total: orderTotal });
+      return res.data;
+    } catch (err) {
+      throw new Error(err.response?.data?.detail || 'Mã giảm giá không hợp lệ');
     }
   },
 };

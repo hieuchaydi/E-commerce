@@ -9,6 +9,7 @@ from django.urls import reverse
 from .models import PasswordResetCode
 from django.contrib.auth.models import User
 from django.conf import settings
+from .models import PasswordResetCode, DiscountCode
 from django.db.models import Avg, Count
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
@@ -27,7 +28,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from .models import Category, Product, Cart, Order, OrderItem, Review
 from .serializers import (
-    UserSerializer, CategorySerializer, ProductSerializer,
+    DiscountCodeSerializer, UserSerializer, CategorySerializer, ProductSerializer,
     CartSerializer, OrderSerializer, ReviewSerializer
 )
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -309,13 +310,31 @@ class OrderViewSet(viewsets.ModelViewSet):
         cart_items = Cart.objects.filter(user=request.user)
         if not cart_items.exists():
             return Response({'error': 'Giỏ hàng trống'}, status=status.HTTP_400_BAD_REQUEST)
+        
         total_price = float(sum(item.total_price for item in cart_items))
+        
+        # Validate discount code
+        discount_code_str = request.data.get('discount_code')
+        discount_amount = 0
+        discount_code = None
+        if discount_code_str:
+            try:
+                discount_code = DiscountCode.objects.get(code=discount_code_str)
+                if not discount_code.is_valid(request.user, total_price):
+                    return Response({'error': 'Mã giảm giá không hợp lệ'}, status=status.HTTP_400_BAD_REQUEST)
+                discount_amount = float(discount_code.discount_amount)
+            except DiscountCode.DoesNotExist:
+                return Response({'error': 'Mã giảm giá không tồn tại'}, status=status.HTTP_400_BAD_REQUEST)
+
         order = Order.objects.create(
             user=request.user,
-            total_price=total_price,
+            total_price=total_price - discount_amount,
             shipping_address=request.data.get('shipping_address', ''),
-            payment_method='COD',  # Hardcode to COD since only COD is used
+            payment_method='COD',
+            discount_code=discount_code,
+            discount_amount=discount_amount
         )
+
         for item in cart_items:
             OrderItem.objects.create(
                 order=order,
@@ -323,6 +342,11 @@ class OrderViewSet(viewsets.ModelViewSet):
                 quantity=item.quantity,
                 price=item.product.price
             )
+
+        if discount_code:
+            discount_code.usage_count += 1
+            discount_code.save()
+
         cart_items.delete()
         serializer = self.get_serializer(order)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -345,6 +369,30 @@ class OrderViewSet(viewsets.ModelViewSet):
             {'error': 'Bạn không có quyền cập nhật trạng thái đơn hàng này.'},
             status=status.HTTP_403_FORBIDDEN
         )
+        
+class DiscountCodeViewSet(viewsets.ModelViewSet):
+    queryset = DiscountCode.objects.all()
+    serializer_class = DiscountCodeSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+    @action(detail=False, methods=['post'], url_path='validate', permission_classes=[IsAuthenticated])
+    def validate(self, request):
+        code = request.data.get('code')
+        order_total = request.data.get('order_total', 0)
+        try:
+            discount_code = DiscountCode.objects.get(code=code)
+            if discount_code.is_valid(request.user, float(order_total)):
+                serializer = self.get_serializer(discount_code)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(
+                {'error': 'Mã giảm giá không hợp lệ hoặc đã hết hạn'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        except DiscountCode.DoesNotExist:
+            return Response(
+                {'error': 'Mã giảm giá không tồn tại'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 class ReviewSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
