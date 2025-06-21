@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { authAPI, setAuthToken } from '../api/api'; // Import thêm setAuthToken
+import { authAPI, setAuthToken } from '../api/api';
 
 const AuthContext = createContext();
 
@@ -19,45 +19,53 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data);
     } catch (error) {
       console.error('User fetch error:', error);
-      // Xử lý lỗi 401 (token không hợp lệ)
       if (error.response?.status === 401) {
-        setAuthToken(null); // Xóa token từ API
+        setAuthToken(null);
       }
       setUser(null);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, []); // Memoize fetchUser, không phụ thuộc vào bất kỳ giá trị nào
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchUser();
-  }, [fetchUser]);
+  }, []); // Chỉ chạy một lần khi mount, bỏ qua cảnh báo
 
   const login = async (credentials) => {
-    const response = await authAPI.login(credentials);
-    // AuthAPI đã tự động xử lý token (setAuthToken)
-    await fetchUser(); // Fetch user mới sau khi login
-    return response.data;
+    try {
+      const response = await authAPI.login(credentials);
+      await fetchUser();
+      return response.data;
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
+    }
   };
 
   const register = async (userData) => {
-    const response = await authAPI.register(userData);
-    // AuthAPI đã tự động xử lý token (setAuthToken)
-    await fetchUser(); // Fetch user mới sau khi register
-    return response.data;
+    try {
+      const response = await authAPI.register(userData);
+      await fetchUser();
+      return response.data;
+    } catch (error) {
+      console.error('Register error:', error);
+      throw error;
+    }
   };
 
   const logout = useCallback(async () => {
     try {
-      await authAPI.logout(); // Gọi API logout (đã xử lý setAuthToken)
+      await authAPI.logout();
     } catch (error) {
       console.error('Logout API error:', error);
-      // Xử lý lỗi 401 (token không hợp lệ)
       if (error.response?.status === 401) {
-        setAuthToken(null); // Vẫn xóa token nếu gặp lỗi
+        setAuthToken(null);
+      } else {
+        throw error;
       }
     } finally {
-      // Luôn đảm bảo dọn dẹp client-side
       setUser(null);
       localStorage.removeItem('token');
     }
@@ -69,7 +77,6 @@ export const AuthProvider = ({ children }) => {
     login,
     register,
     logout,
-    setUser // Cho các cập nhật thủ công nếu cần
   };
 
   return (

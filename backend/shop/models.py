@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
+from django.core.exceptions import ValidationError
+from django.db.models import Avg
 
 class User(AbstractUser):
     ROLES = (
@@ -16,6 +18,11 @@ class User(AbstractUser):
     
     def __str__(self):
         return self.username
+    
+    @property
+    def seller_rating(self):
+        """Calculate the average rating of the seller's products' reviews."""
+        return self.products.aggregate(avg_rating=Avg('reviews__rating'))['avg_rating'] or None
 
 class PasswordResetCode(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reset_codes')
@@ -38,6 +45,14 @@ class Category(models.Model):
         return self.name
 
 class Product(models.Model):
+    PRODUCT_TYPES = (
+        ('electronics', 'Electronics'),
+        ('clothing', 'Clothing'),
+        ('food', 'Food'),
+        ('furniture', 'Furniture'),
+        ('other', 'Other'),
+    )
+    
     name = models.CharField(max_length=200)
     description = models.TextField()
     price = models.DecimalField(
@@ -58,8 +73,23 @@ class Product(models.Model):
         on_delete=models.CASCADE, 
         related_name='products'
     )
+    product_type = models.CharField(
+        max_length=50,
+        choices=PRODUCT_TYPES,
+        default='other'
+    )
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def clean(self):
+        """Validate that the seller has role='seller'."""
+        if self.seller.role != 'seller':
+            raise ValidationError("Seller must have the role 'seller'.")
+    
+    def save(self, *args, **kwargs):
+        """Run validation before saving."""
+        self.full_clean()
+        super().save(*args, **kwargs)
     
     def __str__(self):
         return f"{self.name} - ${self.price}"
@@ -121,11 +151,12 @@ class DiscountCode(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.valid_until:
-            self.valid_until = timezone.now() + timedelta(hours=1)
+            self.valid_until = timezone.now() + timedelta(days=30)  # Changed to 30 days
         super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.code} - {self.discount_amount}"
+
 class Order(models.Model):
     STATUS_CHOICES = (
         ('pending', 'Pending'),
@@ -213,11 +244,12 @@ class Review(models.Model):
     )
     comment = models.TextField()
     created_at = models.DateTimeField(default=timezone.now)
+    guest_name = models.CharField(max_length=100, blank=True, null=True)  # Added for guest reviews
     
     class Meta:
         verbose_name = 'Product Review'
         verbose_name_plural = 'Product Reviews'
     
     def __str__(self):
-        reviewer = self.user.username if self.user else "Guest"
+        reviewer = self.user.username if self.user else self.guest_name or "Guest"
         return f"{self.rating}★ review by {reviewer} for {self.product.name}"

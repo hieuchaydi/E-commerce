@@ -1,32 +1,38 @@
 src/
-├── api/                 # API calls
-│   └── api.js
-├── assets/              # Static assets
-│   ├── images/
-│   └── styles/
-├── components/          # Reusable components
+├── api/                 
+│   └── api.jsx
+|
+├── components/          
 │   ├── common/
 │   │   ├── Button.jsx
 │   │   ├── Card.jsx
 │   │   └── Navbar.jsx
+|   |── └── startrating.jsx
 │   ├── auth/
 │   │   ├── LoginForm.jsx
 │   │   └── RegisterForm.jsx
 │   ├── products/
 │   │   ├── ProductCard.jsx
-│   │   └── ProductList.jsx
+│   │   └── ProductList.jsx 
+|   |── └── ImageUpload.jsx
+|   |   
 │   └── cart/
 │       ├── CartItem.jsx
-│       └── CartSummary.jsx
+│       └── CartSummary.jsx 
+|
 |
 |────── OrderConfirmation.jsx
-├── context/            # Context providers
+├── context/            
 │   ├── AuthContext.jsx
 │   └── CartContext.jsx
-├── pages/              # Page components
+|   └── Themeprovider.jsx
+├── pages/              
 │   ├── auth/
 │   │   ├── Login.jsx
 │   │   └── Register.jsx
+|   |   └── Logout.jsx
+|   |   └── forgotpassword.jsx
+|   |   └── Resetpassword.jsx
 │   ├── products/
 │   │   ├── Home.jsx
 │   │   └── ProductDetail.jsx
@@ -35,11 +41,21 @@ src/
 │   │   └── Checkout.jsx
 │   ├── orders/
 │   │   └── OrderHistory.jsx
+|   |   └── OrderDetail.jsx
+|   |   └── OrderStartus.jsx
 │   ├── seller/
 │   │   ├── SellerDashboard.jsx
 │   │   └── ProductManagement.jsx
+│   │   ├── SellerDashboard.jsx
 │   └── admin/
-│       └── AdminDashboard.jsx
+│   |   └── AdminDashboard.jsx
+│   └── profile/
+│   |    └── Profile.jsx
+│   └── seller/
+│       └── ProductForm.jsx
+│   └── profile/
+│       └── Profile.jsx
+|    
 ├── App.jsx
 └── index.jsx
 
@@ -66,3 +82,83 @@ Chỉnh sửa
 npm run build
 npx serve -s build
 → Bây giờ React sẽ gọi đúng API bạn đã đặt: https://juvenile-expo-went-law.trycloudflare.com/api.
+
+
+
+
+src/
+├── api/                   # Các hàm gọi API
+│   └── index.js           # Tập hợp tất cả endpoints tại đây
+│   └── auth.js
+│   └── products.js
+│   └── orders.js
+│   └── cart.js
+│
+├── assets/                # Hình ảnh, icons, fonts
+│   └── images/
+│   └── icons/
+│
+├── components/            # Tái sử dụng toàn cục
+│   ├── ui/                # Thành phần UI phổ biến (Button, Modal,...)
+│   │   ├── Button.jsx
+│   │   ├── Card.jsx
+│   │   └── StarRating.jsx
+│   ├── layout/            # Thành phần bố cục
+│   │   ├── Navbar.jsx
+│   │   └── Footer.jsx
+│   └── forms/             # Các form tái sử dụng (InputGroup, Upload,...)
+│       └── ImageUpload.jsx
+│
+├── features/              # Tách logic và giao diện theo domain
+│   ├── auth/
+│   │   ├── LoginForm.jsx
+│   │   ├── RegisterForm.jsx
+│   │   └── authSlice.js (nếu dùng Redux)
+│   ├── products/
+│   │   ├── ProductCard.jsx
+│   │   ├── ProductList.jsx
+│   │   ├── ProductForm.jsx
+│   │   └── productSlice.js
+│   ├── cart/
+│   │   ├── CartItem.jsx
+│   │   ├── CartSummary.jsx
+│   │   └── cartSlice.js
+│   └── orders/
+│       ├── OrderConfirmation.jsx
+│       ├── OrderHistory.jsx
+│       ├── OrderDetail.jsx
+│       └── OrderStatus.jsx
+│
+├── context/               # Global context (nếu không dùng Redux)
+│   ├── AuthContext.jsx
+│   ├── CartContext.jsx
+│   └── ThemeProvider.jsx
+│
+├── pages/                 # Các trang chính (dùng routes)
+│   ├── Home.jsx
+│   ├── Profile.jsx
+│   ├── NotFound.jsx
+│   ├── auth/
+│   │   ├── Login.jsx
+│   │   ├── Register.jsx
+│   │   ├── Logout.jsx
+│   │   ├── ForgotPassword.jsx
+│   │   └── ResetPassword.jsx
+│   ├── products/
+│   │   └── ProductDetail.jsx
+│   ├── cart/
+│   │   ├── Cart.jsx
+│   │   └── Checkout.jsx
+│   ├── seller/
+│   │   ├── SellerDashboard.jsx
+│   │   └── ProductManagement.jsx
+│   └── admin/
+│       └── AdminDashboard.jsx
+│
+├── routes/                # Định tuyến các trang
+│   └── AppRoutes.jsx
+│
+├── App.jsx
+├── index.jsx
+└── styles/                # Toàn bộ CSS/Tailwind custom
+    └── index.css

@@ -38,13 +38,13 @@ const Checkout = () => {
   const handleApplyDiscount = async () => {
     try {
       const response = await ordersAPI.validateDiscountCode(formData.discount_code, subtotal);
-      setDiscountAmount(Number(response.discount_amount || 0));
-
+      const amount = response.discount_amount; // Đã được chuyển thành số trong api.js
+      setDiscountAmount(amount);
       setLocalError('');
-      toast.success(`Áp dụng mã giảm giá thành công! Giảm: $${response.discount_amount.toFixed(2)}`);
+      toast.success(`Áp dụng mã giảm giá thành công! Giảm: $${amount.toFixed(2)}`);
     } catch (err) {
-      toast.warning(err.response?.data?.error || 'Mã giảm giá không hợp lệ');
-      
+      console.error('Discount error:', err.message);
+      toast.warning(err.message || 'Mã giảm giá không hợp lệ');
       setLocalError(err.message || 'Mã giảm giá không hợp lệ');
       setDiscountAmount(0);
     }
@@ -53,8 +53,6 @@ const Checkout = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log('User:', user);
-    console.log('Token:', localStorage.getItem('token'));
     if (!user) {
       setLocalError('Vui lòng đăng nhập để thanh toán.');
       if (localStorage.getItem('token')) {
@@ -69,7 +67,6 @@ const Checkout = () => {
       return;
     }
 
-    console.log('Cart Items:', cartItems);
     if (cartItems.length === 0) {
       setLocalError('Giỏ hàng trống.');
       return;
@@ -83,7 +80,7 @@ const Checkout = () => {
       const orderData = {
         shipping_address: shippingAddressString,
         payment_method: 'COD',
-        discount_code: formData.discount_code,
+        discount_code: formData.discount_code || null,
         items: cartItems.map((item) => ({
           product_id: item.product.id,
           quantity: item.quantity,
@@ -91,14 +88,14 @@ const Checkout = () => {
         })),
         total_price: total,
       };
-      console.log('Order Data:', orderData);
       const order = await ordersAPI.createOrder(orderData);
       await clearCart();
+      toast.success('Đặt hàng thành công! Vui lòng kiểm tra email để xác nhận.');
       navigate(`/orders/${order.id}`, { state: { success: 'Đặt hàng thành công!' } });
     } catch (err) {
-      console.error('Lỗi khi thanh toán:', err.response?.data || err.message);
       const errorMessage = err.response?.data?.error || err.response?.data?.detail || 'Thanh toán thất bại. Vui lòng thử lại.';
       setLocalError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -109,11 +106,11 @@ const Checkout = () => {
     return null;
   }
 
-  if (cartError) return <div className="error-message">Error: {cartError}</div>;
+  if (cartError) return <div className="error-message">Lỗi: {cartError}</div>;
 
   return (
     <div className="checkout-page container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-      <ToastContainer/>
+      <ToastContainer />
       <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6 text-center">Thanh Toán</h2>
       {localError && <div className="error-message">{localError}</div>}
       <div className="checkout-container grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">

@@ -31,6 +31,7 @@ from .serializers import (
     DiscountCodeSerializer, UserSerializer, CategorySerializer, ProductSerializer,
     CartSerializer, OrderSerializer, ReviewSerializer
 )
+from django.db import transaction
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from .serializers import ProductSerializer
@@ -49,9 +50,8 @@ class IsSellerOrAdmin(permissions.BasePermission):
     def has_permission(self, request, view):
         print('User:', request.user, 'Role:', request.user.role if request.user.is_authenticated else 'None')
         if request.method in permissions.SAFE_METHODS:
-            return request.user.is_authenticated
+            return True  # Allow all users (authenticated or not) for GET, HEAD, OPTIONS
         return request.user.is_authenticated and request.user.role in ['seller', 'admin']
-
 class IsProductOwnerOrAdmin(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
@@ -69,38 +69,43 @@ class IsOrderRelatedToSellerOrAdmin(BasePermission):
             return obj.items.filter(product__seller=request.user).exists()
         return obj.user == request.user
     
+# views.py
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all().select_related('category', 'seller')
     serializer_class = ProductSerializer
-    permission_classes = [IsSellerOrAdmin]  # Chỉ seller hoặc admin được phép tạo/sửa sản phẩm
+    permission_classes = [IsSellerOrAdmin]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = ['category']
+    filterset_fields = ['category', 'product_type']
     search_fields = ['name', 'description']
     ordering_fields = ['price', 'created_at', 'sold_count']
     ordering = ['-created_at']
 
+    def get_permissions(self):
+        if self.action in ['retrieve', 'list']:  # Allow public access for GET /products/ and GET /products/:id/
+            return [permissions.AllowAny()]
+        return super().get_permissions()
+
     def create(self, request, *args, **kwargs):
-        print('Dữ liệu nhận được:', request.data)
         serializer = self.get_serializer(data=request.data)
         if not serializer.is_valid():
             print('Lỗi xác thực:', serializer.errors)
             return Response(serializer.errors, status=400)
-        # Khi serializer hợp lệ, lưu dữ liệu và trả về phản hồi
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     def perform_create(self, serializer):
-        serializer.save(seller=self.request.user)  # Tự động gán seller từ request.user
+        serializer.save(seller=self.request.user)
 
     def get_queryset(self):
         queryset = super().get_queryset()
         if self.request.user.is_authenticated and self.request.user.role == 'seller':
-            return queryset.filter(seller=self.request.user)
+            queryset = queryset.filter(seller=self.request.user)
 
         min_price = self.request.query_params.get('min_price')
         max_price = self.request.query_params.get('max_price')
         min_rating = self.request.query_params.get('min_rating')
+        product_type = self.request.query_params.get('product_type')
 
         if min_price:
             queryset = queryset.filter(price__gte=min_price)
@@ -108,6 +113,8 @@ class ProductViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(price__lte=max_price)
         if min_rating:
             queryset = queryset.annotate(avg_rating=Avg('reviews__rating')).filter(avg_rating__gte=min_rating)
+        if product_type:
+            queryset = queryset.filter(product_type=product_type)
 
         return queryset
     
@@ -301,10 +308,10 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         if self.request.user.role == 'admin':
-            return Order.objects.all()
+            return Order.objects.all().prefetch_related('items__product')
         elif self.request.user.role == 'seller':
-            return Order.objects.filter(items__product__seller=self.request.user).distinct()
-        return Order.objects.filter(user=self.request.user)
+            return Order.objects.filter(items__product__seller=self.request.user).distinct().prefetch_related('items__product')
+        return Order.objects.filter(user=self.request.user).prefetch_related('items__product')
 
     def create(self, request, *args, **kwargs):
         cart_items = Cart.objects.filter(user=request.user)
@@ -313,16 +320,21 @@ class OrderViewSet(viewsets.ModelViewSet):
         
         total_price = float(sum(item.total_price for item in cart_items))
         
-        # Validate discount code
+        # Xác thực mã giảm giá
         discount_code_str = request.data.get('discount_code')
         discount_amount = 0
         discount_code = None
         if discount_code_str:
             try:
-                discount_code = DiscountCode.objects.get(code=discount_code_str)
-                if not discount_code.is_valid(request.user, total_price):
-                    return Response({'error': 'Mã giảm giá không hợp lệ'}, status=status.HTTP_400_BAD_REQUEST)
-                discount_amount = float(discount_code.discount_amount)
+                with transaction.atomic():
+                    discount_code = DiscountCode.objects.select_for_update().get(code=discount_code_str)
+                    if not discount_code.is_valid(request.user, total_price):
+                        return Response({'error': 'Mã giảm giá không hợp lệ'}, status=status.HTTP_400_BAD_REQUEST)
+                    discount_amount = float(discount_code.discount_amount)
+                    if discount_code.max_usage > 0 and discount_code.usage_count >= discount_code.max_usage:
+                        return Response({'error': 'Mã giảm giá đã đạt giới hạn sử dụng'}, status=status.HTTP_400_BAD_REQUEST)
+                    discount_code.usage_count += 1
+                    discount_code.save()
             except DiscountCode.DoesNotExist:
                 return Response({'error': 'Mã giảm giá không tồn tại'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -330,7 +342,7 @@ class OrderViewSet(viewsets.ModelViewSet):
             user=request.user,
             total_price=total_price - discount_amount,
             shipping_address=request.data.get('shipping_address', ''),
-            payment_method='COD',
+            payment_method=request.data.get('payment_method', 'COD'),
             discount_code=discount_code,
             discount_amount=discount_amount
         )
@@ -343,54 +355,105 @@ class OrderViewSet(viewsets.ModelViewSet):
                 price=item.product.price
             )
 
-        if discount_code:
-            discount_code.usage_count += 1
-            discount_code.save()
+        # Gửi email xác nhận
+        subject = 'Xác nhận đơn hàng'
+        message = f"""
+        Cảm ơn bạn đã đặt hàng!
+        - Mã đơn hàng: {order.id}
+        - Tổng giá: ${order.total_price}
+        - Địa chỉ giao hàng: {order.shipping_address}
+        """
+        from_email = settings.EMAIL_HOST_USER
+        to_email = [request.user.email]
+        send_mail(subject, message, from_email, to_email, fail_silently=True)
 
         cart_items.delete()
         serializer = self.get_serializer(order)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    @action(detail=True, methods=['patch'], url_path='status')
-    def update_status(self, request, pk=None):
+    # Loại bỏ @action cho retrieve, giữ nguyên logic mặc định
+    def retrieve(self, request, pk=None):
         order = self.get_object()
-        new_status = request.data.get('status')
-        if new_status not in dict(Order.STATUS_CHOICES):
-            return Response({'error': 'Trạng thái không hợp lệ'}, status=status.HTTP_400_BAD_REQUEST)
-        if order.status == 'cancelled':
-            return Response({'error': 'Đơn hàng đã bị hủy, không thể cập nhật trạng thái.'}, status=status.HTTP_400_BAD_REQUEST)
-        if order.status in ['completed', 'shipped'] and new_status == 'cancelled':
-            return Response({'error': 'Không thể hủy đơn hàng đã giao hoặc hoàn thành.'}, status=status.HTTP_400_BAD_REQUEST)
-        if self.request.user.role == 'admin' or order.user == self.request.user or order.items.filter(product__seller=self.request.user).exists():
-            order.status = new_status
-            order.save()
-            return Response({'status': order.status})
-        return Response(
-            {'error': 'Bạn không có quyền cập nhật trạng thái đơn hàng này.'},
-            status=status.HTTP_403_FORBIDDEN
-        )
+        serializer = self.get_serializer(order)
+        return Response(serializer.data)
+
+    # Thêm action tùy chỉnh nếu cần (ví dụ: update_status)
+    @action(detail=True, methods=['patch'], url_path='status')
+    def update_order_status(self, request, pk=None):
+        order = self.get_object()
+        serializer = OrderSerializer(order, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
+from .models import DiscountCode
+from .serializers import DiscountCodeSerializer
+import logging
+
+# Cấu hình logging
+logger = logging.getLogger(__name__)
+
 class DiscountCodeViewSet(viewsets.ModelViewSet):
     queryset = DiscountCode.objects.all()
     serializer_class = DiscountCodeSerializer
     permission_classes = [permissions.IsAdminUser]
 
-    @action(detail=False, methods=['post'], url_path='validate', permission_classes=[IsAuthenticated])
+    @action(detail=False, methods=['post'], url_path='validate', permission_classes=[permissions.IsAuthenticated])
     def validate(self, request):
         code = request.data.get('code')
         order_total = request.data.get('order_total', 0)
-        try:
-            discount_code = DiscountCode.objects.get(code=code)
-            if discount_code.is_valid(request.user, float(order_total)):
-                serializer = self.get_serializer(discount_code)
-                return Response(serializer.data, status=status.HTTP_200_OK)
+
+        # Debug: In dữ liệu nhận được
+        logger.info(f"Received data: code={code}, order_total={order_total}, user={request.user.username}")
+
+        if not code:
+            logger.error("Missing 'code' field in request data")
             return Response(
-                {'error': 'Mã giảm giá không hợp lệ hoặc đã hết hạn'},
+                {'error': 'Trường "code" là bắt buộc'},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+        try:
+            order_total = float(order_total)
+            logger.info(f"Converted order_total to float: {order_total}")
+            if order_total < 0:
+                logger.error(f"Invalid order_total: {order_total}")
+                return Response(
+                    {'error': 'Trường "order_total" phải là số không âm'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            discount_code = DiscountCode.objects.get(code=code)
+            logger.info(f"Found discount code: {discount_code.code}, is_active={discount_code.is_active}, usage_count={discount_code.usage_count}")
+
+            if not discount_code.is_valid(request.user, order_total):
+                logger.warning(f"Discount code invalid for user {request.user.username}: {discount_code.__dict__}")
+                return Response(
+                    {'error': 'Mã giảm giá không hợp lệ hoặc đã hết hạn'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            serializer = self.get_serializer(discount_code)
+            logger.info(f"Validation successful for code {code}")
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
         except DiscountCode.DoesNotExist:
+            logger.error(f"Discount code {code} does not exist")
             return Response(
                 {'error': 'Mã giảm giá không tồn tại'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        except ValueError as e:
+            logger.error(f"ValueError converting order_total: {e}")
+            return Response(
+                {'error': 'Dữ liệu "order_total" không hợp lệ'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        except Exception as e:
+            logger.error(f"Unexpected error: {e}")
+            return Response(
+                {'error': 'Lỗi không xác định, vui lòng thử lại'},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -529,4 +592,15 @@ class ResetPasswordView(APIView):
             return Response({"message": "Mật khẩu đã được đặt lại thành công."})
         except PasswordResetCode.DoesNotExist:
             return Response({"error": "Mã không hợp lệ hoặc đã hết hạn."}, status=status.HTTP_400_BAD_REQUEST)
+        
+# views.py
+class PublicUserView(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request, pk):
+        try:
+            user = User.objects.get(pk=pk, role='seller')
+            serializer = UserSerializer(user)
+            return Response(serializer.data)
+        except User.DoesNotExist:
+            return Response({'error': 'Không tìm thấy người bán'}, status=status.HTTP_404_NOT_FOUND)
 

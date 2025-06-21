@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-
 const API_URL = 'http://localhost:8000/api';
-const MEDIA_URL = 'http://localhost:8000/media'; 
+const MEDIA_URL = 'http://localhost:8000/media';
 export const getMediaUrl = (path) => {
   if (!path) return '/images/placeholder.jpg';
   if (path.startsWith('http') || path.startsWith('//')) return path;
@@ -149,6 +148,7 @@ export const productsAPI = {
   },
   deleteProduct: (id) => api.delete(`/products/${id}/`),
   getCategories: () => api.get('/categories/'),
+  getUser: (id) => api.get(`/users/${id}/`),
 };
 
 export const cartAPI = {
@@ -174,7 +174,7 @@ export const ordersAPI = {
   getOrders: async (params = {}) => {
     try {
       const res = await api.get('/orders/', { params });
-      return res.data;
+      return res.data.results || res.data; // Xử lý cả trường hợp có pagination
     } catch (err) {
       console.error('Fetch orders failed:', err.response?.data || err.message);
       throw err;
@@ -210,8 +210,13 @@ export const ordersAPI = {
   validateDiscountCode: async (code, orderTotal) => {
     try {
       const res = await api.post('/discounts/validate/', { code, order_total: orderTotal });
-      return res.data;
+      const discountAmount = Number(res.data.discount_amount) || 0;
+      if (isNaN(discountAmount)) {
+        throw new Error('Số tiền giảm giá không hợp lệ từ server');
+      }
+      return { ...res.data, discount_amount: discountAmount };
     } catch (err) {
+      console.error('Discount validation error:', err.response?.data || err.message);
       throw new Error(err.response?.data?.detail || 'Mã giảm giá không hợp lệ');
     }
   },

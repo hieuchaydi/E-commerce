@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { authAPI, cartAPI } from '../../api/api';
+import { authAPI, cartAPI, ordersAPI } from '../../api/api';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -9,6 +9,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [latestOrderId, setLatestOrderId] = useState(null);
 
   const handleLogout = async () => {
     try {
@@ -36,6 +37,22 @@ const Navbar = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      if (user && user.role === 'customer') {
+        try {
+          const response = await ordersAPI.getOrders();
+          if (response && Array.isArray(response) && response.length > 0) {
+            setLatestOrderId(response[0].id);
+          }
+        } catch (err) {
+          console.error('Error fetching orders in Navbar:', err.message);
+        }
+      }
+    };
+    fetchOrders();
+  }, [user]);
 
   return (
     <nav className="navbar bg-white shadow-md sticky top-0 z-30">
@@ -116,17 +133,33 @@ const Navbar = () => {
                     Giỏ hàng
                   </Link>
                   <Link to="/orders" className="nav-link text-gray-600 hover:text-blue-500 text-sm sm:text-base font-medium">
-                    Đơn hàng
+                    Lịch sử đơn hàng
                   </Link>
+                  {latestOrderId && (
+                    <Link
+                      to={`/orders/${latestOrderId}`}
+                      className="nav-link text-gray-600 hover:text-blue-500 text-sm sm:text-base font-medium"
+                    >
+                      Chi tiết đơn hàng
+                    </Link>
+                  )}
                 </>
               )}
               {user.role === 'seller' && (
-                <Link
-                  to="/seller/products"
-                  className="nav-link text-gray-600 hover:text-blue-500 text-sm sm:text-base font-medium"
-                >
-                  Quản lý sản phẩm
-                </Link>
+                <>
+                  <Link
+                    to="/seller/products"
+                    className="nav-link text-gray-600 hover:text-blue-500 text-sm sm:text-base font-medium"
+                  >
+                    Quản lý sản phẩm
+                  </Link>
+                  <Link
+                    to="/seller/orders"
+                    className="nav-link text-gray-600 hover:text-blue-500 text-sm sm:text-base font-medium"
+                  >
+                    Quản lý đơn hàng
+                  </Link>
+                </>
               )}
               {user.role === 'admin' && (
                 <Link
@@ -138,10 +171,10 @@ const Navbar = () => {
               )}
               <div className="user-section flex items-center gap-3 bg-gray-100 rounded-full px-3 py-1">
                 <span className="user-info text-sm text-gray-600">
-                  xin chào, <strong className="text-gray-800">{user.username}</strong> ({user.role})
+                  Xin chào, <strong className="text-gray-800">{user.username}</strong> ({user.role})
                 </span>
                 <Link to="/profile" className="nav-link text-sm text-gray-600 hover:text-blue-500 font-medium">
-                  trang cá nhân
+                  Trang cá nhân
                 </Link>
                 <button
                   onClick={handleLogout}

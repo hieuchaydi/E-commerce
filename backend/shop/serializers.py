@@ -3,14 +3,11 @@ from .models import User, Category, Product, Cart, Order, OrderItem, Review, Dis
 from django.db.models import Avg, Count, Sum
 
 class UserSerializer(serializers.ModelSerializer):
+    seller_rating = serializers.FloatField(read_only=True, allow_null=True)
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'role', 'phone', 'address']
-        extra_kwargs = {'password': {'write_only': True}}
-
-    def create(self, validated_data):
-        user = User.objects.create_user(**validated_data)
-        return user
+        fields = ['id', 'username', 'email', 'role', 'phone', 'address', 'seller_rating']
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,15 +15,19 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 class ProductSerializer(serializers.ModelSerializer):
-    price = serializers.FloatField()
+    category = CategorySerializer(read_only=True)
+    seller = UserSerializer(read_only=True)
     avg_rating = serializers.SerializerMethodField()
     sold_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'price', 'quantity', 'category', 'image', 'description', 'seller', 'avg_rating', 'sold_count']
-        read_only_fields = ['seller']
-
+        fields = [
+            'id', 'name', 'price', 'quantity', 'category', 'image',
+            'description', 'seller', 'product_type', 'avg_rating',
+            'sold_count', 'created_at', 'updated_at'
+        ]
+    
     def get_avg_rating(self, obj):
         try:
             avg = obj.reviews.aggregate(avg_rating=Avg('rating'))['avg_rating']
@@ -55,7 +56,11 @@ class CartSerializer(serializers.ModelSerializer):
         read_only_fields = ['user', 'created_at', 'total_price']
 
     def get_total_price(self, obj):
-        return float(obj.total_price)
+        try:
+            return float(obj.total_price) if obj.total_price is not None else 0.0
+        except Exception as e:
+            print(f"Error in get_total_price: {e}")
+            return 0.0
 
 class OrderItemSerializer(serializers.ModelSerializer):
     product = ProductSerializer(read_only=True)
@@ -114,29 +119,34 @@ class ReviewSerializer(serializers.ModelSerializer):
     guest_name = serializers.CharField(
         write_only=True, required=False, allow_blank=True
     )
+    product = serializers.PrimaryKeyRelatedField(
+        queryset=Product.objects.all(),
+        required=False
+    )
 
     class Meta:
         model = Review
         fields = ['id', 'user', 'guest_name', 'product', 'rating', 'comment', 'created_at']
-        read_only_fields = ['user', 'product', 'created_at']
+        read_only_fields = ['user', 'created_at']
 
     def validate(self, data):
-        request = self.context.get('request')
-        if not request.user.is_authenticated and not data.get('guest_name'):
+        if not self.context['request'].user.is_authenticated and not data.get('guest_name'):
             raise serializers.ValidationError("Guest name is required for unauthenticated users.")
         return data
 
     def create(self, validated_data):
         guest_name = validated_data.pop('guest_name', None)
-        request = self.context.get('request')
-        user = request.user if request.user.is_authenticated else None
+        user = self.context['request'].user if self.context['request'].user.is_authenticated else None
+        product = validated_data['product']
         review = Review.objects.create(
             user=user,
-            product=validated_data['product'],
+            product=product,
             rating=validated_data['rating'],
             comment=validated_data['comment']
         )
         if guest_name:
-            review.comment = f"[Guest: {guest_name}] {review.comment}"
-        review.save()
+            review.guest_name = guest_name
+            review.save()
         return review
+
+

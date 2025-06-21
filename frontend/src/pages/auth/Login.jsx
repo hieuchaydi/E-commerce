@@ -1,7 +1,7 @@
 import React from 'react';
 import LoginForm from '../../components/auth/LoginForm';
 import { Link } from 'react-router-dom';
-import './AuthPages.css';
+import './Login.css';
 
 const Login = () => {
   return (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ordersAPI } from '../../api/api';
 import { useAuth } from '../../context/AuthContext';
@@ -14,17 +14,12 @@ const OrderDetail = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
-  useEffect(() => {
-    if (user) {
-      fetchOrder();
-    }
-  }, [user, id]);
-
-  const fetchOrder = async () => {
+  const fetchOrder = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
       const response = await ordersAPI.getOrder(id);
+      console.log('Fetched order data:', response); // Debug log
       setOrder(response);
     } catch (err) {
       console.error('Error fetching order:', err.message);
@@ -38,7 +33,13 @@ const OrderDetail = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    if (user) {
+      fetchOrder();
+    }
+  }, [user, fetchOrder]);
 
   const handleCancelOrder = async () => {
     if (!window.confirm('Bạn có chắc muốn hủy đơn hàng này?')) return;
@@ -120,22 +121,26 @@ const OrderDetail = () => {
           <p>Ngày đặt: {new Date(order.created_at).toLocaleString('vi-VN')}</p>
           <p>Trạng thái: <span className={getStatusColor(order.status)}>{getStatusText(order.status)}</span></p>
           <p>Tổng tiền: ${Number(order.total_price || 0).toFixed(2)}</p>
-          <p>Phương thức thanh toán: Thanh toán khi nhận hàng (COD)</p> {/* Hardcode COD */}
-          <p>Địa chỉ giao hàng: {order.shipping_address}</p>
+          <p>Phương thức thanh toán: {order.payment_method || 'Chưa xác định'}</p>
+          <p>Địa chỉ giao hàng: {order.shipping_address || 'Chưa cập nhật'}</p>
         </div>
 
         <div className="mb-4">
           <h3 className="text-lg font-semibold text-gray-700">Sản Phẩm</h3>
-          {order.items.map((item) => (
-            <div key={item.id} className="flex justify-between items-center border-b py-2">
-              <div>
-                <p className="font-medium">{item.product.name}</p>
-                <p className="text-sm text-gray-600">Số lượng: {item.quantity}</p>
-                <p className="text-sm text-gray-600">Đơn giá: ${Number(item.price).toFixed(2)}</p>
+          {order.items && order.items.length > 0 ? (
+            order.items.map((item) => (
+              <div key={item.id} className="flex justify-between items-center border-b py-2">
+                <div>
+                  <p className="font-medium">{item.product.name}</p>
+                  <p className="text-sm text-gray-600">Số lượng: {item.quantity}</p>
+                  <p className="text-sm text-gray-600">Đơn giá: ${Number(item.price).toFixed(2)}</p>
+                </div>
+                <p className="font-medium">${(Number(item.price) * item.quantity).toFixed(2)}</p>
               </div>
-              <p className="font-medium">${(Number(item.price) * item.quantity).toFixed(2)}</p>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p className="text-gray-600">Không có sản phẩm trong đơn hàng.</p>
+          )}
         </div>
 
         <div className="flex justify-between items-center">

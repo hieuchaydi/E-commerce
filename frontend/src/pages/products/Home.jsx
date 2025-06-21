@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { productsAPI, getMediaUrl } from '../../api/api';
 import { useCart } from '../../context/CartContext';
+import Button from '../../components/common/Button'; // Import Button component
 import './Home.css';
 
 const CurrentDateTime = () => {
@@ -40,6 +41,7 @@ const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [searchParams] = useSearchParams();
   const { addToCart } = useCart();
@@ -48,13 +50,25 @@ const Home = () => {
   const featuredRef = useRef(null);
   const sliderRef = useRef(null);
 
+  const orderId = searchParams.get('orderId'); // Get orderId from query params
+
+  const productTypes = [
+    { value: '', label: 'Tất cả loại sản phẩm' },
+    { value: 'electronics', label: 'Điện tử' },
+    { value: 'clothing', label: 'Quần áo' },
+    { value: 'food', label: 'Thực phẩm' },
+    { value: 'furniture', label: 'Nội thất' },
+    { value: 'other', label: 'Khác' },
+  ];
+
   const [filters, setFilters] = useState({
     category: '',
     minPrice: '',
     maxPrice: '',
     minRating: '',
     search: searchParams.get('search') || '',
-    sortBy: ''
+    sortBy: '',
+    product_type: '',
   });
 
   const sliderImages = [
@@ -69,7 +83,7 @@ const Home = () => {
         const response = await productsAPI.getCategories();
         setCategories(response.data);
       } catch (err) {
-        console.error('Error fetching categories:', err);
+        console.error('Lỗi tải danh mục:', err);
       }
     };
     fetchCategories();
@@ -81,33 +95,27 @@ const Home = () => {
         setLoading(true);
         setError(null);
 
-        // Tạo đối tượng params từ filters
         const params = {
           search: filters.search || undefined,
           category: filters.category || undefined,
           min_price: filters.minPrice ? parseFloat(filters.minPrice) : undefined,
           max_price: filters.maxPrice ? parseFloat(filters.maxPrice) : undefined,
           min_rating: filters.minRating ? parseFloat(filters.minRating) : undefined,
+          product_type: filters.product_type || undefined,
           ordering: filters.sortBy || undefined,
         };
 
-        // Loại bỏ các tham số undefined
         const filteredParams = Object.fromEntries(
           Object.entries(params).filter(([_, value]) => value !== undefined)
         );
 
-        console.log('Filtered params:', filteredParams); // Debug
-
-        // Gọi API với các tham số đã lọc
         const response = await productsAPI.getProducts(filteredParams);
         const productsData = response.data.results || response.data || [];
 
-        // Sắp xếp sản phẩm nổi bật theo số lượng đã bán
         const featured = productsData
           .sort((a, b) => (b.sold_count || 0) - (a.sold_count || 0))
           .slice(0, 6);
 
-        // Cập nhật trạng thái
         setProducts(productsData);
         setFeaturedProducts(featured);
       } catch (err) {
@@ -129,7 +137,7 @@ const Home = () => {
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'minRating' && value && (value < 1 || value > 5)) {
+    if (name === 'minRating' && value && (parseFloat(value) < 1 || parseFloat(value) > 5)) {
       return;
     }
     setFilters((prev) => ({ ...prev, [name]: value }));
@@ -142,7 +150,8 @@ const Home = () => {
       maxPrice: '',
       minRating: '',
       search: '',
-      sortBy: ''
+      sortBy: '',
+      product_type: '',
     });
   };
 
@@ -165,15 +174,17 @@ const Home = () => {
     const averageRating = product.avg_rating || null;
     const productImage = product.image
       ? getMediaUrl(product.image)
-      : getMediaUrl('/media/products/thitlonluoc.jpg');
+      : getMediaUrl('/media/products/placeholder.jpg');
 
     const handleAddToCart = async () => {
       try {
         await addToCart(product.id, 1);
-        navigate('/cart');
+        setSuccessMessage('Thêm vào giỏ hàng thành công!');
+        setTimeout(() => setSuccessMessage(null), 3000);
       } catch (error) {
-        console.error('Failed to add to cart:', error);
+        console.error('Lỗi thêm vào giỏ:', error);
         setError('Thêm vào giỏ hàng thất bại. Vui lòng thử lại.');
+        setTimeout(() => setError(null), 3000);
       }
     };
 
@@ -182,31 +193,32 @@ const Home = () => {
     };
 
     return (
-      <div className="product-card snap-start" key={product.id}>
+      <div className="product-card" key={product.id}>
         <div className="relative w-full aspect-square">
           <img
             src={productImage}
             alt={product.name || 'Sản phẩm'}
-            className="product-image absolute inset-0 w-full h-full object-cover rounded-md"
+            className="product-image"
             onClick={handleProductClick}
             loading="lazy"
+            onError={(e) => (e.target.src = getMediaUrl('/media/products/placeholder.jpg'))}
           />
         </div>
-        <div className="product-info mt-2">
+        <div className="product-info">
           <h3 className="product-name" onClick={handleProductClick}>
             {product.name}
           </h3>
-          {averageRating && <div className="rating">Đánh giá: {averageRating.toFixed(1)}★</div>}
+          {averageRating && <div className="rating">Đánh giá: {averageRating.toFixed(1)} ★</div>}
           {product.sold_count !== undefined && (
             <div className="sold">Đã bán: {product.sold_count}</div>
           )}
-          <div className="price">${(product.price || 0).toFixed(2)}</div>
+          <div className="price">{(product.price || 0).toLocaleString('vi-VN')} ₫</div>
           <button
             className="add-to-cart-btn"
             onClick={handleAddToCart}
-            disabled={loading}
+            disabled={loading || product.quantity === 0}
           >
-            {loading ? 'Đang tải...' : 'Thêm vào giỏ'}
+            {loading ? 'Đang tải...' : product.quantity === 0 ? 'Hết hàng' : 'Thêm vào giỏ'}
           </button>
         </div>
       </div>
@@ -216,18 +228,39 @@ const Home = () => {
   return (
     <div className="home-page">
       <CurrentDateTime />
+      {successMessage && (
+        <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-fade-in">
+          {successMessage}
+        </div>
+      )}
+      {error && (
+        <div className="fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-fade-in">
+          {error}
+        </div>
+      )}
+      {orderId && (
+        <div className="order-success-message fixed top-16 right-4 bg-blue-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-fade-in">
+          <p>Đặt hàng thành công! Mã đơn hàng: #{orderId}</p>
+          <Button
+            variant="success"
+            size="small"
+            onClick={() => navigate(`/orders/${orderId}`)}
+            className="mt-2"
+          >
+            Xem trạng thái đơn hàng
+          </Button>
+        </div>
+      )}
       <div className="hero-slider" ref={sliderRef}>
         <div className="slider-content" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
           {sliderImages.map((image, index) => (
-            <div
-              className="slide relative w-full aspect-[4/3]"
-              key={index}
-            >
+            <div className="slide relative w-full aspect-[4/3]" key={index}>
               <img
                 src={getMediaUrl(image)}
                 alt={`Slide ${index}`}
-                className="slide-image w-full h-full object-cover"
+                className="slide-image"
                 loading="lazy"
+                onError={(e) => (e.target.src = getMediaUrl('/media/products/placeholder.jpg'))}
               />
               <div className="slide-overlay"></div>
             </div>
@@ -269,6 +302,18 @@ const Home = () => {
               </option>
             ))}
           </select>
+          <select
+            name="product_type"
+            value={filters.product_type}
+            onChange={handleFilterChange}
+            className="filter-select"
+          >
+            {productTypes.map((type) => (
+              <option key={type.value} value={type.value}>
+                {type.label}
+              </option>
+            ))}
+          </select>
           <input
             type="number"
             name="minPrice"
@@ -276,6 +321,7 @@ const Home = () => {
             value={filters.minPrice}
             onChange={handleFilterChange}
             className="filter-input"
+            min="0"
           />
           <input
             type="number"
@@ -284,6 +330,7 @@ const Home = () => {
             value={filters.maxPrice}
             onChange={handleFilterChange}
             className="filter-input"
+            min="0"
           />
         </div>
         <div className="filter-group-right">
@@ -294,6 +341,9 @@ const Home = () => {
             value={filters.minRating}
             onChange={handleFilterChange}
             className="filter-input"
+            min="1"
+            max="5"
+            step="0.1"
           />
           <select
             name="sortBy"
@@ -330,21 +380,23 @@ const Home = () => {
             </button>
             <div className="carousel-track" ref={section.ref} role="region" aria-label={`Carousel ${section.title}`}>
               {loading ? (
-                Array(6).fill().map((_, i) => (
-                  <div className="product-card snap-start placeholder" key={i}>
-                    <div className="product-image bg-gray-200 animate-pulse"></div>
-                    <div className="product-info">
-                      <div className="h-6 bg-gray-200 rounded w-3/4 mb-2 animate-pulse"></div>
-                      <div className="h-4 bg-gray-200 rounded w-1/2 mb-2 animate-pulse"></div>
-                      <div className="h-4 bg-gray-200 rounded w-1/3 mb-4 animate-pulse"></div>
-                      <div className="h-10 bg-gray-200 rounded w-full animate-pulse"></div>
+                Array(6)
+                  .fill()
+                  .map((_, i) => (
+                    <div className="product-card snap-start placeholder" key={i}>
+                      <div className="product-image h-48"></div>
+                      <div className="product-info">
+                        <div className="h-6 w-3/4 mb-2"></div>
+                        <div className="h-4 w-1/2 mb-2"></div>
+                        <div className="h-4 w-1/3 mb-4"></div>
+                        <div className="h-10 w-full"></div>
+                      </div>
                     </div>
-                  </div>
-                ))
+                  ))
               ) : error ? (
                 <div className="error-state">{error}</div>
               ) : section.products.length === 0 ? (
-                <div className="no-results">Không có sản phẩm</div>
+                <div className="no-results">Không có sản phẩm nào phù hợp</div>
               ) : (
                 section.products.map(renderProductCard)
               )}
