@@ -31,17 +31,16 @@ const ProductForm = () => {
     const fetchCategories = async () => {
       try {
         const response = await productsAPI.getCategories();
-        console.log('Raw response from getCategories:', response); // Log toàn bộ response
+        console.log('Raw response from getCategories:', response);
         if (Array.isArray(response)) {
-          setCategories(response); // Nếu response trực tiếp là mảng
+          setCategories(response);
         } else if (response?.data && Array.isArray(response.data)) {
-          setCategories(response.data); // Nếu response chứa data là mảng
+          setCategories(response.data);
         } else {
-          console.error('Invalid response structure:', response);
-          throw new Error('Dữ liệu danh mục không phải là mảng hoặc không chứa results');
+          throw new Error('Dữ liệu danh mục không hợp lệ');
         }
       } catch (err) {
-        console.error('Lỗi tải danh mục:', err); // Log chi tiết lỗi
+        console.error('Lỗi tải danh mục:', err);
         setErrors({ detail: `Lỗi tải danh mục: ${err.message}` });
       }
     };
@@ -51,12 +50,12 @@ const ProductForm = () => {
         try {
           const response = await productsAPI.getProduct(id);
           setFormData({
-            name: response.data.name,
-            description: response.data.description,
-            price: response.data.price,
-            quantity: response.data.quantity,
-            category_id: response.data.category?.id || '',
-            product_type: response.data.product_type,
+            name: response.name || '',
+            description: response.description || '',
+            price: response.price ? response.price.toString() : '',
+            quantity: response.quantity ? response.quantity.toString() : '',
+            category_id: response.category?.id ? response.category.id.toString() : '',
+            product_type: response.product_type || 'other',
             image: null,
           });
         } catch (err) {
@@ -69,6 +68,23 @@ const ProductForm = () => {
     fetchCategories();
     fetchProduct();
   }, [id]);
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.name.trim()) newErrors.name = 'Tên sản phẩm là bắt buộc';
+    if (!formData.description.trim()) newErrors.description = 'Mô tả là bắt buộc';
+    if (!formData.price || isNaN(formData.price) || Number(formData.price) <= 0) {
+      newErrors.price = 'Giá phải là số dương';
+    }
+    if (!formData.quantity || isNaN(formData.quantity) || Number(formData.quantity) < 0) {
+      newErrors.quantity = 'Số lượng phải là số không âm';
+    }
+    if (!formData.category_id || isNaN(formData.category_id)) {
+      newErrors.category_id = 'Vui lòng chọn danh mục hợp lệ';
+    }
+    if (!formData.product_type) newErrors.product_type = 'Vui lòng chọn loại sản phẩm';
+    return newErrors;
+  };
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -83,22 +99,34 @@ const ProductForm = () => {
     setLoading(true);
     setErrors({});
 
-    if (!formData.category_id) {
-      setErrors({ category_id: 'Vui lòng chọn danh mục' });
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
       setLoading(false);
       return;
     }
 
+    const submissionData = {
+      ...formData,
+      price: parseFloat(formData.price),
+      quantity: parseInt(formData.quantity, 10),
+      category_id: parseInt(formData.category_id, 10),
+    };
+
     try {
       if (id) {
-        await productsAPI.updateProduct(id, formData);
+        await productsAPI.updateProduct(id, submissionData);
       } else {
-        await productsAPI.createProduct(formData);
+        await productsAPI.createProduct(submissionData);
       }
       navigate('/seller/products');
     } catch (err) {
-      console.error('Lỗi khi lưu sản phẩm:', err);
-      setErrors(err.response?.data || { detail: 'Lỗi khi lưu sản phẩm' });
+      console.error('Lỗi khi lưu sản phẩm:', {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status,
+      });
+      setErrors(err.response?.data || { detail: 'Lỗi khi lưu sản phẩm. Vui lòng kiểm tra dữ liệu và thử lại.' });
     } finally {
       setLoading(false);
     }

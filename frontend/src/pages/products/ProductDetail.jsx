@@ -40,18 +40,24 @@ const ProductDetail = () => {
     try {
       setState((prev) => ({ ...prev, loading: true, error: null }));
 
-      // Fetch product data
+      // Lấy dữ liệu sản phẩm từ API
       const productRes = await productsAPI.getProduct(id);
-      console.log('Product API Response:', productRes.data);
+      console.log('Product API Response:', productRes);
 
+      // Kiểm tra xem dữ liệu trả về có tồn tại không
+      if (!productRes || typeof productRes !== 'object') {
+        throw new Error('Dữ liệu sản phẩm không hợp lệ');
+      }
+
+      // Tạo đối tượng productData với các giá trị mặc định
       const productData = {
-        ...productRes.data,
-        price: Number(productRes.data.price) || 0,
-        image: getMediaUrl(productRes.data.image) || getMediaUrl('/media/products/placeholder.jpg'),
-        seller: productRes.data.seller || { username: 'Không xác định', id: null, seller_rating: null },
+        ...productRes,
+        price: Number(productRes.price) || 0,
+        image: getMediaUrl(productRes.image) || getMediaUrl('/media/products/placeholder.jpg'),
+        seller: productRes.seller || { username: 'Không xác định', id: null, seller_rating: null },
       };
 
-      // Fetch reviews separately to handle errors gracefully
+      // Lấy danh sách đánh giá (reviews)
       let reviews = [];
       let averageRating = 0;
       try {
@@ -63,9 +69,9 @@ const ProductDetail = () => {
         console.log('Reviews API Response:', reviews);
       } catch (reviewErr) {
         console.error('Reviews Fetch Error:', reviewErr.response?.data || reviewErr.message);
-        // Continue without reviews
       }
 
+      // Cập nhật trạng thái với dữ liệu đã xử lý
       setState((prev) => ({
         ...prev,
         product: productData,
@@ -74,10 +80,10 @@ const ProductDetail = () => {
         loading: false,
       }));
     } catch (err) {
-      console.error('Product Fetch Error:', err.response?.data || err.message);
+      console.error('Product Fetch Error:', err.message || err);
       setState((prev) => ({
         ...prev,
-        error: err.response?.status === 404
+        error: err.message === 'Sản phẩm không tồn tại' || err.response?.status === 404
           ? 'Sản phẩm không tồn tại'
           : 'Lỗi tải dữ liệu sản phẩm. Vui lòng thử lại.',
         loading: false,
@@ -157,9 +163,7 @@ const ProductDetail = () => {
   };
 
   const handleRatingChange = useCallback(
-    (newRating) => {
-      setState((prev) => ({ ...prev, rating: newRating }));
-    },
+    (newRating) => setState((prev) => ({ ...prev, rating: newRating })),
     []
   );
 

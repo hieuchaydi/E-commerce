@@ -35,7 +35,8 @@ PyJWT==2.9.0
 sqlparse==0.5.3
 tzdata==2025.2
 
-
+python -m venv env
+.\env\Scripts\Activate
 2025-06-14T16:03:51Z INF +--------------------------------------------------------------------------------------------+
 2025-06-14T16:03:51Z INF |  Your quick Tunnel has been created! Visit it at (it may take some time to be reachable):
 
