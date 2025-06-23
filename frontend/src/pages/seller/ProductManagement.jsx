@@ -17,11 +17,21 @@ const ProductManagement = () => {
     setError(null);
     try {
       const response = await productsAPI.getProducts({ page: 1, page_size: 10 });
-      const productsData = response.data.results || response.data || [];
-      console.log('Product Management - Products:', productsData);
+      console.log('Full response from getProducts:', response);
+
+      let productsData;
+      if (Array.isArray(response)) {
+        productsData = response; // Trường hợp response là mảng trực tiếp
+      } else if (response && response.data && Array.isArray(response.data)) {
+        productsData = response.data; // Trường hợp response là object với thuộc tính data
+      } else {
+        throw new Error('Dữ liệu sản phẩm không hợp lệ');
+      }
+
       setProducts(productsData);
+      console.log('Set products called with:', productsData);
     } catch (err) {
-      const errorMessage = err.response?.data?.detail || err.response?.data?.message || 'Không thể tải sản phẩm';
+      const errorMessage = err.response?.data?.detail || err.message || 'Không thể tải sản phẩm';
       console.error('Fetch products error:', err);
       setError(errorMessage);
     } finally {
@@ -42,9 +52,8 @@ const ProductManagement = () => {
       setDeleteConfirm(null);
       setSuccessMessage('Sản phẩm đã được xóa thành công');
       setTimeout(() => setSuccessMessage(null), 3000);
-      console.log('Deleted product:', productId);
     } catch (err) {
-      const errorMessage = err.response?.data?.detail || err.response?.data?.message || 'Lỗi khi xóa sản phẩm';
+      const errorMessage = err.response?.data?.detail || err.message || 'Lỗi khi xóa sản phẩm';
       console.error('Delete product error:', err);
       setError(errorMessage);
     } finally {
@@ -63,7 +72,6 @@ const ProductManagement = () => {
 
       {successMessage && <div className="success-message">{successMessage}</div>}
       {error && <div className="error-message">{error}</div>}
-
       {loading && <div className="loading">Đang tải sản phẩm...</div>}
 
       {!loading && (

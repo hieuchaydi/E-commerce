@@ -1,7 +1,7 @@
-// pages/seller/ProductForm.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { productsAPI } from '../../api/api';
+import './ProductForm.css';
 
 const ProductForm = () => {
   const { id } = useParams();
@@ -11,44 +11,63 @@ const ProductForm = () => {
     description: '',
     price: '',
     quantity: '',
-    category: '',
+    category_id: '',
     product_type: 'other',
     image: null,
   });
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [errors, setErrors] = useState({});
 
   const productTypes = [
-    { value: 'electronics', label: 'Electronics' },
-    { value: 'clothing', label: 'Clothing' },
-    { value: 'food', label: 'Food' },
-    { value: 'furniture', label: 'Furniture' },
-    { value: 'other', label: 'Other' },
+    { value: 'electronics', label: 'Điện tử' },
+    { value: 'clothing', label: 'Quần áo' },
+    { value: 'food', label: 'Thực phẩm' },
+    { value: 'furniture', label: 'Nội thất' },
+    { value: 'other', label: 'Khác' },
   ];
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await productsAPI.getCategories();
-        setCategories(response.data);
+        console.log('Raw response from getCategories:', response); // Log toàn bộ response
+        if (Array.isArray(response)) {
+          setCategories(response); // Nếu response trực tiếp là mảng
+        } else if (response?.data && Array.isArray(response.data)) {
+          setCategories(response.data); // Nếu response chứa data là mảng
+        } else {
+          console.error('Invalid response structure:', response);
+          throw new Error('Dữ liệu danh mục không phải là mảng hoặc không chứa results');
+        }
       } catch (err) {
-        setError('Lỗi tải danh mục');
+        console.error('Lỗi tải danh mục:', err); // Log chi tiết lỗi
+        setErrors({ detail: `Lỗi tải danh mục: ${err.message}` });
       }
     };
-    fetchCategories();
 
-    if (id) {
-      const fetchProduct = async () => {
+    const fetchProduct = async () => {
+      if (id) {
         try {
           const response = await productsAPI.getProduct(id);
-          setFormData(response.data);
+          setFormData({
+            name: response.data.name,
+            description: response.data.description,
+            price: response.data.price,
+            quantity: response.data.quantity,
+            category_id: response.data.category?.id || '',
+            product_type: response.data.product_type,
+            image: null,
+          });
         } catch (err) {
-          setError('Lỗi tải sản phẩm');
+          console.error('Lỗi tải sản phẩm:', err);
+          setErrors({ detail: 'Lỗi tải sản phẩm' });
         }
-      };
-      fetchProduct();
-    }
+      }
+    };
+
+    fetchCategories();
+    fetchProduct();
   }, [id]);
 
   const handleChange = (e) => {
@@ -62,7 +81,13 @@ const ProductForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
+    setErrors({});
+
+    if (!formData.category_id) {
+      setErrors({ category_id: 'Vui lòng chọn danh mục' });
+      setLoading(false);
+      return;
+    }
 
     try {
       if (id) {
@@ -72,35 +97,27 @@ const ProductForm = () => {
       }
       navigate('/seller/products');
     } catch (err) {
-      setError(err.message || 'Lỗi khi lưu sản phẩm');
+      console.error('Lỗi khi lưu sản phẩm:', err);
+      setErrors(err.response?.data || { detail: 'Lỗi khi lưu sản phẩm' });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="product-form">
+    <div className="product-form-container">
       <h2>{id ? 'Sửa sản phẩm' : 'Thêm sản phẩm'}</h2>
-      {error && <div className="error">{error}</div>}
-      <form onSubmit={handleSubmit}>
+      {errors.detail && <div className="error">{errors.detail}</div>}
+      <form onSubmit={handleSubmit} className="product-form">
         <div className="form-group">
           <label>Tên sản phẩm</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
+          <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+          {errors.name && <div className="error">{errors.name}</div>}
         </div>
         <div className="form-group">
           <label>Mô tả</label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            required
-          />
+          <textarea name="description" value={formData.description} onChange={handleChange} required />
+          {errors.description && <div className="error">{errors.description}</div>}
         </div>
         <div className="form-group">
           <label>Giá</label>
@@ -113,6 +130,7 @@ const ProductForm = () => {
             step="0.01"
             required
           />
+          {errors.price && <div className="error">{errors.price}</div>}
         </div>
         <div className="form-group">
           <label>Số lượng</label>
@@ -124,46 +142,39 @@ const ProductForm = () => {
             min="0"
             required
           />
+          {errors.quantity && <div className="error">{errors.quantity}</div>}
         </div>
         <div className="form-group">
           <label>Danh mục</label>
-          <select
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            required
-          >
+          <select name="category_id" value={formData.category_id} onChange={handleChange} required>
             <option value="">Chọn danh mục</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
+            {categories.length > 0 ? (
+              categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))
+            ) : (
+              <option value="" disabled>Không có danh mục</option>
+            )}
           </select>
+          {errors.category_id && <div className="error">{errors.category_id}</div>}
         </div>
         <div className="form-group">
           <label>Loại sản phẩm</label>
-          <select
-            name="product_type"
-            value={formData.product_type}
-            onChange={handleChange}
-            required
-          >
+          <select name="product_type" value={formData.product_type} onChange={handleChange} required>
             {productTypes.map((type) => (
               <option key={type.value} value={type.value}>
                 {type.label}
               </option>
             ))}
           </select>
+          {errors.product_type && <div className="error">{errors.product_type}</div>}
         </div>
         <div className="form-group">
           <label>Hình ảnh</label>
-          <input
-            type="file"
-            name="image"
-            onChange={handleChange}
-            accept="image/*"
-          />
+          <input type="file" name="image" onChange={handleChange} accept="image/*" />
+          {errors.image && <div className="error">{errors.image}</div>}
         </div>
         <button type="submit" disabled={loading}>
           {loading ? 'Đang lưu...' : id ? 'Cập nhật' : 'Thêm sản phẩm'}

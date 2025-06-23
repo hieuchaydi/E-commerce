@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { productsAPI, getMediaUrl } from '../../api/api';
 import { useCart } from '../../context/CartContext';
-import Button from '../../components/common/Button'; // Import Button component
+import Button from '../../components/common/Button';
 import './Home.css';
 
 const CurrentDateTime = () => {
@@ -50,7 +50,7 @@ const Home = () => {
   const featuredRef = useRef(null);
   const sliderRef = useRef(null);
 
-  const orderId = searchParams.get('orderId'); // Get orderId from query params
+  const orderId = searchParams.get('orderId');
 
   const productTypes = [
     { value: '', label: 'Tất cả loại sản phẩm' },
@@ -81,9 +81,10 @@ const Home = () => {
     const fetchCategories = async () => {
       try {
         const response = await productsAPI.getCategories();
-        setCategories(response.data);
+        setCategories(Array.isArray(response.data) ? response.data : []);
       } catch (err) {
         console.error('Lỗi tải danh mục:', err);
+        setCategories([]);
       }
     };
     fetchCategories();
@@ -110,7 +111,22 @@ const Home = () => {
         );
 
         const response = await productsAPI.getProducts(filteredParams);
-        const productsData = response.data.results || response.data || [];
+        console.log('API Response:', response);
+
+        let productsData;
+        if (Array.isArray(response)) {
+          productsData = response;
+        } else if (response && response.data) {
+          if (Array.isArray(response.data)) {
+            productsData = response.data;
+          } else if (response.data && Array.isArray(response.data.results)) {
+            productsData = response.data.results;
+          } else {
+            throw new Error('Dữ liệu sản phẩm không hợp lệ');
+          }
+        } else {
+          throw new Error('Response không hợp lệ');
+        }
 
         const featured = productsData
           .sort((a, b) => (b.sold_count || 0) - (a.sold_count || 0))
@@ -119,8 +135,10 @@ const Home = () => {
         setProducts(productsData);
         setFeaturedProducts(featured);
       } catch (err) {
-        setError(err.response?.data?.message || 'Lỗi tải sản phẩm');
+        setError(err.message || 'Lỗi tải sản phẩm');
         console.error('Lỗi tải sản phẩm:', err);
+        setProducts([]);
+        setFeaturedProducts([]);
       } finally {
         setLoading(false);
       }
@@ -171,8 +189,8 @@ const Home = () => {
   }, 100);
 
   const renderProductCard = (product) => {
-    const averageRating = product.avg_rating || null;
-    const productImage = product.image
+    const averageRating = product?.avg_rating || null;
+    const productImage = product?.image
       ? getMediaUrl(product.image)
       : getMediaUrl('/media/products/placeholder.jpg');
 
@@ -206,7 +224,7 @@ const Home = () => {
         </div>
         <div className="product-info">
           <h3 className="product-name" onClick={handleProductClick}>
-            {product.name}
+            {product.name || 'Tên sản phẩm'}
           </h3>
           {averageRating && <div className="rating">Đánh giá: {averageRating.toFixed(1)} ★</div>}
           {product.sold_count !== undefined && (
@@ -253,27 +271,31 @@ const Home = () => {
       )}
       <div className="hero-slider" ref={sliderRef}>
         <div className="slider-content" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
-          {sliderImages.map((image, index) => (
-            <div className="slide relative w-full aspect-[4/3]" key={index}>
-              <img
-                src={getMediaUrl(image)}
-                alt={`Slide ${index}`}
-                className="slide-image"
-                loading="lazy"
-                onError={(e) => (e.target.src = getMediaUrl('/media/products/placeholder.jpg'))}
-              />
-              <div className="slide-overlay"></div>
-            </div>
-          ))}
+          {sliderImages?.length > 0 ? (
+            sliderImages.map((image, index) => (
+              <div className="slide relative w-full aspect-[4/3]" key={index}>
+                <img
+                  src={getMediaUrl(image)}
+                  alt={`Slide ${index}`}
+                  className="slide-image"
+                  loading="lazy"
+                  onError={(e) => (e.target.src = getMediaUrl('/media/products/placeholder.jpg'))}
+                />
+                <div className="slide-overlay"></div>
+              </div>
+            ))
+          ) : (
+            <div className="no-slides">Không có hình ảnh</div>
+          )}
         </div>
         <div className="slider-dots">
-          {sliderImages.map((_, index) => (
+          {sliderImages?.length > 0 && sliderImages.map((_, index) => (
             <span
               key={index}
               className={`dot ${currentSlide === index ? 'active' : ''}`}
               onClick={() => setCurrentSlide(index)}
               role="button"
-              aria-label={`Chuyển đến slide ${index + 1}`}
+              aria-label={`Chuyển đến记slide ${index + 1}`}
             />
           ))}
         </div>
@@ -296,7 +318,7 @@ const Home = () => {
             className="filter-select"
           >
             <option value="">Tất cả danh mục</option>
-            {categories.map((category) => (
+            {categories?.length > 0 && categories.map((category) => (
               <option key={category.id} value={category.id}>
                 {category.name}
               </option>
@@ -304,11 +326,11 @@ const Home = () => {
           </select>
           <select
             name="product_type"
-            value={filters.product_type}
+            value={filters.fetch_type}
             onChange={handleFilterChange}
             className="filter-select"
           >
-            {productTypes.map((type) => (
+            {productTypes?.length > 0 && productTypes.map((type) => (
               <option key={type.value} value={type.value}>
                 {type.label}
               </option>
@@ -395,10 +417,10 @@ const Home = () => {
                   ))
               ) : error ? (
                 <div className="error-state">{error}</div>
-              ) : section.products.length === 0 ? (
-                <div className="no-results">Không có sản phẩm nào phù hợp</div>
-              ) : (
+              ) : section.products?.length > 0 ? (
                 section.products.map(renderProductCard)
+              ) : (
+                <div className="no-results">Không có sản phẩm nào phù hợp</div>
               )}
             </div>
             <button

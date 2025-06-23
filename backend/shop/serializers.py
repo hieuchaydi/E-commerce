@@ -16,6 +16,9 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
+    category_id = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(), source='category', write_only=True
+    )
     seller = UserSerializer(read_only=True)
     avg_rating = serializers.SerializerMethodField()
     sold_count = serializers.SerializerMethodField()
@@ -23,24 +26,24 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = [
-            'id', 'name', 'price', 'quantity', 'category', 'image',
+            'id', 'name', 'price', 'quantity', 'category', 'category_id', 'image',
             'description', 'seller', 'product_type', 'avg_rating',
             'sold_count', 'created_at', 'updated_at'
         ]
-    
+
     def get_avg_rating(self, obj):
         try:
             avg = obj.reviews.aggregate(avg_rating=Avg('rating'))['avg_rating']
             return round(avg, 2) if avg is not None else 0.0
         except Exception as e:
-            print(f"Error in get_avg_rating: {e}")
+            print(f"Lỗi khi tính avg_rating: {e}")
             return 0.0
 
     def get_sold_count(self, obj):
         try:
             return obj.orderitem_set.aggregate(total_sold=Sum('quantity'))['total_sold'] or 0
         except Exception as e:
-            print(f"Error in get_sold_count: {e}")
+            print(f"Lỗi khi tính sold_count: {e}")
             return 0
 
 class CartSerializer(serializers.ModelSerializer):

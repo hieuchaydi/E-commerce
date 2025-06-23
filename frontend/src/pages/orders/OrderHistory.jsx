@@ -30,16 +30,19 @@ const OrderHistory = () => {
       const timer = setTimeout(() => setSuccess(null), 3000);
       return () => clearTimeout(timer);
     }
-  }, [user, location.state]);
+  }, [user, location.state, success]);
 
   const fetchOrders = async () => {
     try {
       setLoading(true);
       setError(null);
       const response = await ordersAPI.getOrders();
-      console.log('Orders response:', response); // Ghi log response trực tiếp
+      console.log('Orders response:', response); // Ghi log để kiểm tra dữ liệu trả về
+      // Xử lý dữ liệu trả về: đảm bảo là mảng
       if (Array.isArray(response)) {
         setOrders(response);
+      } else if (response && Array.isArray(response.results)) {
+        setOrders(response.results); // Hỗ trợ phân trang nếu backend trả về dạng { results: [...] }
       } else {
         setError('Dữ liệu đơn hàng không hợp lệ.');
       }
@@ -57,15 +60,34 @@ const OrderHistory = () => {
     }
   };
 
+  const getStatusText = (status) => {
+    switch (status?.toLowerCase()) {
+      case 'pending':
+        return 'Chờ xử lý';
+      case 'processing':
+        return 'Đang xử lý';
+      case 'shipped':
+        return 'Đang giao hàng';
+      case 'completed':
+        return 'Đã hoàn thành';
+      case 'cancelled':
+        return 'Đã hủy';
+      default:
+        return 'Không xác định';
+    }
+  };
+
   const getStatusColor = (status) => {
     switch (status?.toLowerCase()) {
       case 'pending':
         return 'text-yellow-500';
-      case 'paid':
+      case 'processing':
+        return 'text-blue-500';
+      case 'shipped':
+        return 'text-purple-500';
+      case 'completed':
         return 'text-green-600';
-      case 'failed':
-        return 'text-red-500';
-      case 'canceled':
+      case 'cancelled':
         return 'text-gray-500';
       default:
         return 'text-gray-500';
@@ -94,16 +116,13 @@ const OrderHistory = () => {
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-1 sm:mb-2">
                 <h3 className="text-base sm:text-lg font-semibold text-gray-800">Đơn #{order.id}</h3>
                 <span className={`text-sm sm:text-base font-medium ${getStatusColor(order.status)}`}>
-                  {order.status === 'Pending' ? 'Chờ xử lý' :
-                   order.status === 'Paid' ? 'Đã thanh toán' :
-                   order.status === 'Failed' ? 'Thất bại' :
-                   'Đã hủy'}
+                  {getStatusText(order.status)}
                 </span>
               </div>
               <div className="text-sm sm:text-base text-gray-600">
                 <p>Ngày đặt: {new Date(order.created_at).toLocaleString('vi-VN')}</p>
                 <p>Tổng tiền: ${Number(order.total_price || 0).toFixed(2)}</p>
-                <p>Phương thức: {order.payment_method === 'COD' ? 'Thanh toán khi nhận hàng' : order.payment_method}</p>
+                <p>Phương thức: {order.payment_method === 'COD' ? 'Thanh toán khi nhận hàng' : order.payment_method || 'Chưa xác định'}</p>
               </div>
               <Button
                 variant="primary"
