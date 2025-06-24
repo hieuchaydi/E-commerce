@@ -1,41 +1,49 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 import ProductCard from './ProductCard';
-import { productsAPI } from '../../api'; // Import API từ api.jsx
+import { productsAPI } from '../../api/api';
 import './ProductList.css';
 
 const ProductList = () => {
-  // State cho danh sách sản phẩm và trạng thái
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
+  const [nextPage, setNextPage] = useState(null);
 
-  // State cho bộ lọc và sắp xếp
   const [filters, setFilters] = useState({
     category: '',
     minPrice: '',
     maxPrice: '',
     minRating: '',
     search: '',
+    seller: '',
     sortBy: ''
   });
 
-  // Fetch danh mục khi component mount
+  const location = useLocation();
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await productsAPI.getCategories();
-        setCategories(response.data);
+        setCategories(response.data || response);
       } catch (err) {
-        console.error('Error fetching categories:', err);
+        console.error('Lỗi tải danh mục:', err);
       }
     };
     fetchCategories();
   }, []);
 
-  // Fetch sản phẩm khi filters thay đổi
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const seller = params.get('seller') || '';
+    setFilters((prev) => ({ ...prev, seller }));
+    setPage(1);
+  }, [location.search]);
+
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
@@ -46,26 +54,30 @@ const ProductList = () => {
           max_price: filters.maxPrice,
           min_rating: filters.minRating,
           search: filters.search,
-          ordering: filters.sortBy
+          seller: filters.seller,
+          ordering: filters.sortBy,
+          page
         });
-        setProducts(response.data);
+        setProducts((prev) =>
+          page === 1 ? (response.results || response) : [...prev, ...(response.results || response)]
+        );
+        setNextPage(response.next || null);
         setError(null);
       } catch (err) {
-        setError(err);
+        setError(filters.seller ? `Không tìm thấy sản phẩm nào từ người bán "${filters.seller}".` : 'Lỗi tải sản phẩm.');
       } finally {
         setLoading(false);
       }
     };
     fetchProducts();
-  }, [filters]);
+  }, [filters, page]);
 
-  // Handle thay đổi bộ lọc
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
+    setPage(1);
   };
 
-  // Handle reset bộ lọc
   const handleResetFilters = () => {
     setFilters({
       category: '',
@@ -73,13 +85,19 @@ const ProductList = () => {
       maxPrice: '',
       minRating: '',
       search: '',
+      seller: '',
       sortBy: ''
     });
+    setPage(1);
   };
 
-  if (loading) return <div className="loading">Loading products...</div>;
-  if (error) return <div className="error">Error: {error.message}</div>;
-  if (!products.length) return <div className="no-products">No products found</div>;
+  const handleLoadMore = () => {
+    if (nextPage) setPage(page + 1);
+  };
+
+  if (loading && page === 1) return <div className="loading">Đang tải sản phẩm...</div>;
+  if (error) return <div className="error">{error}</div>;
+  if (!products.length) return <div className="no-products">Không tìm thấy sản phẩm nào</div>;
 
   return (
     <div className="product-list-container">
@@ -87,8 +105,16 @@ const ProductList = () => {
         <input
           type="text"
           name="search"
-          placeholder="Search products..."
+          placeholder="Tìm kiếm sản phẩm..."
           value={filters.search}
+          onChange={handleFilterChange}
+          className="filter-input"
+        />
+        <input
+          type="text"
+          name="seller"
+          placeholder="Tìm kiếm theo tên người bán..."
+          value={filters.seller}
           onChange={handleFilterChange}
           className="filter-input"
         />
@@ -98,7 +124,7 @@ const ProductList = () => {
           onChange={handleFilterChange}
           className="filter-select"
         >
-          <option value="">All Categories</option>
+          <option value="">Tất cả danh mục</option>
           {categories.map((category) => (
             <option key={category.id} value={category.id}>
               {category.name}
@@ -108,7 +134,7 @@ const ProductList = () => {
         <input
           type="number"
           name="minPrice"
-          placeholder="Min Price"
+          placeholder="Giá tối thiểu"
           value={filters.minPrice}
           onChange={handleFilterChange}
           className="filter-input"
@@ -116,7 +142,7 @@ const ProductList = () => {
         <input
           type="number"
           name="maxPrice"
-          placeholder="Max Price"
+          placeholder="Giá tối đa"
           value={filters.maxPrice}
           onChange={handleFilterChange}
           className="filter-input"
@@ -124,7 +150,7 @@ const ProductList = () => {
         <input
           type="number"
           name="minRating"
-          placeholder="Min Rating (1-5)"
+          placeholder="Đánh giá tối thiểu (1-5)"
           value={filters.minRating}
           onChange={handleFilterChange}
           className="filter-input"
@@ -135,15 +161,15 @@ const ProductList = () => {
           onChange={handleFilterChange}
           className="filter-select"
         >
-          <option value="">Sort By</option>
-          <option value="price">Price: Low to High</option>
-          <option value="-price">Price: High to Low</option>
-          <option value="created_at">Newest</option>
-          <option value="-created_at">Oldest</option>
-          <option value="sold_count">Most Popular</option>
+          <option value="">Sắp xếp theo</option>
+          <option value="price">Giá: Thấp đến cao</option>
+          <option value="-price">Giá: Cao đến thấp</option>
+          <option value="created_at">Mới nhất</option>
+          <option value="-created_at">Cũ nhất</option>
+          <option value="sold_count">Phổ biến nhất</option>
         </select>
         <button onClick={handleResetFilters} className="reset-button">
-          Reset Filters
+          Xóa bộ lọc
         </button>
       </div>
       <div className="product-list">
@@ -151,6 +177,12 @@ const ProductList = () => {
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
+      {nextPage && (
+        <button onClick={handleLoadMore} className="load-more-button">
+          Tải thêm
+        </button>
+      )}
+      {loading && page > 1 && <div className="loading">Đang tải thêm...</div>}
     </div>
   );
 };
@@ -163,7 +195,10 @@ ProductList.propTypes = {
       price: PropTypes.number.isRequired,
       image: PropTypes.string,
       avg_rating: PropTypes.number,
-      sold_count: PropTypes.number
+      sold_count: PropTypes.number,
+      seller: PropTypes.shape({
+        username: PropTypes.string.isRequired
+      })
     })
   ),
   loading: PropTypes.bool,

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -36,7 +37,11 @@ const Navbar = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if (searchTerm.trim()) navigate(`/?search=${encodeURIComponent(searchTerm)}`);
+    if (searchTerm.trim()) {
+      navigate(`/products?seller=${encodeURIComponent(searchTerm)}`);
+      setSearchTerm('');
+      setIsMenuOpen(false);
+    }
   };
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -46,8 +51,9 @@ const Navbar = () => {
       if (user && user.role === 'customer') {
         try {
           const response = await ordersAPI.getOrders();
-          if (response && Array.isArray(response) && response.length > 0) {
-            setLatestOrderId(response[0].id);
+          const orders = response.results || response;
+          if (Array.isArray(orders) && orders.length > 0) {
+            setLatestOrderId(orders[0].id);
           }
         } catch (err) {
           console.error('Error fetching orders:', err.message);
@@ -60,23 +66,20 @@ const Navbar = () => {
   return (
     <nav className={`navbar ${isDarkMode ? 'dark' : ''}`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-4">
-        {/* Logo */}
         <div className="navbar-brand">
           <Link to="/" className="navbar-logo">
             E-Commerce
           </Link>
         </div>
-
-        {/* Thanh tìm kiếm - chỉ hiển thị trên màn hình lớn */}
         <div className="navbar-search hidden sm:flex flex-1 max-w-xl mx-4">
           <form onSubmit={handleSearch} className="flex w-full">
             <input
               type="text"
-              placeholder="Tìm kiếm sản phẩm..."
+              placeholder="Tìm kiếm theo tên người bán..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="navbar-search-input"
-              aria-label="Search products"
+              aria-label="Search by seller name"
             />
             <button
               type="submit"
@@ -87,8 +90,6 @@ const Navbar = () => {
             </button>
           </form>
         </div>
-
-        {/* Nút hamburger - chỉ hiển thị trên màn hình nhỏ */}
         <button
           className="navbar-toggle sm:hidden"
           onClick={toggleMenu}
@@ -103,23 +104,20 @@ const Navbar = () => {
             />
           </svg>
         </button>
-
-        {/* Menu chính - hiển thị trên màn hình lớn, ẩn trên màn hình nhỏ */}
         <div
           className={`navbar-menu ${
             isMenuOpen ? 'flex' : 'hidden'
           } sm:flex sm:static sm:w-auto sm:bg-transparent sm:shadow-none sm:p-0`}
         >
-          {/* Thanh tìm kiếm cho màn hình nhỏ */}
           {isMenuOpen && (
             <form onSubmit={handleSearch} className="navbar-search-mobile sm:hidden w-full mb-6">
               <input
                 type="text"
-                placeholder="Tìm kiếm sản phẩm..."
+                placeholder="Tìm kiếm theo tên người bán..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="navbar-search-input"
-                aria-label="Search products on mobile"
+                aria-label="Search by seller name on mobile"
               />
               <button
                 type="submit"
@@ -130,8 +128,6 @@ const Navbar = () => {
               </button>
             </form>
           )}
-
-          {/* Liên kết điều hướng */}
           <Link to="/" className="nav-link" onClick={() => setIsMenuOpen(false)}>
             Trang chủ
           </Link>
@@ -176,11 +172,11 @@ const Navbar = () => {
               )}
               {user.role === 'admin' && (
                 <Link
-                  to="/admin/dashboard"
+                  to="/admin"
                   className="nav-link"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Bảng điều khiển quản trị
+                  Admin
                 </Link>
               )}
               <div className="user-section">

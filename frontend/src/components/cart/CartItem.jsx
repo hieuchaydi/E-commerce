@@ -16,8 +16,10 @@ const CartItem = ({ item }) => {
       setError('');
       try {
         await updateCartItem(item.id, newQuantity);
+        toast.success('Cập nhật số lượng thành công!');
       } catch (err) {
         setError('Cập nhật số lượng thất bại. Vui lòng thử lại.');
+        toast.error('Cập nhật số lượng thất bại.');
       }
     }
   };
@@ -26,8 +28,10 @@ const CartItem = ({ item }) => {
     setError('');
     try {
       await removeFromCart(item.id);
+      toast.success('Đã xóa sản phẩm khỏi giỏ hàng!');
     } catch (err) {
       setError('Xóa sản phẩm thất bại. Vui lòng thử lại.');
+      toast.error('Xóa sản phẩm thất bại.');
     }
   };
 

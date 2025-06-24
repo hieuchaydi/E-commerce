@@ -70,6 +70,12 @@ class IsOrderRelatedToSellerOrAdmin(BasePermission):
         return obj.user == request.user
     
 # views.py
+class SellerListView(APIView):
+    def get(self, request):
+        query = request.query_params.get('query', '')
+        sellers = User.objects.filter(role='seller', username__icontains=query).values('username')
+        return Response(sellers)
+
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all().select_related('category', 'seller')
     serializer_class = ProductSerializer
@@ -81,7 +87,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     ordering = ['-created_at']
 
     def get_permissions(self):
-        if self.action in ['retrieve', 'list']:  # Allow public access for GET /products/ and GET /products/:id/
+        if self.action in ['retrieve', 'list']:
             return [permissions.AllowAny()]
         return super().get_permissions()
 
@@ -102,15 +108,22 @@ class ProductViewSet(viewsets.ModelViewSet):
         if self.request.user.is_authenticated and self.request.user.role == 'seller':
             queryset = queryset.filter(seller=self.request.user)
 
+        # Lọc theo tên seller
+        seller_name = self.request.query_params.get('seller')
+        if seller_name:
+            queryset = queryset.filter(seller__username__icontains=seller_name)
+
         min_price = self.request.query_params.get('min_price')
         max_price = self.request.query_params.get('max_price')
         min_rating = self.request.query_params.get('min_rating')
         product_type = self.request.query_params.get('product_type')
 
         if min_price:
-            queryset = queryset.filter(price__gte=min_price)
+            queryset = queryset.filter(price__gte=min_price
+
+);
         if max_price:
-            queryset = queryset.filter(price__lte=max_price)
+            queryset = queryset.filter(price__lte=max_price);
         if min_rating:
             queryset = queryset.annotate(avg_rating=Avg('reviews__rating')).filter(avg_rating__gte=min_rating)
         if product_type:

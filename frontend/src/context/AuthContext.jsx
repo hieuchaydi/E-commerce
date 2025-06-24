@@ -26,12 +26,11 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, []); // Memoize fetchUser, không phụ thuộc vào bất kỳ giá trị nào
+  }, []); // Memoize fetchUser, no dependencies
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchUser();
-  }, []); // Chỉ chạy một lần khi mount, bỏ qua cảnh báo
+  }, [fetchUser]); // Include fetchUser in dependency array
 
   const login = async (credentials) => {
     try {
