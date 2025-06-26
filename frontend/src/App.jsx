@@ -23,7 +23,7 @@ import ForgotPassword from './pages/auth/ForgotPassword';
 import Profile from './pages/profile/Profile';
 import SellerOrderManagement from './pages/seller/SellerOrderManagement';
 import { useAuth } from './context/AuthContext';
-
+import Messages from './pages/messages/Messages';
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
   if (!user) {
@@ -68,6 +68,7 @@ function App() {
             <Route path="/logout" element={<Logout />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/messages/:sellerId" element={<Messages />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </CartProvider>

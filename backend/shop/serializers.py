@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Category, Product, Cart, Order, OrderItem, Review, DiscountCode
+from .models import User, Category, Product, Cart, Order, OrderItem, Review, DiscountCode, Message
 from django.db.models import Avg, Count, Sum
 
 class UserSerializer(serializers.ModelSerializer):
@@ -152,4 +152,16 @@ class ReviewSerializer(serializers.ModelSerializer):
             review.save()
         return review
 
+class MessageSerializer(serializers.ModelSerializer):
+    sender = UserSerializer(read_only=True)
+    receiver = UserSerializer(read_only=True)
+    receiver_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True, source='receiver')
 
+    class Meta:
+        model = Message
+        fields = ['id', 'sender', 'receiver', 'receiver_id', 'content', 'created_at', 'is_read']
+        read_only_fields = ['id', 'sender', 'created_at', 'is_read']
+
+    def create(self, validated_data):
+        print(f"Validated data: {validated_data}")  # Debug
+        return Message.objects.create(**validated_data)

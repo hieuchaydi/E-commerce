@@ -5,7 +5,8 @@ from .views import (
     CartViewSet, OrderViewSet, ReviewViewSet, DiscountCodeViewSet,
     LoginView, LogoutView, RegisterView,
     CurrentUserView, AdminStatsView, ClearCartView,
-    ForgotPasswordView, ResetPasswordView, ChangePasswordView
+    ForgotPasswordView, ResetPasswordView, ChangePasswordView,
+    MessageViewSet, PublicUserView
 )
 from django.conf import settings
 from django.conf.urls.static import static
@@ -18,6 +19,7 @@ router.register(r'cart', CartViewSet, basename='cart')
 router.register(r'orders', OrderViewSet, basename='orders')
 router.register(r'reviews', ReviewViewSet, basename='reviews')
 router.register(r'discounts', DiscountCodeViewSet, basename='discount')
+router.register(r'messages', MessageViewSet, basename='messages')
 
 urlpatterns = [
     path('auth/login/', LoginView.as_view(), name='login'),
@@ -34,6 +36,7 @@ urlpatterns = [
     path('products/<int:pk>/upload_image/', ProductImageUploadView.as_view(), name='upload-product-image'),
     path('cart/clear/', ClearCartView.as_view(), name='clear-cart'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('admin/users/<int:pk>/', PublicUserView.as_view(), name='public-user'),
     path('', include(router.urls)),
 ]
 

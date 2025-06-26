@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.db.models import Avg
 
+
 class User(AbstractUser):
     ROLES = (
         ('customer', 'Customer'),
@@ -253,3 +254,17 @@ class Review(models.Model):
     def __str__(self):
         reviewer = self.user.username if self.user else self.guest_name or "Guest"
         return f"{self.rating}★ review by {reviewer} for {self.product.name}"
+
+
+class Message(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='sent_messages')
+    receiver = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='received_messages')
+    content = models.TextField()
+    created_at = models.DateTimeField(default=timezone.now)
+    is_read = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Tin nhắn từ {self.sender} đến {self.receiver}"

@@ -28,9 +28,10 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from .models import Category, Product, Cart, Order, OrderItem, Review
 from .serializers import (
-    DiscountCodeSerializer, UserSerializer, CategorySerializer, ProductSerializer,
+    DiscountCodeSerializer, MessageSerializer, UserSerializer, CategorySerializer, ProductSerializer,
     CartSerializer, OrderSerializer, ReviewSerializer
 )
+from .models import Message, DiscountCode, PasswordResetCode
 from django.db import transaction
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
@@ -42,6 +43,8 @@ from rest_framework.permissions import BasePermission
 import os
 from django.db.models import Sum
 from django.contrib.auth import get_user_model
+
+from .models import models
 User = get_user_model()
 
 from .serializers import ProductSerializer
@@ -552,6 +555,11 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAdminUser]
 
+    def get_permissions(self):
+        if self.action in ['retrieve', 'list']:
+            return [permissions.AllowAny()]
+        return super().get_permissions()
+
 class ClearCartView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -612,12 +620,64 @@ class ResetPasswordView(APIView):
         
 # views.py
 class PublicUserView(APIView):
-    permission_classes = [AllowAny]
     def get(self, request, pk):
         try:
-            user = User.objects.get(pk=pk, role='seller')
+            user = User.objects.get(pk=pk)
             serializer = UserSerializer(user)
             return Response(serializer.data)
         except User.DoesNotExist:
-            return Response({'error': 'Không tìm thấy người bán'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'detail': 'Người dùng không tồn tại'}, status=status.HTTP_404_NOT_FOUND)
+        
 
+class IsMessageParticipant(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return request.user in [obj.sender, obj.receiver]
+
+class MessageViewSet(viewsets.ModelViewSet):
+    queryset = Message.objects.all()
+    serializer_class = MessageSerializer
+    permission_classes = [permissions.IsAuthenticated, IsMessageParticipant]
+
+    def get_queryset(self):
+        return Message.objects.filter(
+            models.Q(sender=self.request.user) | models.Q(receiver=self.request.user)
+        ).select_related('sender', 'receiver')
+
+    def perform_create(self, serializer):
+        serializer.save(sender=self.request.user)
+
+    @action(detail=False, methods=['get'], url_path='conversations')
+    def get_conversations(self, request):
+        user = request.user
+        conversations = Message.objects.filter(
+            models.Q(sender=user) | models.Q(receiver=user)
+        ).values('sender__id', 'sender__username', 'receiver__id', 'receiver__username').distinct()
+        
+        conversation_list = []
+        for conv in conversations:
+            other_user = (
+                {'id': conv['receiver__id'], 'username': conv['receiver__username']}
+                if conv['sender__id'] == user.id
+                else {'id': conv['sender__id'], 'username': conv['sender__username']}
+            )
+            messages = Message.objects.filter(
+                models.Q(sender=user, receiver__id=other_user['id']) |
+                models.Q(sender__id=other_user['id'], receiver=user)
+            ).order_by('created_at')
+            last_message = messages.last()
+            conversation_list.append({
+                'other_user': other_user,
+                'last_message': MessageSerializer(last_message).data if last_message else None,
+                'unread_count': messages.filter(receiver=user, is_read=False).count()
+            })
+        
+        return Response(conversation_list)
+
+    @action(detail=True, methods=['patch'], url_path='mark-read')
+    def mark_read(self, request, pk=None):
+        message = self.get_object()
+        if message.receiver == request.user and not message.is_read:
+            message.is_read = True
+            message.save()
+            return Response({'status': 'Message marked as read'})
+        return Response({'error': 'Invalid action'}, status=status.HTTP_400_BAD_REQUEST)

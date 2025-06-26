@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { ordersAPI } from '../../api/api';
+import { ordersAPI } from '../../api/api'; // Corrected import
 import Button from '../../components/common/Button';
 import './SellerOrderManagement.css';
 
@@ -25,18 +25,17 @@ const SellerOrderManagement = () => {
       try {
         setLoading(true);
         setError(null);
-        const params = { page, page_size: 10 }; // Thêm phân trang
+        const params = { page, page_size: 10 };
         const response = await ordersAPI.getOrders(params);
 
-        // Xử lý dữ liệu trả về (hỗ trợ cả pagination từ Django REST Framework)
-        const data = response.results || response; // Lấy danh sách đơn hàng
-        const total = response.count || data.length; // Tổng số đơn hàng
+        const data = response.results || response;
+        const total = response.count || data.length;
         setTotalPages(Math.ceil(total / 10));
 
         if (Array.isArray(data)) {
-          const sellerOrders = data.filter(order => 
-            order.items && Array.isArray(order.items) && 
-            order.items.some(item => 
+          const sellerOrders = data.filter(order =>
+            order.items && Array.isArray(order.items) &&
+            order.items.some(item =>
               item.product && item.product.seller && item.product.seller.id === user.id
             )
           );
@@ -155,7 +154,6 @@ const SellerOrderManagement = () => {
               </div>
             ))}
           </div>
-          {/* Phân trang */}
           <div className="flex justify-center mt-4 gap-2">
             <Button
               variant="secondary"

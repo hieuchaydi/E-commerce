@@ -26,11 +26,11 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, []); // Memoize fetchUser, no dependencies
+  }, []);
 
   useEffect(() => {
     fetchUser();
-  }, [fetchUser]); // Include fetchUser in dependency array
+  }, [fetchUser]);
 
   const login = async (credentials) => {
     try {

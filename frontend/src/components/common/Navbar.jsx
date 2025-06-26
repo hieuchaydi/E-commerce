@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -150,6 +149,9 @@ const Navbar = () => {
                       Chi tiết đơn hàng
                     </Link>
                   )}
+                  <Link to="/messages/2" className="nav-link" onClick={() => setIsMenuOpen(false)}>
+                    Tin nhắn
+                  </Link>
                 </>
               )}
               {user.role === 'seller' && (
@@ -168,16 +170,24 @@ const Navbar = () => {
                   >
                     Quản lý đơn hàng
                   </Link>
+                  <Link to="/messages/2" className="nav-link" onClick={() => setIsMenuOpen(false)}>
+                    Tin nhắn
+                  </Link>
                 </>
               )}
               {user.role === 'admin' && (
-                <Link
-                  to="/admin"
-                  className="nav-link"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Admin
-                </Link>
+                <>
+                  <Link
+                    to="/admin"
+                    className="nav-link"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Admin
+                  </Link>
+                  <Link to="/messages/2" className="nav-link" onClick={() => setIsMenuOpen(false)}>
+                    Tin nhắn
+                  </Link>
+                </>
               )}
               <div className="user-section">
                 <span className="user-info">

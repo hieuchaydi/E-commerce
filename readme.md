@@ -306,6 +306,14 @@ npm start
 
 ---
 
+---
+![chat with seller](assets/chat-with-seller.png)
+
+## Chat with seller
+
+
+---
+
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE). You are free to use, copy, modify, and distribute this code under the terms of the MIT license.
