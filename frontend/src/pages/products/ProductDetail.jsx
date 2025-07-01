@@ -5,14 +5,16 @@ import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/common/Button';
 import StarRating from '../../components/common/StarRating';
+import EmojiPicker from 'emoji-picker-react';
 import './ProductDetail.css';
 
 const ProductDetail = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const { addToCart } = useCart();
-  const { user } = useAuth();
+  const { id } = useParams(); // Lấy ID sản phẩm từ URL
+  const navigate = useNavigate(); // Điều hướng trang
+  const { addToCart } = useCart(); // Hook thêm sản phẩm vào giỏ hàng
+  const { user } = useAuth(); // Hook lấy thông tin người dùng
 
+  // Danh sách loại sản phẩm
   const productTypes = [
     { value: '', label: 'Tất cả loại sản phẩm' },
     { value: 'electronics', label: 'Điện tử' },
@@ -22,6 +24,7 @@ const ProductDetail = () => {
     { value: 'other', label: 'Khác' },
   ];
 
+  // Trạng thái ban đầu
   const [state, setState] = useState({
     product: null,
     reviews: [],
@@ -34,44 +37,43 @@ const ProductDetail = () => {
     reviewError: '',
     reviewLoading: false,
     successMessage: '',
+    selectedImages: [],
+    selectedVideos: [],
+    showEmojiPicker: false,
   });
 
+  // Hàm tải dữ liệu sản phẩm và đánh giá
   const fetchProductData = useCallback(async () => {
     try {
       setState((prev) => ({ ...prev, loading: true, error: null }));
 
-      // Lấy dữ liệu sản phẩm từ API
       const productRes = await productsAPI.getProduct(id);
-      console.log('Product API Response:', productRes);
+      console.log('Phản hồi API sản phẩm:', productRes);
 
-      // Kiểm tra xem dữ liệu trả về có tồn tại không
       if (!productRes || typeof productRes !== 'object') {
         throw new Error('Dữ liệu sản phẩm không hợp lệ');
       }
 
-      // Tạo đối tượng productData với các giá trị mặc định
       const productData = {
         ...productRes,
         price: Number(productRes.price) || 0,
-        image: getMediaUrl(productRes.image) || getMediaUrl('/media/products/placeholder.jpg'),
+        image: getMediaUrl(productRes.image) || getMediaUrl('/products/placeholder.jpg'),
         seller: productRes.seller || { username: 'Không xác định', id: null, seller_rating: null },
       };
 
-      // Lấy danh sách đánh giá (reviews)
       let reviews = [];
       let averageRating = 0;
       try {
         const reviewsRes = await reviewsAPI.getProductReviews(id);
-        reviews = reviewsRes.data || [];
+        reviews = Array.isArray(reviewsRes.data) ? reviewsRes.data : [];
         averageRating = reviews.length > 0
-          ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+          ? reviews.reduce((sum, r) => sum + (Number(r.rating) || 0), 0) / reviews.length
           : 0;
-        console.log('Reviews API Response:', reviews);
+        console.log('Phản hồi API đánh giá:', reviews);
       } catch (reviewErr) {
-        console.error('Reviews Fetch Error:', reviewErr.response?.data || reviewErr.message);
+        console.error('Lỗi tải đánh giá:', reviewErr.response?.data || reviewErr.message);
       }
 
-      // Cập nhật trạng thái với dữ liệu đã xử lý
       setState((prev) => ({
         ...prev,
         product: productData,
@@ -80,7 +82,7 @@ const ProductDetail = () => {
         loading: false,
       }));
     } catch (err) {
-      console.error('Product Fetch Error:', err.message || err);
+      console.error('Lỗi tải sản phẩm:', err.message || err);
       setState((prev) => ({
         ...prev,
         error: err.message === 'Sản phẩm không tồn tại' || err.response?.status === 404
@@ -91,10 +93,12 @@ const ProductDetail = () => {
     }
   }, [id]);
 
+  // Gọi hàm tải dữ liệu khi component được mount
   useEffect(() => {
     fetchProductData();
   }, [fetchProductData]);
 
+  // Hàm thêm sản phẩm vào giỏ hàng
   const handleAddToCart = async () => {
     if (state.product && state.product.quantity > 0) {
       try {
@@ -118,6 +122,68 @@ const ProductDetail = () => {
     }
   };
 
+  // Xử lý chọn hình ảnh
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    const validImages = files.filter(file => file.type.startsWith('image/'));
+    if (validImages.length + state.selectedImages.length > 4) {
+      setState(prev => ({
+        ...prev,
+        reviewError: 'Chỉ được tải lên tối đa 4 hình ảnh'
+      }));
+      return;
+    }
+    setState(prev => ({
+      ...prev,
+      selectedImages: [...prev.selectedImages, ...validImages],
+      reviewError: ''
+    }));
+  };
+
+  // Xử lý chọn video
+  const handleVideoChange = (e) => {
+    const files = Array.from(e.target.files);
+    const validVideos = files.filter(file => file.type.startsWith('video/') && file.size <= 50 * 1024 * 1024);
+    if (validVideos.length + state.selectedVideos.length > 2) {
+      setState(prev => ({
+        ...prev,
+        reviewError: 'Chỉ được tải lên tối đa 2 video'
+      }));
+      return;
+    }
+    setState(prev => ({
+      ...prev,
+      selectedVideos: [...prev.selectedVideos, ...validVideos],
+      reviewError: ''
+    }));
+  };
+
+  // Xử lý chọn biểu tượng cảm xúc
+  const handleEmojiClick = (emojiObject) => {
+    setState(prev => ({
+      ...prev,
+      reviewText: prev.reviewText + emojiObject.emoji,
+      showEmojiPicker: false
+    }));
+  };
+
+  // Bật/tắt trình chọn biểu tượng cảm xúc
+  const toggleEmojiPicker = () => {
+    setState(prev => ({
+      ...prev,
+      showEmojiPicker: !prev.showEmojiPicker
+    }));
+  };
+
+  // Xóa hình ảnh hoặc video
+  const removeMedia = (type, index) => {
+    setState(prev => ({
+      ...prev,
+      [type]: prev[type].filter((_, i) => i !== index)
+    }));
+  };
+
+  // Xử lý gửi đánh giá
   const handleSubmitReview = async (e) => {
     e.preventDefault();
     if (!state.reviewText.trim()) {
@@ -128,19 +194,31 @@ const ProductDetail = () => {
       setState((prev) => ({ ...prev, reviewError: 'Vui lòng nhập tên của bạn' }));
       return;
     }
+
     try {
       setState((prev) => ({ ...prev, reviewLoading: true, reviewError: '' }));
-      const reviewData = {
-        rating: state.rating,
-        comment: state.reviewText,
-      };
+      const formData = new FormData();
+      formData.append('rating', state.rating);
+      formData.append('comment', state.reviewText);
       if (!user) {
-        reviewData.guest_name = state.guestName;
+        formData.append('guest_name', state.guestName);
       }
-      const res = await reviewsAPI.createReview(state.product.id, reviewData);
+      state.selectedImages.forEach(image => {
+        formData.append('image_files', image);
+      });
+      state.selectedVideos.forEach(video => {
+        formData.append('video_files', video);
+      });
+
+      const res = await reviewsAPI.createReview(state.product.id, formData);
+      console.log('Phản hồi gửi đánh giá:', res.data);
+      console.log('Hình ảnh trong phản hồi:', res.data.images || 'Không có hình ảnh');
+      console.log('Video trong phản hồi:', res.data.videos || 'Không có video');
+
       const updatedReviews = [res.data, ...state.reviews];
-      const totalRating = updatedReviews.reduce((sum, r) => sum + r.rating, 0);
-      const newAverage = totalRating / updatedReviews.length;
+      const totalRating = updatedReviews.reduce((sum, r) => sum + (Number(r.rating) || 0), 0);
+      const newAverage = updatedReviews.length ? totalRating / updatedReviews.length : 0;
+
       setState((prev) => ({
         ...prev,
         reviews: updatedReviews,
@@ -148,25 +226,32 @@ const ProductDetail = () => {
         reviewText: '',
         guestName: '',
         rating: 5,
+        selectedImages: [],
+        selectedVideos: [],
+        showEmojiPicker: false,
         reviewLoading: false,
         successMessage: 'Đánh giá đã được gửi thành công!',
       }));
       setTimeout(() => setState((prev) => ({ ...prev, successMessage: '' })), 3000);
     } catch (err) {
-      console.error('Review Submit Error:', err.response?.data || err.message);
+      console.error('Lỗi gửi đánh giá:', err.response?.data || err.message);
       setState((prev) => ({
         ...prev,
-        reviewError: err.response?.data?.message || 'Lỗi khi gửi đánh giá',
+        reviewError: err.response?.status === 404
+          ? 'Sản phẩm không tồn tại. Vui lòng kiểm tra lại.'
+          : err.response?.data?.detail || 'Lỗi khi gửi đánh giá. Vui lòng thử lại.',
         reviewLoading: false,
       }));
     }
   };
 
+  // Xử lý thay đổi đánh giá sao
   const handleRatingChange = useCallback(
     (newRating) => setState((prev) => ({ ...prev, rating: newRating })),
     []
   );
 
+  // Xử lý thay đổi nội dung đánh giá
   const handleReviewTextChange = (e) => {
     setState((prev) => ({
       ...prev,
@@ -175,6 +260,7 @@ const ProductDetail = () => {
     }));
   };
 
+  // Xử lý thay đổi tên khách hàng
   const handleGuestNameChange = (e) => {
     setState((prev) => ({
       ...prev,
@@ -183,13 +269,14 @@ const ProductDetail = () => {
     }));
   };
 
+  // Xử lý nhấp vào thông tin người bán
   const handleSellerClick = () => {
     if (state.product?.seller?.id) {
       navigate(`/sellers/${state.product.seller.id}`);
     }
   };
 
-  const { product, reviews, averageRating, loading, error, reviewText, guestName, rating, reviewError, reviewLoading, successMessage } = state;
+  const { product, reviews, averageRating, loading, error, reviewText, guestName, rating, reviewError, reviewLoading, successMessage, selectedImages, selectedVideos, showEmojiPicker } = state;
 
   if (loading) return <div className="loading">Đang tải sản phẩm...</div>;
   if (error) return <div className="error">Lỗi: {error}</div>;
@@ -212,7 +299,10 @@ const ProductDetail = () => {
           <img
             src={product.image}
             alt={product.name}
-            onError={(e) => (e.target.src = getMediaUrl('/media/products/placeholder.jpg'))}
+            onError={(e) => {
+              console.error(`Không tải được hình ảnh sản phẩm ${id}`);
+              e.target.src = getMediaUrl('/products/placeholder.jpg');
+            }}
           />
         </div>
         <div className="product-info">
@@ -231,7 +321,7 @@ const ProductDetail = () => {
             <span
               className="seller-name"
               onClick={handleSellerClick}
-              style={{ cursor: product.seller?.id ? 'pointer' : 'default' }}
+              style={{ cursor: product.seller?.id ? 'pointer' : 'default', color: product.seller?.id ? '#007bff' : 'inherit' }}
             >
               {product.seller?.username || 'Không xác định'}
               {product.seller?.seller_rating && ` (${product.seller.seller_rating.toFixed(1)} ★)`}
@@ -286,11 +376,51 @@ const ProductDetail = () => {
                     <span className="username">{review.user?.username || review.guest_name || 'Khách'}</span>
                   </div>
                   <div className="review-meta">
-                    <StarRating rating={review.rating} />
+                    <StarRating rating={Number(review.rating) || 0} />
                     <span className="date">{new Date(review.created_at).toLocaleDateString('vi-VN')}</span>
                   </div>
                 </div>
-                <p className="review-comment">{review.comment}</p>
+                <p className="review-comment">{review.comment || 'Không có bình luận'}</p>
+                {(review.images?.length > 0 || review.videos?.length > 0) ? (
+                  <div className="review-media">
+                    {review.images?.length > 0 && (
+                      <div className="review-images">
+                        {review.images.map((img, index) => (
+                          <img
+                            key={`image-${review.id}-${index}`}
+                            src={getMediaUrl(img.image || '/products/placeholder.jpg')}
+                            alt={`Đánh giá ${index + 1} cho ${product.name}`}
+                            className="review-image"
+                            style={{ maxWidth: '150px', maxHeight: '150px', margin: '5px', borderRadius: '5px', objectFit: 'cover' }}
+                            onError={(e) => {
+                              console.error(`Không tải được hình ảnh đánh giá ${index + 1} cho đánh giá ${review.id}`);
+                              e.target.src = getMediaUrl('/products/placeholder.jpg');
+                            }}
+                          />
+                        ))}
+                      </div>
+                    )}
+                    {review.videos?.length > 0 && (
+                      <div className="review-videos">
+                        {review.videos.map((vid, index) => (
+                          <video
+                            key={`video-${review.id}-${index}`}
+                            src={getMediaUrl(vid.video)}
+                            controls
+                            className="review-video"
+                            style={{ maxWidth: '300px', maxHeight: '200px', margin: '5px', borderRadius: '5px' }}
+                            onError={(e) => {
+                              console.error(`Không tải được video ${index + 1} cho đánh giá ${review.id}`);
+                              e.target.parentElement.innerHTML = '<p className="error-text">Không thể tải video</p>';
+                            }}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <p className="no-media">Không có hình ảnh hoặc video.</p>
+                )}
               </div>
             ))}
           </div>
@@ -315,12 +445,80 @@ const ProductDetail = () => {
           </div>
           <div className="form-group">
             <label>Nội dung đánh giá</label>
-            <textarea
-              value={reviewText}
-              onChange={handleReviewTextChange}
-              placeholder="Chia sẻ trải nghiệm của bạn về sản phẩm này..."
-              rows="5"
+            <div className="review-text-container">
+              <textarea
+                value={reviewText}
+                onChange={handleReviewTextChange}
+                placeholder="Chia sẻ trải nghiệm của bạn về sản phẩm này..."
+                rows="5"
+              />
+              <Button
+                type="button"
+                onClick={toggleEmojiPicker}
+                className="emoji-button"
+              >
+                😊
+              </Button>
+            </div>
+            {showEmojiPicker && (
+              <div className="emoji-picker">
+                <EmojiPicker onEmojiClick={handleEmojiClick} />
+              </div>
+            )}
+          </div>
+          <div className="form-group">
+            <label>Thêm hình ảnh (tối đa 4)</label>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleImageChange}
             />
+            <div className="media-preview">
+              {selectedImages.map((img, index) => (
+                <div key={index} className="media-item">
+                  <img
+                    src={URL.createObjectURL(img)}
+                    alt={`Xem trước ${index + 1}`}
+                    style={{ maxWidth: '100px', maxHeight: '100px', margin: '5px' }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeMedia('selectedImages', index)}
+                    className="remove-media"
+                  >
+                    X
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="form-group">
+            <label>Thêm video (tối đa 2)</label>
+            <input
+              type="file"
+              accept="video/*"
+              multiple
+              onChange={handleVideoChange}
+            />
+            <div className="media-preview">
+              {selectedVideos.map((vid, index) => (
+                <div key={index} className="media-item">
+                  <video
+                    src={URL.createObjectURL(vid)}
+                    controls
+                    style={{ maxWidth: '200px', maxHeight: '150px', margin: '5px' }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeMedia('selectedVideos', index)}
+                    className="remove-media"
+                  >
+                    X
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
           <Button type="submit" disabled={reviewLoading} className="submit-review-btn">
             {reviewLoading ? 'Đang gửi...' : 'Gửi đánh giá'}

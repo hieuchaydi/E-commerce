@@ -184,7 +184,7 @@ export const productsAPI = {
       }
     }
     try {
-      const res = await api.patch(`/products/${id}/`, formData, {
+      const res = await api.post(`/products/${id}/`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       return res.data;
@@ -304,7 +304,9 @@ export const ordersAPI = {
 
 export const reviewsAPI = {
   getProductReviews: (productId) => api.get(`/products/${productId}/reviews/`),
-  createReview: (productId, data) => api.post(`/products/${productId}/reviews/`, data),
+  createReview: (productId, data) => api.post(`/products/${productId}/reviews/`, data, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  }),
   updateReview: (id, data) => api.patch(`/reviews/${id}/`, data),
   deleteReview: (id) => api.delete(`/reviews/${id}/`),
   getMyReviews: () => api.get('/reviews/my/'),

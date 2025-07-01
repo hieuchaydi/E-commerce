@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { productsAPI } from '../../api/api';
+import { productsAPI, getMediaUrl } from '../../api/api';
 import Button from '../../components/common/Button';
 
 const SellerProfile = () => {
@@ -13,13 +13,13 @@ const SellerProfile = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
 
-  const fetchSellerDetails = async () => {
+  const fetchSellerDetails = useCallback(async () => {
     try {
       setLoading(true);
       const sellerData = await productsAPI.getSellerDetails(sellerId);
       setSeller(sellerData);
       const productData = await productsAPI.getProductsBySeller(sellerId);
-      setProducts(productData);
+      setProducts(Array.isArray(productData.results) ? productData.results : productData);
     } catch (err) {
       console.error('Failed to fetch seller details:', err);
       setError(err.message || 'Không thể tải thông tin người bán');
@@ -27,11 +27,11 @@ const SellerProfile = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [sellerId]);
 
   useEffect(() => {
     fetchSellerDetails();
-  }, [sellerId]);
+  }, [fetchSellerDetails]); // Added fetchSellerDetails to dependency array
 
   const handleMessageSeller = () => {
     if (!user) {
@@ -41,6 +41,10 @@ const SellerProfile = () => {
     navigate(`/messages/${sellerId}`);
   };
 
+  const handleProductClick = (productId) => {
+    navigate(`/products/${productId}`);
+  };
+
   if (loading) return <div className="text-center py-6 text-gray-600">Đang tải...</div>;
   if (error) return <div className="text-center py-6 text-red-500">{error}</div>;
 
@@ -48,6 +52,11 @@ const SellerProfile = () => {
     <div className="container mx-auto p-4 sm:p-6">
       <h1 className="text-2xl font-bold mb-4">
         Hồ sơ người bán: {seller?.username || 'Không xác định'}
+        {seller?.seller_rating && (
+          <span className="ml-2 text-yellow-500">
+            ({seller.seller_rating.toFixed(1)} ★)
+          </span>
+        )}
       </h1>
       <div className="mb-6">
         <Button variant="primary" onClick={handleMessageSeller}>
@@ -60,17 +69,23 @@ const SellerProfile = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {products.map((product) => (
-            <div key={product.id} className="border p-4 rounded-lg shadow-sm">
+            <div key={product.id} className="border p-4 rounded-lg shadow-sm hover:shadow-md transition">
               <img
-                src={product.image || '/placeholder-image.jpg'}
+                src={getMediaUrl(product.image || '/products/placeholder.jpg')}
                 alt={product.name}
-                className="w-full h-48 object-cover mb-4"
+                className="w-full h-48 object-cover mb-4 rounded"
+                onError={(e) => {
+                  console.error(`Failed to load product image for product ${product.id}`);
+                  e.target.src = getMediaUrl('/products/placeholder.jpg');
+                }}
               />
               <h3 className="text-lg font-medium">{product.name}</h3>
-              <p className="text-gray-600">{product.price} VNĐ</p>
+              <p className="text-gray-600">
+                {product.price ? `${product.price.toLocaleString('vi-VN')} ₫` : 'Liên hệ'}
+              </p>
               <Button
                 variant="secondary"
-                onClick={() => navigate(`/products/${product.id}`)}
+                onClick={() => handleProductClick(product.id)}
               >
                 Xem chi tiết
               </Button>

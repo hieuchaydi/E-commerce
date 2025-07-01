@@ -24,6 +24,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.parsers import MultiPartParser
 from django.db.models import Count
+from rest_framework.parsers import MultiPartParser, FormParser
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from .models import Category, Product, Cart, Order, OrderItem, Review
@@ -48,6 +49,13 @@ from .models import models
 User = get_user_model()
 
 from .serializers import ProductSerializer
+
+from rest_framework import viewsets
+from rest_framework.permissions import AllowAny
+from django.shortcuts import get_object_or_404
+from .models import Review, Product
+from .serializers import ReviewSerializer
+from django.core.exceptions import ObjectDoesNotExist
 
 class IsSellerOrAdmin(permissions.BasePermission):
     def has_permission(self, request, view):
@@ -477,56 +485,46 @@ class DiscountCodeViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-class ReviewSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
-    guest_name = serializers.CharField(
-        write_only=True, required=False, allow_blank=True
-    )
-    product = serializers.PrimaryKeyRelatedField(
-        queryset=Product.objects.all(),
-        required=False  # Thêm dòng này để không yêu cầu product từ request data
-    )
-
-    class Meta:
-        model = Review
-        fields = ['id', 'user', 'guest_name', 'product', 'rating', 'comment', 'created_at']
-        read_only_fields = ['user', 'created_at']
-
-    def validate(self, data):
-        if not self.context['request'].user.is_authenticated and not data.get('guest_name'):
-            raise serializers.ValidationError("Guest name is required for unauthenticated users.")
-        return data
-
-    def create(self, validated_data):
-        guest_name = validated_data.pop('guest_name', None)
-        user = self.context['request'].user if self.context['request'].user.is_authenticated else None
-        product = validated_data['product']  # product đã được cung cấp từ perform_create
-        review = Review.objects.create(
-            user=user,
-            product=product,
-            rating=validated_data['rating'],
-            comment=validated_data['comment']
-        )
-        if guest_name:
-            review.comment = f"[Guest: {guest_name}] {review.comment}"
-            review.save()
-        return review
-
 class ReviewViewSet(viewsets.ModelViewSet):
+    queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
-        return Review.objects.filter(product_id=self.kwargs.get('product_pk'))
+        # Lấy product_id từ URL (do sử dụng NestedSimpleRouter)
+        product_id = self.kwargs.get('product_pk')
+        if product_id:
+            return Review.objects.filter(product_id=product_id).select_related('user', 'product').prefetch_related('images', 'videos')
+        return super().get_queryset()
+
+    def create(self, request, *args, **kwargs):
+        logger.info(f"Tiêu đề yêu cầu: {request.headers}")
+        logger.info(f"Dữ liệu yêu cầu: {request.data}")
+        serializer = self.get_serializer(data=request.data)
+        if not serializer.is_valid():
+            logger.error(f"Lỗi xác thực: {serializer.errors}")
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        logger.info(f"Số lượng hình ảnh: {len(request.data.getlist('image_files', []))}")
+        logger.info(f"Số lượng video: {len(request.data.getlist('video_files', []))}")
+        try:
+            self.perform_create(serializer)
+            response_data = self.get_serializer(serializer.instance).data
+            headers = self.get_success_headers(serializer.data)
+            logger.info(f"Đánh giá được tạo thành công: {response_data}")
+            return Response(response_data, status=status.HTTP_201_CREATED, headers=headers)
+        except ObjectDoesNotExist:
+            logger.error(f"Sản phẩm không tồn tại: product_pk={self.kwargs.get('product_pk')}")
+            return Response({"detail": "Sản phẩm không tồn tại."}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            logger.exception(f"Lỗi không mong muốn khi tạo đánh giá: {str(e)}")
+            return Response({"detail": f"Lỗi máy chủ: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def perform_create(self, serializer):
         product_id = self.kwargs.get('product_pk')
-        product = get_object_or_404(Product, pk=product_id)
-        serializer.save(
-            user=self.request.user if self.request.user.is_authenticated else None,
-            product=product
-        )
-
+        logger.info(f"Lấy sản phẩm với ID: {product_id}")
+        product = Product.objects.get(id=product_id)
+        serializer.save(product=product)
+        
 class UploadImageView(APIView):
     parser_classes = [MultiPartParser]
 

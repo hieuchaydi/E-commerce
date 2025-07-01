@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from .models import User, Category, Product, Cart, Order, OrderItem, Review, DiscountCode, Message
 from django.db.models import Avg, Count, Sum
+from .models import User, Category, Product, Cart, Order, OrderItem, Review, DiscountCode, Message, ReviewImage, ReviewVideo
 
 class UserSerializer(serializers.ModelSerializer):
     seller_rating = serializers.FloatField(read_only=True, allow_null=True)
@@ -62,7 +62,7 @@ class CartSerializer(serializers.ModelSerializer):
         try:
             return float(obj.total_price) if obj.total_price is not None else 0.0
         except Exception as e:
-            print(f"Error in get_total_price: {e}")
+            print(f"Lỗi khi tính total_price: {e}")
             return 0.0
 
 class OrderItemSerializer(serializers.ModelSerializer):
@@ -117,40 +117,108 @@ class OrderSerializer(serializers.ModelSerializer):
             discount_code.save()
         return order
 
+class ReviewImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReviewImage
+        fields = ['id', 'image']
+
+class ReviewVideoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReviewVideo
+        fields = ['id', 'video']
+import logging
+
+logger = logging.getLogger(__name__)
+
 class ReviewSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
-    guest_name = serializers.CharField(
-        write_only=True, required=False, allow_blank=True
+    images = ReviewImageSerializer(many=True, read_only=True)
+    videos = ReviewVideoSerializer(many=True, read_only=True)
+    image_files = serializers.ListField(
+        child=serializers.ImageField(max_length=1000000, allow_empty_file=False),
+        write_only=True, required=False
     )
-    product = serializers.PrimaryKeyRelatedField(
-        queryset=Product.objects.all(),
-        required=False
+    video_files = serializers.ListField(
+        child=serializers.FileField(max_length=100000000, allow_empty_file=False),
+        write_only=True, required=False
     )
+    guest_name = serializers.CharField(max_length=255, write_only=True, required=False, allow_null=True)
 
     class Meta:
         model = Review
-        fields = ['id', 'user', 'guest_name', 'product', 'rating', 'comment', 'created_at']
-        read_only_fields = ['user', 'created_at']
+        fields = ['id', 'user', 'product', 'rating', 'comment', 'guest_name', 'created_at', 'images', 'videos', 'image_files', 'video_files']
+        read_only_fields = ['id', 'user', 'created_at', 'images', 'videos']
+        extra_kwargs = {
+            'product': {'required': False},
+            'image_files': {'required': False},
+            'video_files': {'required': False},
+        }
+
+    def validate_image_files(self, value):
+        max_size = 5 * 1024 * 1024
+        max_images = 4
+        if len(value) > max_images:
+            raise serializers.ValidationError(f"Chỉ được phép tải lên tối đa {max_images} hình ảnh.")
+        for file in value:
+            if file.size > max_size:
+                raise serializers.ValidationError(f"Kích thước hình ảnh '{file.name}' vượt quá 5MB")
+            if not file.content_type.startswith('image/'):
+                raise serializers.ValidationError(f"'{file.name}' không phải là tệp hình ảnh hợp lệ")
+        return value
+
+    def validate_video_files(self, value):
+        max_size = 50 * 1024 * 1024
+        for file in value:
+            if file.size > max_size:
+                raise serializers.ValidationError(f"Kích thước video '{file.name}' vượt quá 50MB")
+            if not file.content_type.startswith('video/'):
+                raise serializers.ValidationError(f"'{file.name}' không phải là tệp video hợp lệ")
+        return value
 
     def validate(self, data):
-        if not self.context['request'].user.is_authenticated and not data.get('guest_name'):
-            raise serializers.ValidationError("Guest name is required for unauthenticated users.")
+        user = self.context['request'].user
+        if not user.is_authenticated and not data.get('guest_name'):
+            raise serializers.ValidationError({"guest_name": "Tên khách hàng là bắt buộc khi không đăng nhập."})
+        if user.is_authenticated and data.get('guest_name'):
+            data.pop('guest_name')
         return data
 
     def create(self, validated_data):
+        image_files = validated_data.pop('image_files', [])
+        video_files = validated_data.pop('video_files', [])
         guest_name = validated_data.pop('guest_name', None)
         user = self.context['request'].user if self.context['request'].user.is_authenticated else None
         product = validated_data['product']
-        review = Review.objects.create(
-            user=user,
-            product=product,
-            rating=validated_data['rating'],
-            comment=validated_data['comment']
-        )
-        if guest_name:
-            review.guest_name = guest_name
-            review.save()
-        return review
+
+        logger.info(f"Tạo đánh giá cho sản phẩm {product.id}, người dùng: {user}, tên khách: {guest_name}")
+        logger.info(f"Tệp hình ảnh: {[f.name for f in image_files]}")
+        logger.info(f"Tệp video: {[f.name for f in video_files]}")
+
+        try:
+            review = Review.objects.create(
+                user=user,
+                product=product,
+                rating=validated_data['rating'],
+                comment=validated_data['comment'],
+                guest_name=guest_name
+            )
+
+            for image_file in image_files:
+                logger.info(f"Lưu hình ảnh: {image_file.name}")
+                ReviewImage.objects.create(review=review, image=image_file)
+
+            for video_file in video_files:
+                logger.info(f"Lưu video: {video_file.name}")
+                ReviewVideo.objects.create(review=review, video=video_file)
+
+            if review.images.count() > 4:
+                review.delete()
+                raise serializers.ValidationError("Một đánh giá không thể có quá 4 hình ảnh.")
+
+            review = Review.objects.prefetch_related('images', 'videos').get(id=review.id)
+            return review
+        except Exception as e:
+            logger.exception(f"Lỗi khi tạo đánh giá: {str(e)}")
+            raise
 
 class MessageSerializer(serializers.ModelSerializer):
     sender = UserSerializer(read_only=True)
@@ -163,5 +231,5 @@ class MessageSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'sender', 'created_at', 'is_read']
 
     def create(self, validated_data):
-        print(f"Validated data: {validated_data}")  # Debug
+        print(f"Validated data: {validated_data}")
         return Message.objects.create(**validated_data)

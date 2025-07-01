@@ -1,0 +1,583 @@
+Using selector: SelectSelector
+Using selector: SelectSelector
+Watching for file changes with StatReloader
+HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+Configuring endpoint tcp:port=8000:interface=127.0.0.1
+Listening on TCP address 127.0.0.1:8000
+HTTP b'GET' request for ['127.0.0.1', 59642]
+Not Found: /
+HTTP 404 response started for ['127.0.0.1', 59642]
+HTTP close for ['127.0.0.1', 59642]
+HTTP response complete for ['127.0.0.1', 59642]
+[33mHTTP GET / 404 [0.04, 127.0.0.1:59642][0m
+HTTP b'GET' request for ['127.0.0.1', 59642]
+Not Found: /favicon.ico
+HTTP 404 response started for ['127.0.0.1', 59642]
+HTTP close for ['127.0.0.1', 59642]
+HTTP response complete for ['127.0.0.1', 59642]
+[33mHTTP GET /favicon.ico 404 [0.01, 127.0.0.1:59642][0m
+HTTP b'GET' request for ['127.0.0.1', 59642]
+HTTP 200 response started for ['127.0.0.1', 59642]
+HTTP close for ['127.0.0.1', 59642]
+HTTP response complete for ['127.0.0.1', 59642]
+[mHTTP GET /admin/ 200 [0.15, 127.0.0.1:59642][0m
+HTTP b'GET' request for ['127.0.0.1', 59642]
+HTTP b'GET' request for ['127.0.0.1', 59643]
+HTTP b'GET' request for ['127.0.0.1', 59655]
+HTTP b'GET' request for ['127.0.0.1', 59654]
+HTTP b'GET' request for ['127.0.0.1', 59653]
+HTTP b'GET' request for ['127.0.0.1', 59656]
+HTTP 200 response started for ['127.0.0.1', 59654]
+HTTP response chunk for ['127.0.0.1', 59654]
+HTTP close for ['127.0.0.1', 59654]
+HTTP response complete for ['127.0.0.1', 59654]
+[mHTTP GET /static/admin/css/dashboard.css 200 [0.44, 127.0.0.1:59654][0m
+HTTP 200 response started for ['127.0.0.1', 59655]
+HTTP response chunk for ['127.0.0.1', 59655]
+HTTP close for ['127.0.0.1', 59655]
+HTTP response complete for ['127.0.0.1', 59655]
+[mHTTP GET /static/admin/css/responsive.css 200 [0.47, 127.0.0.1:59655][0m
+HTTP 200 response started for ['127.0.0.1', 59656]
+HTTP response chunk for ['127.0.0.1', 59656]
+HTTP close for ['127.0.0.1', 59656]
+HTTP response complete for ['127.0.0.1', 59656]
+[mHTTP GET /static/admin/js/theme.js 200 [0.45, 127.0.0.1:59656][0m
+HTTP 200 response started for ['127.0.0.1', 59642]
+HTTP 200 response started for ['127.0.0.1', 59653]
+HTTP response chunk for ['127.0.0.1', 59642]
+HTTP close for ['127.0.0.1', 59642]
+HTTP response complete for ['127.0.0.1', 59642]
+[mHTTP GET /static/admin/css/base.css 200 [0.49, 127.0.0.1:59642][0m
+HTTP response chunk for ['127.0.0.1', 59653]
+HTTP close for ['127.0.0.1', 59653]
+HTTP response complete for ['127.0.0.1', 59653]
+[mHTTP GET /static/admin/css/nav_sidebar.css 200 [0.49, 127.0.0.1:59653][0m
+HTTP b'GET' request for ['127.0.0.1', 59653]
+HTTP 200 response started for ['127.0.0.1', 59643]
+HTTP response chunk for ['127.0.0.1', 59643]
+HTTP close for ['127.0.0.1', 59643]
+HTTP response complete for ['127.0.0.1', 59643]
+[mHTTP GET /static/admin/css/dark_mode.css 200 [0.50, 127.0.0.1:59643][0m
+HTTP b'GET' request for ['127.0.0.1', 59643]
+HTTP b'GET' request for ['127.0.0.1', 59642]
+HTTP 304 response started for ['127.0.0.1', 59642]
+HTTP close for ['127.0.0.1', 59642]
+HTTP response complete for ['127.0.0.1', 59642]
+[36mHTTP GET /static/admin/img/icon-changelink.svg 304 [0.00, 127.0.0.1:59642][0m
+HTTP 200 response started for ['127.0.0.1', 59653]
+HTTP response chunk for ['127.0.0.1', 59653]
+HTTP close for ['127.0.0.1', 59653]
+HTTP response complete for ['127.0.0.1', 59653]
+[mHTTP GET /static/admin/js/nav_sidebar.js 200 [0.02, 127.0.0.1:59653][0m
+HTTP 200 response started for ['127.0.0.1', 59643]
+HTTP response chunk for ['127.0.0.1', 59643]
+HTTP close for ['127.0.0.1', 59643]
+HTTP response complete for ['127.0.0.1', 59643]
+[mHTTP GET /static/admin/img/icon-addlink.svg 200 [0.01, 127.0.0.1:59643][0m
+HTTP b'POST' request for ['127.0.0.1', 59662]
+STREAM b'IHDR' 16 13
+STREAM b'sRGB' 41 1
+STREAM b'gAMA' 54 4
+STREAM b'pHYs' 70 9
+STREAM b'IDAT' 91 27746
+Importing AvifImagePlugin
+Importing BlpImagePlugin
+Importing BmpImagePlugin
+Importing BufrStubImagePlugin
+Importing CurImagePlugin
+Importing DcxImagePlugin
+Importing DdsImagePlugin
+Importing EpsImagePlugin
+Importing FitsImagePlugin
+Importing FliImagePlugin
+Importing FpxImagePlugin
+Image: failed to import FpxImagePlugin: No module named 'olefile'
+Importing FtexImagePlugin
+Importing GbrImagePlugin
+Importing GifImagePlugin
+Importing GribStubImagePlugin
+Importing Hdf5StubImagePlugin
+Importing IcnsImagePlugin
+Importing IcoImagePlugin
+Importing ImImagePlugin
+Importing ImtImagePlugin
+Importing IptcImagePlugin
+Importing JpegImagePlugin
+Importing Jpeg2KImagePlugin
+Importing McIdasImagePlugin
+Importing MicImagePlugin
+Image: failed to import MicImagePlugin: No module named 'olefile'
+Importing MpegImagePlugin
+Importing MpoImagePlugin
+Importing MspImagePlugin
+Importing PalmImagePlugin
+Importing PcdImagePlugin
+Importing PcxImagePlugin
+Importing PdfImagePlugin
+Importing PixarImagePlugin
+Importing PngImagePlugin
+Importing PpmImagePlugin
+Importing PsdImagePlugin
+Importing QoiImagePlugin
+Importing SgiImagePlugin
+Importing SpiderImagePlugin
+Importing SunImagePlugin
+Importing TgaImagePlugin
+Importing TiffImagePlugin
+Importing WebPImagePlugin
+Importing WmfImagePlugin
+Importing XbmImagePlugin
+Importing XpmImagePlugin
+Importing XVThumbImagePlugin
+Internal Server Error: /api/products/17/reviews/
+HTTP 500 response started for ['127.0.0.1', 59662]
+HTTP close for ['127.0.0.1', 59662]
+HTTP response complete for ['127.0.0.1', 59662]
+[35;1mHTTP POST /api/products/17/reviews/ 500 [0.11, 127.0.0.1:59662][0m
+C:\Users\FPT\Desktop\shop\backend\config\settings.py changed, reloading.
+DEBUG 2025-07-01 15:33:43,696 selector_events Using selector: SelectSelector
+INFO 2025-07-01 15:33:43,869 autoreload Watching for file changes with StatReloader
+INFO 2025-07-01 15:33:44,027 server HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+INFO 2025-07-01 15:33:44,027 server Configuring endpoint tcp:port=8000:interface=127.0.0.1
+INFO 2025-07-01 15:33:44,028 server Listening on TCP address 127.0.0.1:8000
+INFO 2025-07-01 15:33:48,710 autoreload C:\Users\FPT\Desktop\shop\backend\config\settings.py changed, reloading.
+DEBUG 2025-07-01 15:33:49,714 selector_events Using selector: SelectSelector
+INFO 2025-07-01 15:33:49,898 autoreload Watching for file changes with StatReloader
+INFO 2025-07-01 15:33:50,060 server HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+INFO 2025-07-01 15:33:50,061 server Configuring endpoint tcp:port=8000:interface=127.0.0.1
+INFO 2025-07-01 15:33:50,061 server Listening on TCP address 127.0.0.1:8000
+INFO 2025-07-01 15:34:25,656 autoreload C:\Users\FPT\Desktop\shop\backend\shop\models.py changed, reloading.
+DEBUG 2025-07-01 15:34:26,472 selector_events Using selector: SelectSelector
+INFO 2025-07-01 15:34:26,655 autoreload Watching for file changes with StatReloader
+INFO 2025-07-01 15:34:26,819 server HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+INFO 2025-07-01 15:34:26,819 server Configuring endpoint tcp:port=8000:interface=127.0.0.1
+INFO 2025-07-01 15:34:26,819 server Listening on TCP address 127.0.0.1:8000
+DEBUG 2025-07-01 15:34:40,254 http_protocol HTTP b'POST' request for ['127.0.0.1', 60067]
+INFO 2025-07-01 15:34:40,273 views Tiêu đề yêu cầu: {'Host': 'localhost:8000', 'Connection': 'keep-alive', 'Content-Length': '28287', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Token 0f2cb44d46d509e90c36c325b2ec3dead94eb1ea', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', 'Accept': 'application/json, text/plain, */*', 'Sec-Ch-Ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Microsoft Edge";v="138"', 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryfQLKfHwx9dxXPgjh', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:3000', 'Sec-Fetch-Site': 'same-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:3000/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-US,en;q=0.9', 'Cookie': '_ga=GA1.1.913772736.1748591174; _ga_Q35M40MRP2=GS2.1.s1748591174$o1$g1$t1748592952$j44$l0$h0; csrftoken=xDY82nRscOGFcgcqqJevP2DRcOCbw5kC'}
+INFO 2025-07-01 15:34:40,273 views Dữ liệu yêu cầu: <QueryDict: {'rating': ['5'], 'comment': ['quả này ngon lắm'], 'image_files': [<InMemoryUploadedFile: Ảnh chụp màn hình 2025-06-27 155748.png (image/png)>]}>
+DEBUG 2025-07-01 15:34:40,288 PngImagePlugin STREAM b'IHDR' 16 13
+DEBUG 2025-07-01 15:34:40,288 PngImagePlugin STREAM b'sRGB' 41 1
+DEBUG 2025-07-01 15:34:40,288 PngImagePlugin STREAM b'gAMA' 54 4
+DEBUG 2025-07-01 15:34:40,288 PngImagePlugin STREAM b'pHYs' 70 9
+DEBUG 2025-07-01 15:34:40,288 PngImagePlugin STREAM b'IDAT' 91 27746
+DEBUG 2025-07-01 15:34:40,288 Image Importing AvifImagePlugin
+DEBUG 2025-07-01 15:34:40,288 Image Importing BlpImagePlugin
+DEBUG 2025-07-01 15:34:40,288 Image Importing BmpImagePlugin
+DEBUG 2025-07-01 15:34:40,288 Image Importing BufrStubImagePlugin
+DEBUG 2025-07-01 15:34:40,288 Image Importing CurImagePlugin
+DEBUG 2025-07-01 15:34:40,288 Image Importing DcxImagePlugin
+DEBUG 2025-07-01 15:34:40,288 Image Importing DdsImagePlugin
+DEBUG 2025-07-01 15:34:40,288 Image Importing EpsImagePlugin
+DEBUG 2025-07-01 15:34:40,288 Image Importing FitsImagePlugin
+DEBUG 2025-07-01 15:34:40,288 Image Importing FliImagePlugin
+DEBUG 2025-07-01 15:34:40,304 Image Importing FpxImagePlugin
+DEBUG 2025-07-01 15:34:40,304 Image Image: failed to import FpxImagePlugin: No module named 'olefile'
+DEBUG 2025-07-01 15:34:40,304 Image Importing FtexImagePlugin
+DEBUG 2025-07-01 15:34:40,304 Image Importing GbrImagePlugin
+DEBUG 2025-07-01 15:34:40,304 Image Importing GifImagePlugin
+DEBUG 2025-07-01 15:34:40,304 Image Importing GribStubImagePlugin
+DEBUG 2025-07-01 15:34:40,304 Image Importing Hdf5StubImagePlugin
+DEBUG 2025-07-01 15:34:40,304 Image Importing IcnsImagePlugin
+DEBUG 2025-07-01 15:34:40,313 Image Importing IcoImagePlugin
+DEBUG 2025-07-01 15:34:40,313 Image Importing ImImagePlugin
+DEBUG 2025-07-01 15:34:40,313 Image Importing ImtImagePlugin
+DEBUG 2025-07-01 15:34:40,313 Image Importing IptcImagePlugin
+DEBUG 2025-07-01 15:34:40,313 Image Importing JpegImagePlugin
+DEBUG 2025-07-01 15:34:40,313 Image Importing Jpeg2KImagePlugin
+DEBUG 2025-07-01 15:34:40,313 Image Importing McIdasImagePlugin
+DEBUG 2025-07-01 15:34:40,313 Image Importing MicImagePlugin
+DEBUG 2025-07-01 15:34:40,313 Image Image: failed to import MicImagePlugin: No module named 'olefile'
+DEBUG 2025-07-01 15:34:40,313 Image Importing MpegImagePlugin
+DEBUG 2025-07-01 15:34:40,313 Image Importing MpoImagePlugin
+DEBUG 2025-07-01 15:34:40,321 Image Importing MspImagePlugin
+DEBUG 2025-07-01 15:34:40,321 Image Importing PalmImagePlugin
+DEBUG 2025-07-01 15:34:40,321 Image Importing PcdImagePlugin
+DEBUG 2025-07-01 15:34:40,321 Image Importing PcxImagePlugin
+DEBUG 2025-07-01 15:34:40,321 Image Importing PdfImagePlugin
+DEBUG 2025-07-01 15:34:40,321 Image Importing PixarImagePlugin
+DEBUG 2025-07-01 15:34:40,321 Image Importing PngImagePlugin
+DEBUG 2025-07-01 15:34:40,321 Image Importing PpmImagePlugin
+DEBUG 2025-07-01 15:34:40,321 Image Importing PsdImagePlugin
+DEBUG 2025-07-01 15:34:40,321 Image Importing QoiImagePlugin
+DEBUG 2025-07-01 15:34:40,338 Image Importing SgiImagePlugin
+DEBUG 2025-07-01 15:34:40,338 Image Importing SpiderImagePlugin
+DEBUG 2025-07-01 15:34:40,338 Image Importing SunImagePlugin
+DEBUG 2025-07-01 15:34:40,342 Image Importing TgaImagePlugin
+DEBUG 2025-07-01 15:34:40,342 Image Importing TiffImagePlugin
+DEBUG 2025-07-01 15:34:40,342 Image Importing WebPImagePlugin
+DEBUG 2025-07-01 15:34:40,342 Image Importing WmfImagePlugin
+DEBUG 2025-07-01 15:34:40,342 Image Importing XbmImagePlugin
+DEBUG 2025-07-01 15:34:40,342 Image Importing XpmImagePlugin
+DEBUG 2025-07-01 15:34:40,342 Image Importing XVThumbImagePlugin
+INFO 2025-07-01 15:34:40,342 views Số lượng hình ảnh: 1
+INFO 2025-07-01 15:34:40,342 views Số lượng video: 0
+INFO 2025-07-01 15:34:40,342 views Lấy sản phẩm với ID: 17
+INFO 2025-07-01 15:34:40,342 serializers Tạo đánh giá cho sản phẩm 17, người dùng: 1111, tên khách: None
+INFO 2025-07-01 15:34:40,342 serializers Tệp hình ảnh: ['Ảnh chụp màn hình 2025-06-27 155748.png']
+INFO 2025-07-01 15:34:40,342 serializers Tệp video: []
+INFO 2025-07-01 15:34:40,358 serializers Lưu hình ảnh: Ảnh chụp màn hình 2025-06-27 155748.png
+INFO 2025-07-01 15:34:40,371 views Đánh giá được tạo thành công: {'id': 36, 'user': 4, 'product': 17, 'rating': 5, 'comment': 'quả này ngon lắm', 'created_at': '2025-07-01T15:34:40.354947+07:00', 'images': [{'id': 3, 'image': 'http://localhost:8000/media/review_images/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2025-06-27_155748.png'}], 'videos': []}
+DEBUG 2025-07-01 15:34:40,388 http_protocol HTTP 201 response started for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:40,388 http_protocol HTTP close for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:40,388 http_protocol HTTP response complete for ['127.0.0.1', 60067]
+INFO 2025-07-01 15:34:40,388 runserver [mHTTP POST /api/products/17/reviews/ 201 [0.13, 127.0.0.1:60067][0m
+DEBUG 2025-07-01 15:34:40,448 http_protocol HTTP b'GET' request for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:40,565 http_protocol HTTP 200 response started for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:40,568 http_protocol HTTP response chunk for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:40,568 http_protocol HTTP close for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:40,568 http_protocol HTTP response complete for ['127.0.0.1', 60067]
+INFO 2025-07-01 15:34:40,568 runserver [mHTTP GET /media/review_images/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2025-06-27_155748.png 200 [0.12, 127.0.0.1:60067][0m
+DEBUG 2025-07-01 15:34:55,363 http_protocol HTTP b'GET' request for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:55,366 http_protocol HTTP b'GET' request for ['127.0.0.1', 60069]
+DEBUG 2025-07-01 15:34:55,437 http_protocol HTTP 200 response started for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:55,438 http_protocol HTTP close for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:55,439 http_protocol HTTP response complete for ['127.0.0.1', 60067]
+INFO 2025-07-01 15:34:55,440 runserver [mHTTP GET /api/categories/ 200 [0.08, 127.0.0.1:60067][0m
+DEBUG 2025-07-01 15:34:55,444 http_protocol HTTP b'GET' request for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:55,505 http_protocol HTTP 200 response started for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:55,506 http_protocol HTTP close for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:55,507 http_protocol HTTP response complete for ['127.0.0.1', 60067]
+INFO 2025-07-01 15:34:55,507 runserver [mHTTP GET /api/categories/ 200 [0.06, 127.0.0.1:60067][0m
+DEBUG 2025-07-01 15:34:55,510 http_protocol HTTP 200 response started for ['127.0.0.1', 60069]
+DEBUG 2025-07-01 15:34:55,510 http_protocol HTTP close for ['127.0.0.1', 60069]
+DEBUG 2025-07-01 15:34:55,510 http_protocol HTTP response complete for ['127.0.0.1', 60069]
+INFO 2025-07-01 15:34:55,510 runserver [mHTTP GET /api/products/ 200 [0.14, 127.0.0.1:60069][0m
+DEBUG 2025-07-01 15:34:55,510 http_protocol HTTP b'GET' request for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:55,592 http_protocol HTTP 200 response started for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:55,592 http_protocol HTTP close for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:55,592 http_protocol HTTP response complete for ['127.0.0.1', 60067]
+INFO 2025-07-01 15:34:55,592 runserver [mHTTP GET /api/products/ 200 [0.08, 127.0.0.1:60067][0m
+DEBUG 2025-07-01 15:34:58,567 http_protocol HTTP b'GET' request for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:58,581 http_protocol HTTP 200 response started for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:58,581 http_protocol HTTP close for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:58,581 http_protocol HTTP response complete for ['127.0.0.1', 60067]
+INFO 2025-07-01 15:34:58,582 runserver [mHTTP GET /api/products/13/ 200 [0.01, 127.0.0.1:60067][0m
+DEBUG 2025-07-01 15:34:58,583 http_protocol HTTP b'GET' request for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:58,586 http_protocol HTTP b'GET' request for ['127.0.0.1', 60069]
+DEBUG 2025-07-01 15:34:58,611 http_protocol HTTP 200 response started for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:58,612 http_protocol HTTP close for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:58,612 http_protocol HTTP response complete for ['127.0.0.1', 60067]
+INFO 2025-07-01 15:34:58,613 runserver [mHTTP GET /api/products/13/ 200 [0.03, 127.0.0.1:60067][0m
+DEBUG 2025-07-01 15:34:58,638 http_protocol HTTP 200 response started for ['127.0.0.1', 60069]
+DEBUG 2025-07-01 15:34:58,638 http_protocol HTTP close for ['127.0.0.1', 60069]
+DEBUG 2025-07-01 15:34:58,639 http_protocol HTTP response complete for ['127.0.0.1', 60069]
+INFO 2025-07-01 15:34:58,639 runserver [mHTTP GET /api/products/13/reviews/ 200 [0.05, 127.0.0.1:60069][0m
+DEBUG 2025-07-01 15:34:58,641 http_protocol HTTP b'GET' request for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:58,680 http_protocol HTTP 200 response started for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:58,681 http_protocol HTTP close for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:58,681 http_protocol HTTP response complete for ['127.0.0.1', 60067]
+INFO 2025-07-01 15:34:58,682 runserver [mHTTP GET /api/products/13/reviews/ 200 [0.04, 127.0.0.1:60067][0m
+DEBUG 2025-07-01 15:34:58,711 http_protocol HTTP b'GET' request for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:58,717 http_protocol HTTP 304 response started for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:58,717 http_protocol HTTP close for ['127.0.0.1', 60067]
+DEBUG 2025-07-01 15:34:58,717 http_protocol HTTP response complete for ['127.0.0.1', 60067]
+INFO 2025-07-01 15:34:58,717 runserver [36mHTTP GET /media/review_images/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2025-06-27_155748.png 304 [0.01, 127.0.0.1:60067][0m
+INFO 2025-07-01 15:40:10,029 autoreload C:\Users\FPT\Desktop\shop\backend\shop\serializers.py changed, reloading.
+DEBUG 2025-07-01 15:40:10,884 selector_events Using selector: SelectSelector
+INFO 2025-07-01 15:40:11,069 autoreload Watching for file changes with StatReloader
+INFO 2025-07-01 15:40:11,238 server HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+INFO 2025-07-01 15:40:11,238 server Configuring endpoint tcp:port=8000:interface=127.0.0.1
+INFO 2025-07-01 15:40:11,239 server Listening on TCP address 127.0.0.1:8000
+INFO 2025-07-01 15:40:25,461 autoreload C:\Users\FPT\Desktop\shop\backend\shop\views.py changed, reloading.
+DEBUG 2025-07-01 15:40:26,382 selector_events Using selector: SelectSelector
+INFO 2025-07-01 15:40:26,566 autoreload Watching for file changes with StatReloader
+INFO 2025-07-01 15:40:26,878 server HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+INFO 2025-07-01 15:40:26,878 server Configuring endpoint tcp:port=8000:interface=127.0.0.1
+INFO 2025-07-01 15:40:26,878 server Listening on TCP address 127.0.0.1:8000
+DEBUG 2025-07-01 15:40:38,737 http_protocol HTTP b'GET' request for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:40:38,772 http_protocol HTTP 200 response started for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:40:38,772 http_protocol HTTP close for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:40:38,773 http_protocol HTTP response complete for ['127.0.0.1', 60422]
+INFO 2025-07-01 15:40:38,773 runserver [mHTTP GET /api/products/13/ 200 [0.04, 127.0.0.1:60422][0m
+DEBUG 2025-07-01 15:40:38,780 http_protocol HTTP b'GET' request for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:40:38,802 http_protocol HTTP 200 response started for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:40:38,803 http_protocol HTTP close for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:40:38,804 http_protocol HTTP response complete for ['127.0.0.1', 60422]
+INFO 2025-07-01 15:40:38,805 runserver [mHTTP GET /api/products/13/reviews/ 200 [0.03, 127.0.0.1:60422][0m
+DEBUG 2025-07-01 15:40:52,689 http_protocol HTTP b'GET' request for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:40:52,690 http_protocol HTTP b'GET' request for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:40:52,733 http_protocol HTTP 200 response started for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:40:52,734 http_protocol HTTP close for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:40:52,734 http_protocol HTTP response complete for ['127.0.0.1', 60423]
+INFO 2025-07-01 15:40:52,735 runserver [mHTTP GET /api/auth/user/ 200 [0.04, 127.0.0.1:60423][0m
+DEBUG 2025-07-01 15:40:52,738 http_protocol HTTP b'GET' request for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:40:52,740 http_protocol HTTP 200 response started for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:40:52,741 http_protocol HTTP close for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:40:52,742 http_protocol HTTP response complete for ['127.0.0.1', 60422]
+INFO 2025-07-01 15:40:52,742 runserver [mHTTP GET /api/products/13/ 200 [0.05, 127.0.0.1:60422][0m
+DEBUG 2025-07-01 15:40:52,745 http_protocol HTTP b'GET' request for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:40:52,771 http_protocol HTTP 200 response started for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:40:52,771 http_protocol HTTP close for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:40:52,773 http_protocol HTTP response complete for ['127.0.0.1', 60423]
+INFO 2025-07-01 15:40:52,774 runserver [mHTTP GET /api/auth/user/ 200 [0.04, 127.0.0.1:60423][0m
+DEBUG 2025-07-01 15:40:52,778 http_protocol HTTP b'GET' request for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:40:52,783 http_protocol HTTP 200 response started for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:40:52,784 http_protocol HTTP close for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:40:52,784 http_protocol HTTP response complete for ['127.0.0.1', 60422]
+INFO 2025-07-01 15:40:52,784 runserver [mHTTP GET /api/products/13/ 200 [0.04, 127.0.0.1:60422][0m
+DEBUG 2025-07-01 15:40:52,788 http_protocol HTTP b'GET' request for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:40:52,806 http_protocol HTTP 200 response started for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:40:52,808 http_protocol HTTP close for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:40:52,809 http_protocol HTTP response complete for ['127.0.0.1', 60423]
+INFO 2025-07-01 15:40:52,811 runserver [mHTTP GET /api/products/13/reviews/ 200 [0.03, 127.0.0.1:60423][0m
+DEBUG 2025-07-01 15:40:52,817 http_protocol HTTP b'GET' request for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:40:52,844 http_protocol HTTP 200 response started for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:40:52,846 http_protocol HTTP close for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:40:52,847 http_protocol HTTP response complete for ['127.0.0.1', 60423]
+INFO 2025-07-01 15:40:52,847 runserver [mHTTP GET /api/cart/ 200 [0.03, 127.0.0.1:60423][0m
+DEBUG 2025-07-01 15:40:52,851 http_protocol HTTP b'GET' request for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:40:52,892 http_protocol HTTP 200 response started for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:40:52,893 http_protocol HTTP close for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:40:52,894 http_protocol HTTP response complete for ['127.0.0.1', 60423]
+INFO 2025-07-01 15:40:52,896 runserver [mHTTP GET /api/products/13/reviews/ 200 [0.05, 127.0.0.1:60423][0m
+DEBUG 2025-07-01 15:40:52,899 http_protocol HTTP b'GET' request for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:40:52,945 http_protocol HTTP 200 response started for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:40:52,947 http_protocol HTTP close for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:40:52,947 http_protocol HTTP response complete for ['127.0.0.1', 60423]
+INFO 2025-07-01 15:40:52,948 runserver [mHTTP GET /api/cart/ 200 [0.05, 127.0.0.1:60423][0m
+DEBUG 2025-07-01 15:40:53,049 http_protocol HTTP 200 response started for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:40:53,049 http_protocol HTTP close for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:40:53,049 http_protocol HTTP response complete for ['127.0.0.1', 60422]
+INFO 2025-07-01 15:40:53,050 runserver [mHTTP GET /api/orders/ 200 [0.26, 127.0.0.1:60422][0m
+DEBUG 2025-07-01 15:40:53,053 http_protocol HTTP b'GET' request for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:40:53,281 http_protocol HTTP 200 response started for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:40:53,281 http_protocol HTTP close for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:40:53,282 http_protocol HTTP response complete for ['127.0.0.1', 60423]
+INFO 2025-07-01 15:40:53,282 runserver [mHTTP GET /api/orders/ 200 [0.23, 127.0.0.1:60423][0m
+DEBUG 2025-07-01 15:41:01,647 http_protocol HTTP b'POST' request for ['127.0.0.1', 60423]
+INFO 2025-07-01 15:41:01,654 views Tiêu đề yêu cầu: {'Host': 'localhost:8000', 'Connection': 'keep-alive', 'Content-Length': '28386', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Token 0f2cb44d46d509e90c36c325b2ec3dead94eb1ea', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', 'Accept': 'application/json, text/plain, */*', 'Sec-Ch-Ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Microsoft Edge";v="138"', 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryn7Zxxw0Mo894T52V', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:3000', 'Sec-Fetch-Site': 'same-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:3000/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-US,en;q=0.9', 'Cookie': '_ga=GA1.1.913772736.1748591174; _ga_Q35M40MRP2=GS2.1.s1748591174$o1$g1$t1748592952$j44$l0$h0; csrftoken=xDY82nRscOGFcgcqqJevP2DRcOCbw5kC'}
+INFO 2025-07-01 15:41:01,655 views Dữ liệu yêu cầu: <QueryDict: {'rating': ['5'], 'comment': ['wow'], 'image_files': [<InMemoryUploadedFile: Ảnh chụp màn hình 2025-06-27 154509.png (image/png)>]}>
+DEBUG 2025-07-01 15:41:01,676 PngImagePlugin STREAM b'IHDR' 16 13
+DEBUG 2025-07-01 15:41:01,676 PngImagePlugin STREAM b'sRGB' 41 1
+DEBUG 2025-07-01 15:41:01,676 PngImagePlugin STREAM b'gAMA' 54 4
+DEBUG 2025-07-01 15:41:01,676 PngImagePlugin STREAM b'pHYs' 70 9
+DEBUG 2025-07-01 15:41:01,679 PngImagePlugin STREAM b'IDAT' 91 27863
+DEBUG 2025-07-01 15:41:01,679 Image Importing AvifImagePlugin
+DEBUG 2025-07-01 15:41:01,680 Image Importing BlpImagePlugin
+DEBUG 2025-07-01 15:41:01,682 Image Importing BmpImagePlugin
+DEBUG 2025-07-01 15:41:01,683 Image Importing BufrStubImagePlugin
+DEBUG 2025-07-01 15:41:01,684 Image Importing CurImagePlugin
+DEBUG 2025-07-01 15:41:01,685 Image Importing DcxImagePlugin
+DEBUG 2025-07-01 15:41:01,687 Image Importing DdsImagePlugin
+DEBUG 2025-07-01 15:41:01,691 Image Importing EpsImagePlugin
+DEBUG 2025-07-01 15:41:01,693 Image Importing FitsImagePlugin
+DEBUG 2025-07-01 15:41:01,693 Image Importing FliImagePlugin
+DEBUG 2025-07-01 15:41:01,696 Image Importing FpxImagePlugin
+DEBUG 2025-07-01 15:41:01,697 Image Image: failed to import FpxImagePlugin: No module named 'olefile'
+DEBUG 2025-07-01 15:41:01,698 Image Importing FtexImagePlugin
+DEBUG 2025-07-01 15:41:01,699 Image Importing GbrImagePlugin
+DEBUG 2025-07-01 15:41:01,699 Image Importing GifImagePlugin
+DEBUG 2025-07-01 15:41:01,700 Image Importing GribStubImagePlugin
+DEBUG 2025-07-01 15:41:01,700 Image Importing Hdf5StubImagePlugin
+DEBUG 2025-07-01 15:41:01,701 Image Importing IcnsImagePlugin
+DEBUG 2025-07-01 15:41:01,702 Image Importing IcoImagePlugin
+DEBUG 2025-07-01 15:41:01,703 Image Importing ImImagePlugin
+DEBUG 2025-07-01 15:41:01,704 Image Importing ImtImagePlugin
+DEBUG 2025-07-01 15:41:01,705 Image Importing IptcImagePlugin
+DEBUG 2025-07-01 15:41:01,705 Image Importing JpegImagePlugin
+DEBUG 2025-07-01 15:41:01,705 Image Importing Jpeg2KImagePlugin
+DEBUG 2025-07-01 15:41:01,705 Image Importing McIdasImagePlugin
+DEBUG 2025-07-01 15:41:01,706 Image Importing MicImagePlugin
+DEBUG 2025-07-01 15:41:01,707 Image Image: failed to import MicImagePlugin: No module named 'olefile'
+DEBUG 2025-07-01 15:41:01,707 Image Importing MpegImagePlugin
+DEBUG 2025-07-01 15:41:01,708 Image Importing MpoImagePlugin
+DEBUG 2025-07-01 15:41:01,710 Image Importing MspImagePlugin
+DEBUG 2025-07-01 15:41:01,712 Image Importing PalmImagePlugin
+DEBUG 2025-07-01 15:41:01,713 Image Importing PcdImagePlugin
+DEBUG 2025-07-01 15:41:01,713 Image Importing PcxImagePlugin
+DEBUG 2025-07-01 15:41:01,714 Image Importing PdfImagePlugin
+DEBUG 2025-07-01 15:41:01,715 Image Importing PixarImagePlugin
+DEBUG 2025-07-01 15:41:01,715 Image Importing PngImagePlugin
+DEBUG 2025-07-01 15:41:01,715 Image Importing PpmImagePlugin
+DEBUG 2025-07-01 15:41:01,715 Image Importing PsdImagePlugin
+DEBUG 2025-07-01 15:41:01,715 Image Importing QoiImagePlugin
+DEBUG 2025-07-01 15:41:01,715 Image Importing SgiImagePlugin
+DEBUG 2025-07-01 15:41:01,715 Image Importing SpiderImagePlugin
+DEBUG 2025-07-01 15:41:01,715 Image Importing SunImagePlugin
+DEBUG 2025-07-01 15:41:01,715 Image Importing TgaImagePlugin
+DEBUG 2025-07-01 15:41:01,715 Image Importing TiffImagePlugin
+DEBUG 2025-07-01 15:41:01,715 Image Importing WebPImagePlugin
+DEBUG 2025-07-01 15:41:01,715 Image Importing WmfImagePlugin
+DEBUG 2025-07-01 15:41:01,715 Image Importing XbmImagePlugin
+DEBUG 2025-07-01 15:41:01,715 Image Importing XpmImagePlugin
+DEBUG 2025-07-01 15:41:01,728 Image Importing XVThumbImagePlugin
+INFO 2025-07-01 15:41:01,730 views Số lượng hình ảnh: 1
+INFO 2025-07-01 15:41:01,730 views Số lượng video: 0
+INFO 2025-07-01 15:41:01,730 views Lấy sản phẩm với ID: 13
+INFO 2025-07-01 15:41:01,731 serializers Tạo đánh giá cho sản phẩm 13, người dùng: 1111, tên khách: None
+INFO 2025-07-01 15:41:01,732 serializers Tệp hình ảnh: ['Ảnh chụp màn hình 2025-06-27 154509.png']
+INFO 2025-07-01 15:41:01,732 serializers Tệp video: []
+INFO 2025-07-01 15:41:01,739 serializers Lưu hình ảnh: Ảnh chụp màn hình 2025-06-27 154509.png
+INFO 2025-07-01 15:41:01,745 views Đánh giá được tạo thành công: {'id': 37, 'user': 4, 'product': 13, 'rating': 5, 'comment': 'wow', 'created_at': '2025-07-01T15:41:01.733494+07:00', 'images': [{'id': 4, 'image': 'http://localhost:8000/media/review_images/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2025-06-27_154509_wCkQBwg.png'}], 'videos': []}
+DEBUG 2025-07-01 15:41:01,745 http_protocol HTTP 201 response started for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:01,745 http_protocol HTTP close for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:01,745 http_protocol HTTP response complete for ['127.0.0.1', 60423]
+INFO 2025-07-01 15:41:01,745 runserver [mHTTP POST /api/products/13/reviews/ 201 [0.10, 127.0.0.1:60423][0m
+DEBUG 2025-07-01 15:41:12,073 http_protocol HTTP b'GET' request for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:12,096 http_protocol HTTP 200 response started for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:12,096 http_protocol HTTP close for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:12,097 http_protocol HTTP response complete for ['127.0.0.1', 60423]
+INFO 2025-07-01 15:41:12,097 runserver [mHTTP GET /api/products/13/ 200 [0.02, 127.0.0.1:60423][0m
+DEBUG 2025-07-01 15:41:12,102 http_protocol HTTP b'GET' request for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:12,122 http_protocol HTTP 200 response started for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:12,122 http_protocol HTTP close for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:12,123 http_protocol HTTP response complete for ['127.0.0.1', 60423]
+INFO 2025-07-01 15:41:12,123 runserver [mHTTP GET /api/products/13/reviews/ 200 [0.02, 127.0.0.1:60423][0m
+DEBUG 2025-07-01 15:41:12,140 http_protocol HTTP b'GET' request for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:12,240 http_protocol HTTP 200 response started for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:12,242 http_protocol HTTP response chunk for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:12,242 http_protocol HTTP close for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:12,242 http_protocol HTTP response complete for ['127.0.0.1', 60423]
+INFO 2025-07-01 15:41:12,242 runserver [mHTTP GET /media/review_images/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2025-06-27_154509_wCkQBwg.png 200 [0.10, 127.0.0.1:60423][0m
+DEBUG 2025-07-01 15:41:33,654 http_protocol HTTP b'GET' request for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:33,780 http_protocol HTTP 200 response started for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:33,781 http_protocol HTTP close for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:33,781 http_protocol HTTP response complete for ['127.0.0.1', 60423]
+INFO 2025-07-01 15:41:33,781 runserver [mHTTP GET /api/orders/ 200 [0.13, 127.0.0.1:60423][0m
+DEBUG 2025-07-01 15:41:33,783 http_protocol HTTP b'GET' request for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:33,915 http_protocol HTTP 200 response started for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:33,915 http_protocol HTTP close for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:33,915 http_protocol HTTP response complete for ['127.0.0.1', 60422]
+INFO 2025-07-01 15:41:33,915 runserver [mHTTP GET /api/orders/ 200 [0.13, 127.0.0.1:60422][0m
+DEBUG 2025-07-01 15:41:35,344 http_protocol HTTP b'GET' request for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:35,345 http_protocol HTTP b'GET' request for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:35,403 http_protocol HTTP 200 response started for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:35,410 http_protocol HTTP close for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:35,418 http_protocol HTTP response complete for ['127.0.0.1', 60422]
+INFO 2025-07-01 15:41:35,423 runserver [mHTTP GET /api/categories/ 200 [0.08, 127.0.0.1:60422][0m
+DEBUG 2025-07-01 15:41:35,429 http_protocol HTTP b'GET' request for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:35,455 http_protocol HTTP 200 response started for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:35,456 http_protocol HTTP close for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:35,457 http_protocol HTTP response complete for ['127.0.0.1', 60422]
+INFO 2025-07-01 15:41:35,457 runserver [mHTTP GET /api/categories/ 200 [0.03, 127.0.0.1:60422][0m
+DEBUG 2025-07-01 15:41:35,464 http_protocol HTTP 200 response started for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:35,465 http_protocol HTTP close for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:35,465 http_protocol HTTP response complete for ['127.0.0.1', 60423]
+INFO 2025-07-01 15:41:35,465 runserver [mHTTP GET /api/products/ 200 [0.12, 127.0.0.1:60423][0m
+DEBUG 2025-07-01 15:41:35,467 http_protocol HTTP b'GET' request for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:35,510 http_protocol HTTP 200 response started for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:35,510 http_protocol HTTP close for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:35,510 http_protocol HTTP response complete for ['127.0.0.1', 60422]
+INFO 2025-07-01 15:41:35,510 runserver [mHTTP GET /api/products/ 200 [0.04, 127.0.0.1:60422][0m
+DEBUG 2025-07-01 15:41:37,662 http_protocol HTTP b'GET' request for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:37,674 http_protocol HTTP 200 response started for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:37,675 http_protocol HTTP close for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:37,675 http_protocol HTTP response complete for ['127.0.0.1', 60422]
+INFO 2025-07-01 15:41:37,675 runserver [mHTTP GET /api/products/6/ 200 [0.01, 127.0.0.1:60422][0m
+DEBUG 2025-07-01 15:41:37,678 http_protocol HTTP b'GET' request for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:37,679 http_protocol HTTP b'GET' request for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:37,699 http_protocol HTTP 200 response started for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:37,699 http_protocol HTTP close for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:37,700 http_protocol HTTP response complete for ['127.0.0.1', 60423]
+INFO 2025-07-01 15:41:37,700 runserver [mHTTP GET /api/products/6/reviews/ 200 [0.02, 127.0.0.1:60423][0m
+DEBUG 2025-07-01 15:41:37,701 http_protocol HTTP 200 response started for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:37,701 http_protocol HTTP close for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:37,701 http_protocol HTTP response complete for ['127.0.0.1', 60422]
+INFO 2025-07-01 15:41:37,702 runserver [mHTTP GET /api/products/6/ 200 [0.02, 127.0.0.1:60422][0m
+DEBUG 2025-07-01 15:41:37,713 http_protocol HTTP b'GET' request for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:37,725 http_protocol HTTP 200 response started for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:37,726 http_protocol HTTP close for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:37,726 http_protocol HTTP response complete for ['127.0.0.1', 60422]
+INFO 2025-07-01 15:41:37,727 runserver [mHTTP GET /api/products/6/reviews/ 200 [0.01, 127.0.0.1:60422][0m
+DEBUG 2025-07-01 15:41:39,240 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 60497]
+DEBUG 2025-07-01 15:41:39,241 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 60498]
+DEBUG 2025-07-01 15:41:39,243 http_protocol HTTP 200 response started for ['127.0.0.1', 60497]
+DEBUG 2025-07-01 15:41:39,244 http_protocol HTTP close for ['127.0.0.1', 60497]
+DEBUG 2025-07-01 15:41:39,244 http_protocol HTTP response complete for ['127.0.0.1', 60497]
+INFO 2025-07-01 15:41:39,244 runserver [mHTTP OPTIONS /api/admin/users/1/ 200 [0.00, 127.0.0.1:60497][0m
+DEBUG 2025-07-01 15:41:39,245 http_protocol HTTP 200 response started for ['127.0.0.1', 60498]
+DEBUG 2025-07-01 15:41:39,245 http_protocol HTTP close for ['127.0.0.1', 60498]
+DEBUG 2025-07-01 15:41:39,245 http_protocol HTTP response complete for ['127.0.0.1', 60498]
+INFO 2025-07-01 15:41:39,245 runserver [mHTTP OPTIONS /api/admin/users/1/ 200 [0.00, 127.0.0.1:60498][0m
+DEBUG 2025-07-01 15:41:39,248 http_protocol HTTP b'GET' request for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:39,259 http_protocol HTTP 200 response started for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:39,259 http_protocol HTTP close for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:39,260 http_protocol HTTP response complete for ['127.0.0.1', 60422]
+INFO 2025-07-01 15:41:39,260 runserver [mHTTP GET /api/admin/users/1/ 200 [0.01, 127.0.0.1:60422][0m
+DEBUG 2025-07-01 15:41:39,261 http_protocol HTTP b'GET' request for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:39,263 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 60498]
+DEBUG 2025-07-01 15:41:39,266 http_protocol HTTP 200 response started for ['127.0.0.1', 60498]
+DEBUG 2025-07-01 15:41:39,266 http_protocol HTTP close for ['127.0.0.1', 60498]
+DEBUG 2025-07-01 15:41:39,266 http_protocol HTTP response complete for ['127.0.0.1', 60498]
+INFO 2025-07-01 15:41:39,266 runserver [mHTTP OPTIONS /api/products/?seller=1 200 [0.00, 127.0.0.1:60498][0m
+DEBUG 2025-07-01 15:41:39,268 http_protocol HTTP b'GET' request for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:39,280 http_protocol HTTP 200 response started for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:39,281 http_protocol HTTP close for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:39,283 http_protocol HTTP response complete for ['127.0.0.1', 60422]
+INFO 2025-07-01 15:41:39,284 runserver [mHTTP GET /api/admin/users/1/ 200 [0.02, 127.0.0.1:60422][0m
+DEBUG 2025-07-01 15:41:39,297 http_protocol HTTP 200 response started for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:39,298 http_protocol HTTP close for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:39,298 http_protocol HTTP response complete for ['127.0.0.1', 60423]
+INFO 2025-07-01 15:41:39,298 runserver [mHTTP GET /api/products/?seller=1 200 [0.03, 127.0.0.1:60423][0m
+DEBUG 2025-07-01 15:41:39,300 http_protocol HTTP b'GET' request for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:39,303 http_protocol HTTP b'GET' request for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:39,330 http_protocol HTTP 200 response started for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:39,332 http_protocol HTTP response chunk for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:39,332 http_protocol HTTP close for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:39,333 http_protocol HTTP response complete for ['127.0.0.1', 60422]
+INFO 2025-07-01 15:41:39,333 runserver [mHTTP GET /media/products/images.jpg 200 [0.03, 127.0.0.1:60422][0m
+DEBUG 2025-07-01 15:41:39,338 http_protocol HTTP 200 response started for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:39,338 http_protocol HTTP close for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:39,338 http_protocol HTTP response complete for ['127.0.0.1', 60423]
+INFO 2025-07-01 15:41:39,338 runserver [mHTTP GET /api/products/?seller=1 200 [0.04, 127.0.0.1:60423][0m
+DEBUG 2025-07-01 15:41:47,181 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 60498]
+DEBUG 2025-07-01 15:41:47,183 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 60497]
+DEBUG 2025-07-01 15:41:47,185 http_protocol HTTP 200 response started for ['127.0.0.1', 60498]
+DEBUG 2025-07-01 15:41:47,186 http_protocol HTTP close for ['127.0.0.1', 60498]
+DEBUG 2025-07-01 15:41:47,186 http_protocol HTTP response complete for ['127.0.0.1', 60498]
+INFO 2025-07-01 15:41:47,186 runserver [mHTTP OPTIONS /api/products/25/ 200 [0.01, 127.0.0.1:60498][0m
+DEBUG 2025-07-01 15:41:47,187 http_protocol HTTP 200 response started for ['127.0.0.1', 60497]
+DEBUG 2025-07-01 15:41:47,187 http_protocol HTTP close for ['127.0.0.1', 60497]
+DEBUG 2025-07-01 15:41:47,187 http_protocol HTTP response complete for ['127.0.0.1', 60497]
+INFO 2025-07-01 15:41:47,187 runserver [mHTTP OPTIONS /api/products/25/ 200 [0.01, 127.0.0.1:60497][0m
+DEBUG 2025-07-01 15:41:47,189 http_protocol HTTP b'GET' request for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:47,202 http_protocol HTTP 200 response started for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:47,203 http_protocol HTTP close for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:47,203 http_protocol HTTP response complete for ['127.0.0.1', 60423]
+INFO 2025-07-01 15:41:47,203 runserver [mHTTP GET /api/products/25/ 200 [0.01, 127.0.0.1:60423][0m
+DEBUG 2025-07-01 15:41:47,205 http_protocol HTTP b'GET' request for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:47,206 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 60497]
+DEBUG 2025-07-01 15:41:47,207 http_protocol HTTP 200 response started for ['127.0.0.1', 60497]
+DEBUG 2025-07-01 15:41:47,208 http_protocol HTTP close for ['127.0.0.1', 60497]
+DEBUG 2025-07-01 15:41:47,208 http_protocol HTTP response complete for ['127.0.0.1', 60497]
+INFO 2025-07-01 15:41:47,208 runserver [mHTTP OPTIONS /api/products/25/reviews/ 200 [0.00, 127.0.0.1:60497][0m
+DEBUG 2025-07-01 15:41:47,210 http_protocol HTTP b'GET' request for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:47,224 http_protocol HTTP 200 response started for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:47,225 http_protocol HTTP close for ['127.0.0.1', 60422]
+DEBUG 2025-07-01 15:41:47,225 http_protocol HTTP response complete for ['127.0.0.1', 60422]
+INFO 2025-07-01 15:41:47,226 runserver [mHTTP GET /api/products/25/reviews/ 200 [0.02, 127.0.0.1:60422][0m
+DEBUG 2025-07-01 15:41:47,229 http_protocol HTTP 200 response started for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:47,229 http_protocol HTTP close for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:47,229 http_protocol HTTP response complete for ['127.0.0.1', 60423]
+INFO 2025-07-01 15:41:47,229 runserver [mHTTP GET /api/products/25/ 200 [0.02, 127.0.0.1:60423][0m
+DEBUG 2025-07-01 15:41:47,233 http_protocol HTTP b'GET' request for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:47,241 http_protocol HTTP 200 response started for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:47,241 http_protocol HTTP close for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:47,242 http_protocol HTTP response complete for ['127.0.0.1', 60423]
+INFO 2025-07-01 15:41:47,242 runserver [mHTTP GET /api/products/25/reviews/ 200 [0.01, 127.0.0.1:60423][0m
+DEBUG 2025-07-01 15:41:56,809 http_protocol HTTP b'POST' request for ['127.0.0.1', 60423]
+INFO 2025-07-01 15:41:56,815 views Tiêu đề yêu cầu: {'Host': 'localhost:8000', 'Connection': 'keep-alive', 'Content-Length': '28399', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Token 0f2cb44d46d509e90c36c325b2ec3dead94eb1ea', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', 'Accept': 'application/json, text/plain, */*', 'Sec-Ch-Ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Microsoft Edge";v="138"', 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryklSGLmzo73nchL4P', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:3000', 'Sec-Fetch-Site': 'same-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:3000/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-US,en;q=0.9', 'Cookie': '_ga=GA1.1.913772736.1748591174; _ga_Q35M40MRP2=GS2.1.s1748591174$o1$g1$t1748592952$j44$l0$h0; csrftoken=xDY82nRscOGFcgcqqJevP2DRcOCbw5kC'}
+INFO 2025-07-01 15:41:56,815 views Dữ liệu yêu cầu: <QueryDict: {'rating': ['5'], 'comment': ['áo đẹp lắm'], 'image_files': [<InMemoryUploadedFile: Ảnh chụp màn hình 2025-06-27 154509.png (image/png)>]}>
+DEBUG 2025-07-01 15:41:56,816 PngImagePlugin STREAM b'IHDR' 16 13
+DEBUG 2025-07-01 15:41:56,816 PngImagePlugin STREAM b'sRGB' 41 1
+DEBUG 2025-07-01 15:41:56,817 PngImagePlugin STREAM b'gAMA' 54 4
+DEBUG 2025-07-01 15:41:56,817 PngImagePlugin STREAM b'pHYs' 70 9
+DEBUG 2025-07-01 15:41:56,817 PngImagePlugin STREAM b'IDAT' 91 27863
+INFO 2025-07-01 15:41:56,817 views Số lượng hình ảnh: 1
+INFO 2025-07-01 15:41:56,818 views Số lượng video: 0
+INFO 2025-07-01 15:41:56,818 views Lấy sản phẩm với ID: 25
+INFO 2025-07-01 15:41:56,819 serializers Tạo đánh giá cho sản phẩm 25, người dùng: 1111, tên khách: None
+INFO 2025-07-01 15:41:56,819 serializers Tệp hình ảnh: ['Ảnh chụp màn hình 2025-06-27 154509.png']
+INFO 2025-07-01 15:41:56,819 serializers Tệp video: []
+INFO 2025-07-01 15:41:56,826 serializers Lưu hình ảnh: Ảnh chụp màn hình 2025-06-27 154509.png
+INFO 2025-07-01 15:41:56,838 views Đánh giá được tạo thành công: {'id': 38, 'user': 4, 'product': 25, 'rating': 5, 'comment': 'áo đẹp lắm', 'created_at': '2025-07-01T15:41:56.821254+07:00', 'images': [{'id': 5, 'image': 'http://localhost:8000/media/review_images/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2025-06-27_154509_wdoZLO3.png'}], 'videos': []}
+DEBUG 2025-07-01 15:41:56,841 http_protocol HTTP 201 response started for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:56,841 http_protocol HTTP close for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:56,841 http_protocol HTTP response complete for ['127.0.0.1', 60423]
+INFO 2025-07-01 15:41:56,842 runserver [mHTTP POST /api/products/25/reviews/ 201 [0.03, 127.0.0.1:60423][0m
+DEBUG 2025-07-01 15:41:56,849 http_protocol HTTP b'GET' request for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:56,863 http_protocol HTTP 200 response started for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:56,864 http_protocol HTTP response chunk for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:56,864 http_protocol HTTP close for ['127.0.0.1', 60423]
+DEBUG 2025-07-01 15:41:56,865 http_protocol HTTP response complete for ['127.0.0.1', 60423]
+INFO 2025-07-01 15:41:56,865 runserver [mHTTP GET /media/review_images/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2025-06-27_154509_wdoZLO3.png 200 [0.02, 127.0.0.1:60423][0m

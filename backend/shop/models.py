@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.db.models import Avg
 
-
+from django.conf import settings
 class User(AbstractUser):
     ROLES = (
         ('customer', 'Customer'),
@@ -225,37 +225,30 @@ class OrderItem(models.Model):
         verbose_name_plural = 'Order Items'
 
 class Review(models.Model):
-    user = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='reviews'
-    )
-    product = models.ForeignKey(
-        Product,
-        on_delete=models.CASCADE,
-        related_name='reviews'
-    )
-    rating = models.PositiveIntegerField(
-        validators=[
-            MinValueValidator(1),
-            MaxValueValidator(5)
-        ]
-    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+    product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='reviews')
+    rating = models.IntegerField()
     comment = models.TextField()
-    created_at = models.DateTimeField(default=timezone.now)
-    guest_name = models.CharField(max_length=100, blank=True, null=True)  # Added for guest reviews
-    
-    class Meta:
-        verbose_name = 'Product Review'
-        verbose_name_plural = 'Product Reviews'
-    
-    def __str__(self):
-        reviewer = self.user.username if self.user else self.guest_name or "Guest"
-        return f"{self.rating}★ review by {reviewer} for {self.product.name}"
+    guest_name = models.CharField(max_length=255, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
+    def clean(self):
+        # Bỏ kiểm tra số lượng hình ảnh, đã xử lý trong serializer
+        super().clean()
 
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+
+class ReviewImage(models.Model):
+    review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='review_images/', default='review_images/placeholder.jpg')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+class ReviewVideo(models.Model):
+    review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='videos')
+    video = models.FileField(upload_to='review_videos/', default='review_videos/placeholder.mp4')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
 class Message(models.Model):
     sender = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='sent_messages')
     receiver = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='received_messages')
