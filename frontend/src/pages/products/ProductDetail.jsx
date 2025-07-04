@@ -9,12 +9,11 @@ import EmojiPicker from 'emoji-picker-react';
 import './ProductDetail.css';
 
 const ProductDetail = () => {
-  const { id } = useParams(); // Lấy ID sản phẩm từ URL
-  const navigate = useNavigate(); // Điều hướng trang
-  const { addToCart } = useCart(); // Hook thêm sản phẩm vào giỏ hàng
-  const { user } = useAuth(); // Hook lấy thông tin người dùng
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { addToCart } = useCart();
+  const { user } = useAuth();
 
-  // Danh sách loại sản phẩm
   const productTypes = [
     { value: '', label: 'Tất cả loại sản phẩm' },
     { value: 'electronics', label: 'Điện tử' },
@@ -24,7 +23,6 @@ const ProductDetail = () => {
     { value: 'other', label: 'Khác' },
   ];
 
-  // Trạng thái ban đầu
   const [state, setState] = useState({
     product: null,
     reviews: [],
@@ -42,7 +40,6 @@ const ProductDetail = () => {
     showEmojiPicker: false,
   });
 
-  // Hàm tải dữ liệu sản phẩm và đánh giá
   const fetchProductData = useCallback(async () => {
     try {
       setState((prev) => ({ ...prev, loading: true, error: null }));
@@ -65,11 +62,14 @@ const ProductDetail = () => {
       let averageRating = 0;
       try {
         const reviewsRes = await reviewsAPI.getProductReviews(id);
-        reviews = Array.isArray(reviewsRes.data) ? reviewsRes.data : [];
+        console.log('Phản hồi API đánh giá:', reviewsRes);
+        reviews = Array.isArray(reviewsRes.data)
+          ? reviewsRes.data.filter(review => review.product?.id === parseInt(id))
+          : [];
+        console.log('Đánh giá sau khi lọc:', reviews.map(r => ({ reviewId: r.id, productId: r.product?.id })));
         averageRating = reviews.length > 0
           ? reviews.reduce((sum, r) => sum + (Number(r.rating) || 0), 0) / reviews.length
           : 0;
-        console.log('Phản hồi API đánh giá:', reviews);
       } catch (reviewErr) {
         console.error('Lỗi tải đánh giá:', reviewErr.response?.data || reviewErr.message);
       }
@@ -93,12 +93,10 @@ const ProductDetail = () => {
     }
   }, [id]);
 
-  // Gọi hàm tải dữ liệu khi component được mount
   useEffect(() => {
     fetchProductData();
   }, [fetchProductData]);
 
-  // Hàm thêm sản phẩm vào giỏ hàng
   const handleAddToCart = async () => {
     if (state.product && state.product.quantity > 0) {
       try {
@@ -122,7 +120,6 @@ const ProductDetail = () => {
     }
   };
 
-  // Xử lý chọn hình ảnh
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     const validImages = files.filter(file => file.type.startsWith('image/'));
@@ -140,7 +137,6 @@ const ProductDetail = () => {
     }));
   };
 
-  // Xử lý chọn video
   const handleVideoChange = (e) => {
     const files = Array.from(e.target.files);
     const validVideos = files.filter(file => file.type.startsWith('video/') && file.size <= 50 * 1024 * 1024);
@@ -158,7 +154,6 @@ const ProductDetail = () => {
     }));
   };
 
-  // Xử lý chọn biểu tượng cảm xúc
   const handleEmojiClick = (emojiObject) => {
     setState(prev => ({
       ...prev,
@@ -167,7 +162,6 @@ const ProductDetail = () => {
     }));
   };
 
-  // Bật/tắt trình chọn biểu tượng cảm xúc
   const toggleEmojiPicker = () => {
     setState(prev => ({
       ...prev,
@@ -175,7 +169,6 @@ const ProductDetail = () => {
     }));
   };
 
-  // Xóa hình ảnh hoặc video
   const removeMedia = (type, index) => {
     setState(prev => ({
       ...prev,
@@ -183,7 +176,6 @@ const ProductDetail = () => {
     }));
   };
 
-  // Xử lý gửi đánh giá
   const handleSubmitReview = async (e) => {
     e.preventDefault();
     if (!state.reviewText.trim()) {
@@ -212,8 +204,6 @@ const ProductDetail = () => {
 
       const res = await reviewsAPI.createReview(state.product.id, formData);
       console.log('Phản hồi gửi đánh giá:', res.data);
-      console.log('Hình ảnh trong phản hồi:', res.data.images || 'Không có hình ảnh');
-      console.log('Video trong phản hồi:', res.data.videos || 'Không có video');
 
       const updatedReviews = [res.data, ...state.reviews];
       const totalRating = updatedReviews.reduce((sum, r) => sum + (Number(r.rating) || 0), 0);
@@ -245,13 +235,11 @@ const ProductDetail = () => {
     }
   };
 
-  // Xử lý thay đổi đánh giá sao
   const handleRatingChange = useCallback(
     (newRating) => setState((prev) => ({ ...prev, rating: newRating })),
     []
   );
 
-  // Xử lý thay đổi nội dung đánh giá
   const handleReviewTextChange = (e) => {
     setState((prev) => ({
       ...prev,
@@ -260,7 +248,6 @@ const ProductDetail = () => {
     }));
   };
 
-  // Xử lý thay đổi tên khách hàng
   const handleGuestNameChange = (e) => {
     setState((prev) => ({
       ...prev,
@@ -269,7 +256,6 @@ const ProductDetail = () => {
     }));
   };
 
-  // Xử lý nhấp vào thông tin người bán
   const handleSellerClick = () => {
     if (state.product?.seller?.id) {
       navigate(`/sellers/${state.product.seller.id}`);

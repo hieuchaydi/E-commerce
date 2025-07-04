@@ -488,41 +488,49 @@ class DiscountCodeViewSet(viewsets.ModelViewSet):
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
-        # Lấy product_id từ URL (do sử dụng NestedSimpleRouter)
         product_id = self.kwargs.get('product_pk')
         if product_id:
+            logger.info(f"Fetching reviews for product ID: {product_id}")
             return Review.objects.filter(product_id=product_id).select_related('user', 'product').prefetch_related('images', 'videos')
-        return super().get_queryset()
+        logger.warning("No product ID provided, returning empty queryset")
+        return Review.objects.none()
 
     def create(self, request, *args, **kwargs):
-        logger.info(f"Tiêu đề yêu cầu: {request.headers}")
-        logger.info(f"Dữ liệu yêu cầu: {request.data}")
+        logger.info(f"Request headers: {request.headers}")
+        logger.info(f"Request data: {request.data}")
+        product_id = self.kwargs.get('product_pk')
+        if not product_id:
+            logger.error("No product ID provided in request")
+            return Response({"detail": "Product ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+
         serializer = self.get_serializer(data=request.data)
         if not serializer.is_valid():
-            logger.error(f"Lỗi xác thực: {serializer.errors}")
+            logger.error(f"Validation errors: {serializer.errors}")
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        logger.info(f"Số lượng hình ảnh: {len(request.data.getlist('image_files', []))}")
-        logger.info(f"Số lượng video: {len(request.data.getlist('video_files', []))}")
+
+        logger.info(f"Image files count: {len(request.data.getlist('image_files', []))}")
+        logger.info(f"Video files count: {len(request.data.getlist('video_files', []))}")
+
         try:
             self.perform_create(serializer)
             response_data = self.get_serializer(serializer.instance).data
             headers = self.get_success_headers(serializer.data)
-            logger.info(f"Đánh giá được tạo thành công: {response_data}")
+            logger.info(f"Review created successfully: {response_data}")
             return Response(response_data, status=status.HTTP_201_CREATED, headers=headers)
-        except ObjectDoesNotExist:
-            logger.error(f"Sản phẩm không tồn tại: product_pk={self.kwargs.get('product_pk')}")
+        except Product.DoesNotExist:
+            logger.error(f"Product not found: product_pk={product_id}")
             return Response({"detail": "Sản phẩm không tồn tại."}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            logger.exception(f"Lỗi không mong muốn khi tạo đánh giá: {str(e)}")
+            logger.exception(f"Unexpected error creating review: {str(e)}")
             return Response({"detail": f"Lỗi máy chủ: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def perform_create(self, serializer):
         product_id = self.kwargs.get('product_pk')
-        logger.info(f"Lấy sản phẩm với ID: {product_id}")
-        product = Product.objects.get(id=product_id)
+        logger.info(f"Fetching product with ID: {product_id}")
+        product = get_object_or_404(Product, id=product_id)
         serializer.save(product=product)
         
 class UploadImageView(APIView):

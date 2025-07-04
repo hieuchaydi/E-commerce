@@ -233,7 +233,6 @@ class Review(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def clean(self):
-        # Bỏ kiểm tra số lượng hình ảnh, đã xử lý trong serializer
         super().clean()
 
     def save(self, *args, **kwargs):

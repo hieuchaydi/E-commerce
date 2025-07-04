@@ -581,3 +581,247 @@ DEBUG 2025-07-01 15:41:56,864 http_protocol HTTP response chunk for ['127.0.0.1'
 DEBUG 2025-07-01 15:41:56,864 http_protocol HTTP close for ['127.0.0.1', 60423]
 DEBUG 2025-07-01 15:41:56,865 http_protocol HTTP response complete for ['127.0.0.1', 60423]
 INFO 2025-07-01 15:41:56,865 runserver [mHTTP GET /media/review_images/%E1%BA%A2nh_ch%E1%BB%A5p_m%C3%A0n_h%C3%ACnh_2025-06-27_154509_wdoZLO3.png 200 [0.02, 127.0.0.1:60423][0m
+DEBUG 2025-07-04 15:39:01,475 selector_events Using selector: SelectSelector
+DEBUG 2025-07-04 15:39:06,072 selector_events Using selector: SelectSelector
+INFO 2025-07-04 15:39:06,541 autoreload Watching for file changes with StatReloader
+INFO 2025-07-04 15:39:14,055 server HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+INFO 2025-07-04 15:39:14,057 server Configuring endpoint tcp:port=8000:interface=127.0.0.1
+INFO 2025-07-04 15:39:14,059 server Listening on TCP address 127.0.0.1:8000
+DEBUG 2025-07-04 15:44:23,000 http_protocol HTTP b'GET' request for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,000 http_protocol HTTP b'GET' request for ['127.0.0.1', 62478]
+DEBUG 2025-07-04 15:44:23,001 http_protocol HTTP b'GET' request for ['127.0.0.1', 62477]
+DEBUG 2025-07-04 15:44:23,015 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 62479]
+DEBUG 2025-07-04 15:44:23,017 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 62480]
+DEBUG 2025-07-04 15:44:23,017 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 62483]
+DEBUG 2025-07-04 15:44:23,017 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 62484]
+DEBUG 2025-07-04 15:44:23,019 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 62481]
+DEBUG 2025-07-04 15:44:23,019 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 62482]
+DEBUG 2025-07-04 15:44:23,026 http_protocol HTTP 200 response started for ['127.0.0.1', 62479]
+DEBUG 2025-07-04 15:44:23,026 http_protocol HTTP close for ['127.0.0.1', 62479]
+DEBUG 2025-07-04 15:44:23,027 http_protocol HTTP response complete for ['127.0.0.1', 62479]
+INFO 2025-07-04 15:44:23,027 runserver [mHTTP OPTIONS /api/categories/ 200 [0.01, 127.0.0.1:62479][0m
+DEBUG 2025-07-04 15:44:23,027 http_protocol HTTP 200 response started for ['127.0.0.1', 62480]
+DEBUG 2025-07-04 15:44:23,028 http_protocol HTTP close for ['127.0.0.1', 62480]
+DEBUG 2025-07-04 15:44:23,028 http_protocol HTTP response complete for ['127.0.0.1', 62480]
+INFO 2025-07-04 15:44:23,028 runserver [mHTTP OPTIONS /api/products/ 200 [0.01, 127.0.0.1:62480][0m
+DEBUG 2025-07-04 15:44:23,029 http_protocol HTTP 200 response started for ['127.0.0.1', 62483]
+DEBUG 2025-07-04 15:44:23,029 http_protocol HTTP close for ['127.0.0.1', 62483]
+DEBUG 2025-07-04 15:44:23,029 http_protocol HTTP response complete for ['127.0.0.1', 62483]
+INFO 2025-07-04 15:44:23,029 runserver [mHTTP OPTIONS /api/products/ 200 [0.01, 127.0.0.1:62483][0m
+DEBUG 2025-07-04 15:44:23,029 http_protocol HTTP 200 response started for ['127.0.0.1', 62484]
+DEBUG 2025-07-04 15:44:23,030 http_protocol HTTP close for ['127.0.0.1', 62484]
+DEBUG 2025-07-04 15:44:23,030 http_protocol HTTP response complete for ['127.0.0.1', 62484]
+INFO 2025-07-04 15:44:23,030 runserver [mHTTP OPTIONS /api/auth/user/ 200 [0.01, 127.0.0.1:62484][0m
+DEBUG 2025-07-04 15:44:23,030 http_protocol HTTP 200 response started for ['127.0.0.1', 62481]
+DEBUG 2025-07-04 15:44:23,030 http_protocol HTTP close for ['127.0.0.1', 62481]
+DEBUG 2025-07-04 15:44:23,030 http_protocol HTTP response complete for ['127.0.0.1', 62481]
+INFO 2025-07-04 15:44:23,030 runserver [mHTTP OPTIONS /api/auth/user/ 200 [0.01, 127.0.0.1:62481][0m
+DEBUG 2025-07-04 15:44:23,031 http_protocol HTTP 200 response started for ['127.0.0.1', 62482]
+DEBUG 2025-07-04 15:44:23,031 http_protocol HTTP close for ['127.0.0.1', 62482]
+DEBUG 2025-07-04 15:44:23,031 http_protocol HTTP response complete for ['127.0.0.1', 62482]
+INFO 2025-07-04 15:44:23,031 runserver [mHTTP OPTIONS /api/categories/ 200 [0.01, 127.0.0.1:62482][0m
+DEBUG 2025-07-04 15:44:23,262 http_protocol HTTP b'GET' request for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,286 http_protocol HTTP 200 response started for ['127.0.0.1', 62478]
+DEBUG 2025-07-04 15:44:23,288 http_protocol HTTP response chunk for ['127.0.0.1', 62478]
+DEBUG 2025-07-04 15:44:23,288 http_protocol HTTP close for ['127.0.0.1', 62478]
+DEBUG 2025-07-04 15:44:23,288 http_protocol HTTP response complete for ['127.0.0.1', 62478]
+INFO 2025-07-04 15:44:23,289 runserver [mHTTP GET /api/media/products/man.png 200 [0.29, 127.0.0.1:62478][0m
+DEBUG 2025-07-04 15:44:23,291 http_protocol HTTP b'GET' request for ['127.0.0.1', 62478]
+DEBUG 2025-07-04 15:44:23,295 http_protocol HTTP 200 response started for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,298 http_protocol HTTP response chunk for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,298 http_protocol HTTP close for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,298 http_protocol HTTP response complete for ['127.0.0.1', 62476]
+INFO 2025-07-04 15:44:23,299 runserver [mHTTP GET /api/media/products/thitlonluoc.jpg 200 [0.30, 127.0.0.1:62476][0m
+DEBUG 2025-07-04 15:44:23,301 http_protocol HTTP b'GET' request for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,303 http_protocol HTTP 200 response started for ['127.0.0.1', 62477]
+DEBUG 2025-07-04 15:44:23,305 http_protocol HTTP response chunk for ['127.0.0.1', 62477]
+DEBUG 2025-07-04 15:44:23,305 http_protocol HTTP close for ['127.0.0.1', 62477]
+DEBUG 2025-07-04 15:44:23,306 http_protocol HTTP response complete for ['127.0.0.1', 62477]
+INFO 2025-07-04 15:44:23,308 runserver [mHTTP GET /api/media/products/OSK.jpg 200 [0.31, 127.0.0.1:62477][0m
+DEBUG 2025-07-04 15:44:23,319 http_protocol HTTP 200 response started for ['127.0.0.1', 62478]
+DEBUG 2025-07-04 15:44:23,319 http_protocol HTTP close for ['127.0.0.1', 62478]
+DEBUG 2025-07-04 15:44:23,320 http_protocol HTTP response complete for ['127.0.0.1', 62478]
+INFO 2025-07-04 15:44:23,322 runserver [mHTTP GET /api/categories/ 200 [0.03, 127.0.0.1:62478][0m
+DEBUG 2025-07-04 15:44:23,324 http_protocol HTTP b'GET' request for ['127.0.0.1', 62478]
+DEBUG 2025-07-04 15:44:23,328 http_protocol HTTP 200 response started for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,328 http_protocol HTTP close for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,329 http_protocol HTTP response complete for ['127.0.0.1', 62476]
+INFO 2025-07-04 15:44:23,329 runserver [mHTTP GET /api/auth/user/ 200 [0.03, 127.0.0.1:62476][0m
+DEBUG 2025-07-04 15:44:23,332 http_protocol HTTP b'GET' request for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,343 http_protocol HTTP 200 response started for ['127.0.0.1', 62478]
+DEBUG 2025-07-04 15:44:23,343 http_protocol HTTP close for ['127.0.0.1', 62478]
+DEBUG 2025-07-04 15:44:23,345 http_protocol HTTP response complete for ['127.0.0.1', 62478]
+INFO 2025-07-04 15:44:23,345 runserver [mHTTP GET /api/categories/ 200 [0.02, 127.0.0.1:62478][0m
+DEBUG 2025-07-04 15:44:23,346 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 62481]
+DEBUG 2025-07-04 15:44:23,347 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 62482]
+DEBUG 2025-07-04 15:44:23,350 http_protocol HTTP 200 response started for ['127.0.0.1', 62481]
+DEBUG 2025-07-04 15:44:23,350 http_protocol HTTP close for ['127.0.0.1', 62481]
+DEBUG 2025-07-04 15:44:23,350 http_protocol HTTP response complete for ['127.0.0.1', 62481]
+INFO 2025-07-04 15:44:23,350 runserver [mHTTP OPTIONS /api/cart/ 200 [0.00, 127.0.0.1:62481][0m
+DEBUG 2025-07-04 15:44:23,350 http_protocol HTTP 200 response started for ['127.0.0.1', 62482]
+DEBUG 2025-07-04 15:44:23,350 http_protocol HTTP close for ['127.0.0.1', 62482]
+DEBUG 2025-07-04 15:44:23,350 http_protocol HTTP response complete for ['127.0.0.1', 62482]
+INFO 2025-07-04 15:44:23,350 runserver [mHTTP OPTIONS /api/orders/ 200 [0.00, 127.0.0.1:62482][0m
+DEBUG 2025-07-04 15:44:23,354 http_protocol HTTP b'GET' request for ['127.0.0.1', 62478]
+DEBUG 2025-07-04 15:44:23,355 http_protocol HTTP b'GET' request for ['127.0.0.1', 62477]
+DEBUG 2025-07-04 15:44:23,356 http_protocol HTTP 200 response started for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,356 http_protocol HTTP close for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,357 http_protocol HTTP response complete for ['127.0.0.1', 62476]
+INFO 2025-07-04 15:44:23,357 runserver [mHTTP GET /api/auth/user/ 200 [0.03, 127.0.0.1:62476][0m
+DEBUG 2025-07-04 15:44:23,396 http_protocol HTTP 200 response started for ['127.0.0.1', 62478]
+DEBUG 2025-07-04 15:44:23,398 http_protocol HTTP close for ['127.0.0.1', 62478]
+DEBUG 2025-07-04 15:44:23,399 http_protocol HTTP response complete for ['127.0.0.1', 62478]
+INFO 2025-07-04 15:44:23,402 runserver [mHTTP GET /api/cart/ 200 [0.05, 127.0.0.1:62478][0m
+DEBUG 2025-07-04 15:44:23,407 http_protocol HTTP b'GET' request for ['127.0.0.1', 62478]
+DEBUG 2025-07-04 15:44:23,477 http_protocol HTTP 200 response started for ['127.0.0.1', 62478]
+DEBUG 2025-07-04 15:44:23,478 http_protocol HTTP close for ['127.0.0.1', 62478]
+DEBUG 2025-07-04 15:44:23,482 http_protocol HTTP response complete for ['127.0.0.1', 62478]
+INFO 2025-07-04 15:44:23,485 runserver [mHTTP GET /api/cart/ 200 [0.08, 127.0.0.1:62478][0m
+DEBUG 2025-07-04 15:44:23,515 http_protocol HTTP 200 response started for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,515 http_protocol HTTP close for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,518 http_protocol HTTP response complete for ['127.0.0.1', 62488]
+INFO 2025-07-04 15:44:23,520 runserver [mHTTP GET /api/products/ 200 [0.26, 127.0.0.1:62488][0m
+DEBUG 2025-07-04 15:44:23,523 http_protocol HTTP b'GET' request for ['127.0.0.1', 62478]
+DEBUG 2025-07-04 15:44:23,549 http_protocol HTTP b'GET' request for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,551 http_protocol HTTP b'GET' request for ['127.0.0.1', 62490]
+DEBUG 2025-07-04 15:44:23,553 http_protocol HTTP b'GET' request for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,618 http_protocol HTTP 200 response started for ['127.0.0.1', 62490]
+DEBUG 2025-07-04 15:44:23,630 http_protocol HTTP response chunk for ['127.0.0.1', 62490]
+DEBUG 2025-07-04 15:44:23,633 http_protocol HTTP close for ['127.0.0.1', 62490]
+DEBUG 2025-07-04 15:44:23,633 http_protocol HTTP response complete for ['127.0.0.1', 62490]
+INFO 2025-07-04 15:44:23,635 runserver [mHTTP GET /media/products/man.png 200 [0.08, 127.0.0.1:62490][0m
+DEBUG 2025-07-04 15:44:23,646 http_protocol HTTP b'GET' request for ['127.0.0.1', 62490]
+DEBUG 2025-07-04 15:44:23,655 http_protocol HTTP 200 response started for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,659 http_protocol HTTP 200 response started for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,663 http_protocol HTTP response chunk for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,665 http_protocol HTTP close for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,667 http_protocol HTTP response complete for ['127.0.0.1', 62488]
+INFO 2025-07-04 15:44:23,669 runserver [mHTTP GET /media/products/t%E1%BA%A3i_xu%E1%BB%91ng_2KOGrHE.jpg 200 [0.12, 127.0.0.1:62488][0m
+DEBUG 2025-07-04 15:44:23,673 http_protocol HTTP response chunk for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,673 http_protocol HTTP close for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,675 http_protocol HTTP response complete for ['127.0.0.1', 62476]
+INFO 2025-07-04 15:44:23,675 runserver [mHTTP GET /media/products/t%E1%BA%A3i_xu%E1%BB%91ng.jpg 200 [0.12, 127.0.0.1:62476][0m
+DEBUG 2025-07-04 15:44:23,687 http_protocol HTTP b'GET' request for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,691 http_protocol HTTP b'GET' request for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,714 http_protocol HTTP 200 response started for ['127.0.0.1', 62478]
+DEBUG 2025-07-04 15:44:23,715 http_protocol HTTP close for ['127.0.0.1', 62478]
+DEBUG 2025-07-04 15:44:23,716 http_protocol HTTP response complete for ['127.0.0.1', 62478]
+INFO 2025-07-04 15:44:23,717 runserver [mHTTP GET /api/products/ 200 [0.19, 127.0.0.1:62478][0m
+DEBUG 2025-07-04 15:44:23,731 http_protocol HTTP 200 response started for ['127.0.0.1', 62490]
+DEBUG 2025-07-04 15:44:23,735 http_protocol HTTP response chunk for ['127.0.0.1', 62490]
+DEBUG 2025-07-04 15:44:23,736 http_protocol HTTP close for ['127.0.0.1', 62490]
+DEBUG 2025-07-04 15:44:23,738 http_protocol HTTP response complete for ['127.0.0.1', 62490]
+INFO 2025-07-04 15:44:23,738 runserver [mHTTP GET /media/products/roi_FfnQwkk.jpg 200 [0.09, 127.0.0.1:62490][0m
+DEBUG 2025-07-04 15:44:23,741 http_protocol HTTP 200 response started for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,744 http_protocol HTTP response chunk for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,745 http_protocol HTTP close for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,745 http_protocol HTTP response complete for ['127.0.0.1', 62488]
+INFO 2025-07-04 15:44:23,746 runserver [mHTTP GET /media/products/OSK.jpg 200 [0.06, 127.0.0.1:62488][0m
+DEBUG 2025-07-04 15:44:23,748 http_protocol HTTP b'GET' request for ['127.0.0.1', 62490]
+DEBUG 2025-07-04 15:44:23,753 http_protocol HTTP b'GET' request for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,759 http_protocol HTTP 200 response started for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,767 http_protocol HTTP response chunk for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,768 http_protocol HTTP close for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,769 http_protocol HTTP response complete for ['127.0.0.1', 62476]
+INFO 2025-07-04 15:44:23,770 runserver [mHTTP GET /media/products/thilonluoc_0DWjB4k.jpg 200 [0.08, 127.0.0.1:62476][0m
+DEBUG 2025-07-04 15:44:23,775 http_protocol HTTP b'GET' request for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,785 http_protocol HTTP 200 response started for ['127.0.0.1', 62477]
+DEBUG 2025-07-04 15:44:23,785 http_protocol HTTP close for ['127.0.0.1', 62477]
+DEBUG 2025-07-04 15:44:23,785 http_protocol HTTP response complete for ['127.0.0.1', 62477]
+INFO 2025-07-04 15:44:23,785 runserver [mHTTP GET /api/orders/ 200 [0.43, 127.0.0.1:62477][0m
+DEBUG 2025-07-04 15:44:23,787 http_protocol HTTP 200 response started for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,789 http_protocol HTTP b'GET' request for ['127.0.0.1', 62478]
+DEBUG 2025-07-04 15:44:23,789 http_protocol HTTP response chunk for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,791 http_protocol HTTP close for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,791 http_protocol HTTP response complete for ['127.0.0.1', 62488]
+INFO 2025-07-04 15:44:23,791 runserver [mHTTP GET /media/products/chomchom.png 200 [0.04, 127.0.0.1:62488][0m
+DEBUG 2025-07-04 15:44:23,795 http_protocol HTTP 304 response started for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,795 http_protocol HTTP close for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,795 http_protocol HTTP response complete for ['127.0.0.1', 62476]
+INFO 2025-07-04 15:44:23,795 runserver [36mHTTP GET /media/products/anh-phong-khach-07.jpg 304 [0.02, 127.0.0.1:62476][0m
+DEBUG 2025-07-04 15:44:23,796 http_protocol HTTP b'GET' request for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,799 http_protocol HTTP 200 response started for ['127.0.0.1', 62490]
+DEBUG 2025-07-04 15:44:23,801 http_protocol HTTP response chunk for ['127.0.0.1', 62490]
+DEBUG 2025-07-04 15:44:23,801 http_protocol HTTP close for ['127.0.0.1', 62490]
+DEBUG 2025-07-04 15:44:23,801 http_protocol HTTP response complete for ['127.0.0.1', 62490]
+INFO 2025-07-04 15:44:23,801 runserver [mHTTP GET /media/products/galuoc.jpg 200 [0.05, 127.0.0.1:62490][0m
+DEBUG 2025-07-04 15:44:23,802 http_protocol HTTP b'GET' request for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,838 http_protocol HTTP b'GET' request for ['127.0.0.1', 62490]
+DEBUG 2025-07-04 15:44:23,882 http_protocol HTTP 200 response started for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,886 http_protocol HTTP response chunk for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,886 http_protocol HTTP close for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,887 http_protocol HTTP response complete for ['127.0.0.1', 62488]
+INFO 2025-07-04 15:44:23,888 runserver [mHTTP GET /media/products/mit.png 200 [0.09, 127.0.0.1:62488][0m
+DEBUG 2025-07-04 15:44:23,896 http_protocol HTTP b'GET' request for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,897 http_protocol HTTP 304 response started for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,897 http_protocol HTTP close for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,902 http_protocol HTTP response complete for ['127.0.0.1', 62476]
+INFO 2025-07-04 15:44:23,903 runserver [36mHTTP GET /media/products/t%E1%BA%A3i_xu%E1%BB%91ng_akEpBuv.jpg 304 [0.10, 127.0.0.1:62476][0m
+DEBUG 2025-07-04 15:44:23,911 http_protocol HTTP b'GET' request for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,912 http_protocol HTTP 200 response started for ['127.0.0.1', 62490]
+DEBUG 2025-07-04 15:44:23,916 http_protocol HTTP response chunk for ['127.0.0.1', 62490]
+DEBUG 2025-07-04 15:44:23,917 http_protocol HTTP close for ['127.0.0.1', 62490]
+DEBUG 2025-07-04 15:44:23,918 http_protocol HTTP response complete for ['127.0.0.1', 62490]
+INFO 2025-07-04 15:44:23,918 runserver [mHTTP GET /media/products/oi.png 200 [0.08, 127.0.0.1:62490][0m
+DEBUG 2025-07-04 15:44:23,925 http_protocol HTTP b'GET' request for ['127.0.0.1', 62490]
+DEBUG 2025-07-04 15:44:23,953 http_protocol HTTP 200 response started for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,957 http_protocol HTTP response chunk for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,957 http_protocol HTTP close for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,958 http_protocol HTTP response complete for ['127.0.0.1', 62488]
+INFO 2025-07-04 15:44:23,958 runserver [mHTTP GET /media/products/le.png 200 [0.06, 127.0.0.1:62488][0m
+DEBUG 2025-07-04 15:44:23,966 http_protocol HTTP b'GET' request for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:23,974 http_protocol HTTP 200 response started for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,978 http_protocol HTTP 200 response started for ['127.0.0.1', 62490]
+DEBUG 2025-07-04 15:44:23,980 http_protocol HTTP response chunk for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,980 http_protocol HTTP close for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:23,982 http_protocol HTTP response complete for ['127.0.0.1', 62476]
+INFO 2025-07-04 15:44:23,984 runserver [mHTTP GET /media/products/xoai.png 200 [0.07, 127.0.0.1:62476][0m
+DEBUG 2025-07-04 15:44:23,987 http_protocol HTTP response chunk for ['127.0.0.1', 62490]
+DEBUG 2025-07-04 15:44:23,987 http_protocol HTTP close for ['127.0.0.1', 62490]
+DEBUG 2025-07-04 15:44:23,987 http_protocol HTTP response complete for ['127.0.0.1', 62490]
+INFO 2025-07-04 15:44:23,987 runserver [mHTTP GET /media/products/nhan.png 200 [0.06, 127.0.0.1:62490][0m
+DEBUG 2025-07-04 15:44:23,994 http_protocol HTTP b'GET' request for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:24,023 http_protocol HTTP 200 response started for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:24,027 http_protocol HTTP response chunk for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:24,028 http_protocol HTTP close for ['127.0.0.1', 62488]
+DEBUG 2025-07-04 15:44:24,028 http_protocol HTTP response complete for ['127.0.0.1', 62488]
+INFO 2025-07-04 15:44:24,028 runserver [mHTTP GET /media/products/images.jpg 200 [0.06, 127.0.0.1:62488][0m
+DEBUG 2025-07-04 15:44:24,048 http_protocol HTTP 200 response started for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:24,050 http_protocol HTTP response chunk for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:24,053 http_protocol HTTP close for ['127.0.0.1', 62476]
+DEBUG 2025-07-04 15:44:24,054 http_protocol HTTP response complete for ['127.0.0.1', 62476]
+INFO 2025-07-04 15:44:24,054 runserver [mHTTP GET /media/products/roi.jpg 200 [0.06, 127.0.0.1:62476][0m
+DEBUG 2025-07-04 15:44:24,109 http_protocol HTTP 200 response started for ['127.0.0.1', 62478]
+DEBUG 2025-07-04 15:44:24,110 http_protocol HTTP close for ['127.0.0.1', 62478]
+DEBUG 2025-07-04 15:44:24,110 http_protocol HTTP response complete for ['127.0.0.1', 62478]
+INFO 2025-07-04 15:44:24,110 runserver [mHTTP GET /api/orders/ 200 [0.32, 127.0.0.1:62478][0m
+INFO 2025-07-04 15:45:20,713 autoreload C:\Users\FPT\Desktop\shop\backend\shop\views.py changed, reloading.
+DEBUG 2025-07-04 15:45:21,676 selector_events Using selector: SelectSelector
+INFO 2025-07-04 15:45:21,884 autoreload Watching for file changes with StatReloader
+INFO 2025-07-04 15:45:22,111 server HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+INFO 2025-07-04 15:45:22,111 server Configuring endpoint tcp:port=8000:interface=127.0.0.1
+INFO 2025-07-04 15:45:22,112 server Listening on TCP address 127.0.0.1:8000
+INFO 2025-07-04 15:46:07,214 autoreload C:\Users\FPT\Desktop\shop\backend\shop\serializers.py changed, reloading.
+DEBUG 2025-07-04 15:46:07,987 selector_events Using selector: SelectSelector
+INFO 2025-07-04 15:46:08,192 autoreload Watching for file changes with StatReloader
+INFO 2025-07-04 15:46:08,428 server HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+INFO 2025-07-04 15:46:08,428 server Configuring endpoint tcp:port=8000:interface=127.0.0.1
+INFO 2025-07-04 15:46:08,429 server Listening on TCP address 127.0.0.1:8000
+INFO 2025-07-04 15:47:05,185 autoreload C:\Users\FPT\Desktop\shop\backend\shop\models.py changed, reloading.
+DEBUG 2025-07-04 15:47:05,990 selector_events Using selector: SelectSelector
+INFO 2025-07-04 15:47:06,185 autoreload Watching for file changes with StatReloader
+INFO 2025-07-04 15:47:06,350 server HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+INFO 2025-07-04 15:47:06,350 server Configuring endpoint tcp:port=8000:interface=127.0.0.1
+INFO 2025-07-04 15:47:06,351 server Listening on TCP address 127.0.0.1:8000
+INFO 2025-07-04 15:58:06,529 autoreload C:\Users\FPT\Desktop\shop\backend\shop\views.py changed, reloading.
+DEBUG 2025-07-04 15:58:07,498 selector_events Using selector: SelectSelector
+INFO 2025-07-04 15:58:07,687 autoreload Watching for file changes with StatReloader
+INFO 2025-07-04 15:58:07,896 server HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+INFO 2025-07-04 15:58:07,900 server Configuring endpoint tcp:port=8000:interface=127.0.0.1
+INFO 2025-07-04 15:58:07,901 server Listening on TCP address 127.0.0.1:8000
+INFO 2025-07-04 15:58:21,135 autoreload C:\Users\FPT\Desktop\shop\backend\shop\serializers.py changed, reloading.
+DEBUG 2025-07-04 15:58:21,996 selector_events Using selector: SelectSelector
+INFO 2025-07-04 15:58:22,172 autoreload Watching for file changes with StatReloader
+INFO 2025-07-04 15:58:22,373 server HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+INFO 2025-07-04 15:58:22,373 server Configuring endpoint tcp:port=8000:interface=127.0.0.1
+INFO 2025-07-04 15:58:22,373 server Listening on TCP address 127.0.0.1:8000
