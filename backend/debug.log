@@ -3141,3 +3141,9 @@ DEBUG 2025-07-07 15:45:19,280 http_protocol HTTP response chunk for ['127.0.0.1'
 DEBUG 2025-07-07 15:45:19,280 http_protocol HTTP close for ['127.0.0.1', 55912]
 DEBUG 2025-07-07 15:45:19,280 http_protocol HTTP response complete for ['127.0.0.1', 55912]
 INFO 2025-07-07 15:45:19,280 runserver [mHTTP GET /media/review_videos/1751859999_de427de39a9e4fb6d63938464118ff07_8cBWjhE.mp4 200 [0.05, 127.0.0.1:55912][0m
+DEBUG 2025-07-07 15:49:03,935 selector_events Using selector: SelectSelector
+DEBUG 2025-07-07 15:49:05,252 selector_events Using selector: SelectSelector
+INFO 2025-07-07 15:49:05,511 autoreload Watching for file changes with StatReloader
+INFO 2025-07-07 15:49:05,811 server HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+INFO 2025-07-07 15:49:05,812 server Configuring endpoint tcp:port=8000:interface=127.0.0.1
+INFO 2025-07-07 15:49:05,812 server Listening on TCP address 127.0.0.1:8000
