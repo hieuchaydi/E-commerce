@@ -40,10 +40,12 @@ const ProductDetail = () => {
     showEmojiPicker: false,
   });
 
-  const fetchProductData = useCallback(async () => {
+  const fetchProductData = useCallback(async (retryCount = 0) => {
+    const maxRetries = 3;
     try {
       setState((prev) => ({ ...prev, loading: true, error: null }));
 
+      // Tải thông tin sản phẩm
       const productRes = await productsAPI.getProduct(id);
       console.log('Phản hồi API sản phẩm:', productRes);
 
@@ -58,20 +60,36 @@ const ProductDetail = () => {
         seller: productRes.seller || { username: 'Không xác định', id: null, seller_rating: null },
       };
 
+      // Tải đánh giá
       let reviews = [];
       let averageRating = 0;
       try {
         const reviewsRes = await reviewsAPI.getProductReviews(id);
         console.log('Phản hồi API đánh giá:', reviewsRes);
-        reviews = Array.isArray(reviewsRes.data)
-          ? reviewsRes.data.filter(review => review.product?.id === parseInt(id))
-          : [];
-        console.log('Đánh giá sau khi lọc:', reviews.map(r => ({ reviewId: r.id, productId: r.product?.id })));
+
+        // Kiểm tra cấu trúc dữ liệu trả về
+        reviews = Array.isArray(reviewsRes.data) ? reviewsRes.data : [];
+        console.log('Danh sách đánh giá:', reviews);
+
         averageRating = reviews.length > 0
           ? reviews.reduce((sum, r) => sum + (Number(r.rating) || 0), 0) / reviews.length
           : 0;
+
       } catch (reviewErr) {
-        console.error('Lỗi tải đánh giá:', reviewErr.response?.data || reviewErr.message);
+        console.error('Lỗi tải đánh giá:', {
+          status: reviewErr.response?.status,
+          data: reviewErr.response?.data,
+          message: reviewErr.message,
+        });
+        if (retryCount < maxRetries) {
+          console.log(`Thử lại lần ${retryCount + 1}...`);
+          setTimeout(() => fetchProductData(retryCount + 1), 1000);
+          return;
+        } else {
+          console.error('Không thể tải đánh giá sau nhiều lần thử lại.');
+          // Không ném lỗi, chỉ đặt reviews rỗng
+          reviews = [];
+        }
       }
 
       setState((prev) => ({
@@ -82,10 +100,14 @@ const ProductDetail = () => {
         loading: false,
       }));
     } catch (err) {
-      console.error('Lỗi tải sản phẩm:', err.message || err);
+      console.error('Lỗi tải sản phẩm:', {
+        status: err.response?.status,
+        data: err.response?.data,
+        message: err.message,
+      });
       setState((prev) => ({
         ...prev,
-        error: err.message === 'Sản phẩm không tồn tại' || err.response?.status === 404
+        error: err.response?.status === 404
           ? 'Sản phẩm không tồn tại'
           : 'Lỗi tải dữ liệu sản phẩm. Vui lòng thử lại.',
         loading: false,
@@ -126,31 +148,42 @@ const ProductDetail = () => {
     if (validImages.length + state.selectedImages.length > 4) {
       setState(prev => ({
         ...prev,
-        reviewError: 'Chỉ được tải lên tối đa 4 hình ảnh'
+        reviewError: 'Chỉ được tải lên tối đa 4 hình ảnh',
       }));
       return;
     }
     setState(prev => ({
       ...prev,
       selectedImages: [...prev.selectedImages, ...validImages],
-      reviewError: ''
+      reviewError: '',
     }));
   };
 
   const handleVideoChange = (e) => {
     const files = Array.from(e.target.files);
-    const validVideos = files.filter(file => file.type.startsWith('video/') && file.size <= 50 * 1024 * 1024);
+    const validVideos = files.filter(file => {
+      if (!file.type.startsWith('video/')) return false;
+      if (file.size > 50 * 1024 * 1024) return false; // 50MB
+      return true;
+    });
     if (validVideos.length + state.selectedVideos.length > 2) {
       setState(prev => ({
         ...prev,
-        reviewError: 'Chỉ được tải lên tối đa 2 video'
+        reviewError: 'Chỉ được tải lên tối đa 2 video',
+      }));
+      return;
+    }
+    if (validVideos.length < files.length) {
+      setState(prev => ({
+        ...prev,
+        reviewError: 'Một hoặc nhiều video không hợp lệ (quá 50MB hoặc không phải video)',
       }));
       return;
     }
     setState(prev => ({
       ...prev,
       selectedVideos: [...prev.selectedVideos, ...validVideos],
-      reviewError: ''
+      reviewError: '',
     }));
   };
 
@@ -158,21 +191,21 @@ const ProductDetail = () => {
     setState(prev => ({
       ...prev,
       reviewText: prev.reviewText + emojiObject.emoji,
-      showEmojiPicker: false
+      showEmojiPicker: false,
     }));
   };
 
   const toggleEmojiPicker = () => {
     setState(prev => ({
       ...prev,
-      showEmojiPicker: !prev.showEmojiPicker
+      showEmojiPicker: !prev.showEmojiPicker,
     }));
   };
 
   const removeMedia = (type, index) => {
     setState(prev => ({
       ...prev,
-      [type]: prev[type].filter((_, i) => i !== index)
+      [type]: prev[type].filter((_, i) => i !== index),
     }));
   };
 
@@ -205,14 +238,8 @@ const ProductDetail = () => {
       const res = await reviewsAPI.createReview(state.product.id, formData);
       console.log('Phản hồi gửi đánh giá:', res.data);
 
-      const updatedReviews = [res.data, ...state.reviews];
-      const totalRating = updatedReviews.reduce((sum, r) => sum + (Number(r.rating) || 0), 0);
-      const newAverage = updatedReviews.length ? totalRating / updatedReviews.length : 0;
-
       setState((prev) => ({
         ...prev,
-        reviews: updatedReviews,
-        averageRating: newAverage,
         reviewText: '',
         guestName: '',
         rating: 5,
@@ -223,8 +250,15 @@ const ProductDetail = () => {
         successMessage: 'Đánh giá đã được gửi thành công!',
       }));
       setTimeout(() => setState((prev) => ({ ...prev, successMessage: '' })), 3000);
+
+      // Tải lại dữ liệu để đảm bảo đồng bộ
+      fetchProductData();
     } catch (err) {
-      console.error('Lỗi gửi đánh giá:', err.response?.data || err.message);
+      console.error('Lỗi gửi đánh giá:', {
+        status: err.response?.status,
+        data: err.response?.data,
+        message: err.message,
+      });
       setState((prev) => ({
         ...prev,
         reviewError: err.response?.status === 404

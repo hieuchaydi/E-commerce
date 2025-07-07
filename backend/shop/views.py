@@ -681,9 +681,22 @@ class MessageViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['patch'], url_path='mark-read')
     def mark_read(self, request, pk=None):
-        message = self.get_object()
-        if message.receiver == request.user and not message.is_read:
-            message.is_read = True
-            message.save()
-            return Response({'status': 'Message marked as read'})
-        return Response({'error': 'Invalid action'}, status=status.HTTP_400_BAD_REQUEST)
+        logger.info(f"Yêu cầu mark-read cho tin nhắn {pk} từ user {request.user}")
+        try:
+            message = self.get_object()
+        except Message.DoesNotExist:
+            logger.error(f"Tin nhắn không tồn tại: ID={pk}")
+            return Response({'error': 'Tin nhắn không tồn tại'}, status=status.HTTP_404_NOT_FOUND)
+        
+        if message.receiver != request.user:
+            logger.error(f"Người dùng {request.user} không phải người nhận của tin nhắn {pk}")
+            return Response({'error': 'Bạn không phải người nhận của tin nhắn này'}, status=status.HTTP_403_FORBIDDEN)
+        
+        if message.is_read:
+            logger.warning(f"Tin nhắn {pk} đã được đánh dấu là đã đọc")
+            return Response({'error': 'Tin nhắn đã được đánh dấu là đã đọc'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        message.is_read = True
+        message.save()
+        logger.info(f"Tin nhắn {pk} đã được đánh dấu là đã đọc")
+        return Response({'status': 'Tin nhắn đã được đánh dấu là đã đọc'})
