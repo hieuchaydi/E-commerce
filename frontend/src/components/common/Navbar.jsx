@@ -10,18 +10,6 @@ const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [latestOrderId, setLatestOrderId] = useState(null);
-  const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('darkMode') === 'true');
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    localStorage.setItem('darkMode', isDarkMode);
-  }, [isDarkMode]);
-
-  const toggleDarkMode = () => setIsDarkMode((prev) => !prev);
 
   const handleLogout = async () => {
     try {
@@ -63,7 +51,7 @@ const Navbar = () => {
   }, [user]);
 
   return (
-    <nav className={`navbar ${isDarkMode ? 'dark' : ''}`}>
+    <nav className="navbar">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-4">
         <div className="navbar-brand">
           <Link to="/" className="navbar-logo">
@@ -104,9 +92,7 @@ const Navbar = () => {
           </svg>
         </button>
         <div
-          className={`navbar-menu ${
-            isMenuOpen ? 'flex' : 'hidden'
-          } sm:flex sm:static sm:w-auto sm:bg-transparent sm:shadow-none sm:p-0`}
+          className={`navbar-menu ${isMenuOpen ? 'flex' : 'hidden'} sm:flex sm:static sm:w-auto sm:bg-transparent sm:shadow-none sm:p-0`}
         >
           {isMenuOpen && (
             <form onSubmit={handleSearch} className="navbar-search-mobile sm:hidden w-full mb-6">
@@ -230,16 +216,6 @@ const Navbar = () => {
               </Link>
             </div>
           )}
-          <button
-            onClick={() => {
-              toggleDarkMode();
-              setIsMenuOpen(false);
-            }}
-            className="dark-mode-toggle"
-            aria-label="Toggle dark mode"
-          >
-            {isDarkMode ? '☀️' : '🌙'}
-          </button>
         </div>
       </div>
     </nav>

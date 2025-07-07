@@ -46,11 +46,6 @@
   @apply absolute inset-0 bg-black/40 flex items-center justify-center;
 }
 
-.slide-overlay::after {
-  @apply text-white text-lg font-semibold opacity-0 transition-opacity duration-300 hover:opacity-100;
-  content: 'Xem thêm';
-}
-
 .slider-dots {
   @apply absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2;
 }
@@ -103,12 +98,12 @@
 
 .carousel-track {
   @apply flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .carousel-track::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, and Opera */
+  display: none;
 }
 
 .carousel-btn {
@@ -188,8 +183,4 @@
   .product-card {
     @apply w-44;
   }
-
-  .slide-image {
-    @apply h-56;
-  }
-}
+} 

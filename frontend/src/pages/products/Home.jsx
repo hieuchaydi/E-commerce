@@ -14,19 +14,8 @@ const CurrentDateTime = () => {
   }, []);
 
   const formatDateTime = (date) => {
-    const options = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: '2-digit',
-      timeZone: 'Asia/Ho_Chi_Minh',
-    };
-    const timeOptions = {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true,
-      timeZone: 'Asia/Ho_Chi_Minh',
-    };
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: '2-digit', timeZone: 'Asia/Ho_Chi_Minh' };
+    const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'Asia/Ho_Chi_Minh' };
     const dateString = date.toLocaleDateString('vi-VN', options);
     const timeString = date.toLocaleTimeString('vi-VN', timeOptions).replace(' ', '');
     return `${timeString} (UTC+07) VN vào ${dateString}`;
@@ -39,6 +28,7 @@ const Home = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [recentProducts, setRecentProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
@@ -48,9 +38,7 @@ const Home = () => {
   const navigate = useNavigate();
   const allProductsRef = useRef(null);
   const featuredRef = useRef(null);
-  const sliderRef = useRef(null);
-
-  const orderId = searchParams.get('orderId');
+  const recentRef = useRef(null);
 
   const productTypes = [
     { value: '', label: 'Tất cả loại sản phẩm' },
@@ -111,8 +99,6 @@ const Home = () => {
         );
 
         const response = await productsAPI.getProducts(filteredParams);
-        console.log('API Response:', response);
-
         let productsData;
         if (Array.isArray(response)) {
           productsData = response;
@@ -131,14 +117,19 @@ const Home = () => {
         const featured = productsData
           .sort((a, b) => (b.sold_count || 0) - (a.sold_count || 0))
           .slice(0, 6);
+        const recent = JSON.parse(localStorage.getItem('recentProducts') || '[]')
+          .map(id => productsData.find(p => p.id === id))
+          .filter(p => p)
+          .slice(0, 6);
 
         setProducts(productsData);
         setFeaturedProducts(featured);
+        setRecentProducts(recent);
       } catch (err) {
         setError(err.message || 'Lỗi tải sản phẩm');
-        console.error('Lỗi tải sản phẩm:', err);
         setProducts([]);
         setFeaturedProducts([]);
+        setRecentProducts([]);
       } finally {
         setLoading(false);
       }
@@ -155,9 +146,7 @@ const Home = () => {
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'minRating' && value && (parseFloat(value) < 1 || parseFloat(value) > 5)) {
-      return;
-    }
+    if (name === 'minRating' && value && (parseFloat(value) < 1 || parseFloat(value) > 5)) return;
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -188,6 +177,13 @@ const Home = () => {
     }
   }, 100);
 
+  const updateRecentProducts = (productId) => {
+    let recent = JSON.parse(localStorage.getItem('recentProducts') || '[]');
+    recent = [productId, ...recent.filter(id => id !== productId)].slice(0, 6);
+    localStorage.setItem('recentProducts', JSON.stringify(recent));
+    setRecentProducts(recent.map(id => products.find(p => p.id === id)).filter(p => p));
+  };
+
   const renderProductCard = (product) => {
     const averageRating = product?.avg_rating || null;
     const productImage = product?.image
@@ -200,13 +196,13 @@ const Home = () => {
         setSuccessMessage('Thêm vào giỏ hàng thành công!');
         setTimeout(() => setSuccessMessage(null), 3000);
       } catch (error) {
-        console.error('Lỗi thêm vào giỏ:', error);
         setError('Thêm vào giỏ hàng thất bại. Vui lòng thử lại.');
         setTimeout(() => setError(null), 3000);
       }
     };
 
     const handleProductClick = () => {
+      updateRecentProducts(product.id);
       navigate(`/products/${product.id}`, { replace: false });
     };
 
@@ -256,46 +252,42 @@ const Home = () => {
           {error}
         </div>
       )}
-      {orderId && (
-        <div className="order-success-message fixed top-16 right-4 bg-blue-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-fade-in">
-          <p>Đặt hàng thành công! Mã đơn hàng: #{orderId}</p>
+      {searchParams.get('orderId') && (
+        <div className="fixed top-16 right-4 bg-blue-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-fade-in">
+          <p>Đặt hàng thành công! Mã đơn hàng: #{searchParams.get('orderId')}</p>
           <Button
             variant="success"
             size="small"
-            onClick={() => navigate(`/orders/${orderId}`)}
+            onClick={() => navigate(`/orders/${searchParams.get('orderId')}`)}
             className="mt-2"
           >
             Xem trạng thái đơn hàng
           </Button>
         </div>
       )}
-      <div className="hero-slider" ref={sliderRef}>
+      <div className="hero-slider">
         <div className="slider-content" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
-          {sliderImages?.length > 0 ? (
-            sliderImages.map((image, index) => (
-              <div className="slide relative w-full aspect-[4/3]" key={index}>
-                <img
-                  src={getMediaUrl(image)}
-                  alt={`Slide ${index}`}
-                  className="slide-image"
-                  loading="lazy"
-                  onError={(e) => (e.target.src = getMediaUrl('/media/products/placeholder.jpg'))}
-                />
-                <div className="slide-overlay"></div>
-              </div>
-            ))
-          ) : (
-            <div className="no-slides">Không có hình ảnh</div>
-          )}
+          {sliderImages.map((image, index) => (
+            <div className="slide relative w-full aspect-[4/3]" key={index}>
+              <img
+                src={getMediaUrl(image)}
+                alt={`Slide ${index}`}
+                className="slide-image"
+                loading="lazy"
+                onError={(e) => (e.target.src = getMediaUrl('/media/products/placeholder.jpg'))}
+              />
+              <div className="slide-overlay"></div>
+            </div>
+          ))}
         </div>
         <div className="slider-dots">
-          {sliderImages?.length > 0 && sliderImages.map((_, index) => (
+          {sliderImages.map((_, index) => (
             <span
               key={index}
               className={`dot ${currentSlide === index ? 'active' : ''}`}
               onClick={() => setCurrentSlide(index)}
               role="button"
-              aria-label={`Chuyển đến记slide ${index + 1}`}
+              aria-label={`Chuyển đến slide ${index + 1}`}
             />
           ))}
         </div>
@@ -318,7 +310,7 @@ const Home = () => {
             className="filter-select"
           >
             <option value="">Tất cả danh mục</option>
-            {categories?.length > 0 && categories.map((category) => (
+            {categories.map((category) => (
               <option key={category.id} value={category.id}>
                 {category.name}
               </option>
@@ -326,11 +318,11 @@ const Home = () => {
           </select>
           <select
             name="product_type"
-            value={filters.fetch_type}
+            value={filters.product_type}
             onChange={handleFilterChange}
             className="filter-select"
           >
-            {productTypes?.length > 0 && productTypes.map((type) => (
+            {productTypes.map((type) => (
               <option key={type.value} value={type.value}>
                 {type.label}
               </option>
@@ -389,6 +381,7 @@ const Home = () => {
       {[
         { title: 'Sản phẩm', products: products, ref: allProductsRef },
         { title: 'Sản phẩm nổi bật', products: featuredProducts, ref: featuredRef },
+        { title: 'Sản phẩm xem gần đây', products: recentProducts, ref: recentRef },
       ].map((section, index) => (
         <div className="section" key={index}>
           <h2 className="section-title">{section.title}</h2>
@@ -417,7 +410,7 @@ const Home = () => {
                   ))
               ) : error ? (
                 <div className="error-state">{error}</div>
-              ) : section.products?.length > 0 ? (
+              ) : section.products.length > 0 ? (
                 section.products.map(renderProductCard)
               ) : (
                 <div className="no-results">Không có sản phẩm nào phù hợp</div>
@@ -433,6 +426,16 @@ const Home = () => {
           </div>
         </div>
       ))}
+      <footer className="bg-gray-800 text-white py-6 mt-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-lg">Hiếu - hieu@example.com</p>
+          <div className="mt-4 flex justify-center gap-4">
+            <a href="tel:+84912345678" className="hover:text-indigo-400">+84 912 345 678</a>
+            <a href="mailto:support@example.com" className="hover:text-indigo-400">support@example.com</a>
+            <a href="https://facebook.com" className="hover:text-indigo-400">Facebook</a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
