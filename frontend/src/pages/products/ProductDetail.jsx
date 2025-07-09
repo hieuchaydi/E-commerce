@@ -45,7 +45,6 @@ const ProductDetail = () => {
     try {
       setState((prev) => ({ ...prev, loading: true, error: null }));
 
-      // Tải thông tin sản phẩm
       const productRes = await productsAPI.getProduct(id);
       console.log('Phản hồi API sản phẩm:', productRes);
 
@@ -60,14 +59,12 @@ const ProductDetail = () => {
         seller: productRes.seller || { username: 'Không xác định', id: null, seller_rating: null },
       };
 
-      // Tải đánh giá
       let reviews = [];
       let averageRating = 0;
       try {
         const reviewsRes = await reviewsAPI.getProductReviews(id);
         console.log('Phản hồi API đánh giá:', reviewsRes);
 
-        // Kiểm tra cấu trúc dữ liệu trả về
         reviews = Array.isArray(reviewsRes.data) ? reviewsRes.data : [];
         console.log('Danh sách đánh giá:', reviews);
 
@@ -87,7 +84,6 @@ const ProductDetail = () => {
           return;
         } else {
           console.error('Không thể tải đánh giá sau nhiều lần thử lại.');
-          // Không ném lỗi, chỉ đặt reviews rỗng
           reviews = [];
         }
       }
@@ -109,7 +105,7 @@ const ProductDetail = () => {
         ...prev,
         error: err.response?.status === 404
           ? 'Sản phẩm không tồn tại'
-          : 'Lỗi tải dữ liệu sản phẩm. Vui lòng thử lại.',
+          : err.response?.data?.detail || 'Lỗi tải dữ liệu sản phẩm. Vui lòng thử lại.',
         loading: false,
       }));
     }
@@ -251,7 +247,6 @@ const ProductDetail = () => {
       }));
       setTimeout(() => setState((prev) => ({ ...prev, successMessage: '' })), 3000);
 
-      // Tải lại dữ liệu để đảm bảo đồng bộ
       fetchProductData();
     } catch (err) {
       console.error('Lỗi gửi đánh giá:', {

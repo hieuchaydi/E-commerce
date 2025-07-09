@@ -1,10 +1,12 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework.views import APIView
+from .content_moderation import validate_content
 from rest_framework.response import Response
 from rest_framework import status
 from django.core.mail import send_mail
 from django.utils.crypto import get_random_string
+from django.core.exceptions import ValidationError
 from django.urls import reverse
 from .models import PasswordResetCode
 from django.contrib.auth.models import User
@@ -510,6 +512,14 @@ class ReviewViewSet(viewsets.ModelViewSet):
         if not serializer.is_valid():
             logger.error(f"Validation errors: {serializer.errors}")
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # Kiểm tra nội dung đánh giá
+        comment = request.data.get('comment', '')
+        try:
+            validate_content(comment)
+        except ValidationError as e:
+            logger.error(f"Content violation in review: {e}")
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         logger.info(f"Image files count: {len(request.data.getlist('image_files', []))}")
         logger.info(f"Video files count: {len(request.data.getlist('video_files', []))}")
