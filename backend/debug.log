@@ -9155,3 +9155,256 @@ DEBUG 2025-07-09 16:26:17,641 http_protocol HTTP 400 response started for ['127.
 DEBUG 2025-07-09 16:26:17,641 http_protocol HTTP close for ['127.0.0.1', 62196]
 DEBUG 2025-07-09 16:26:17,642 http_protocol HTTP response complete for ['127.0.0.1', 62196]
 WARNING 2025-07-09 16:26:17,642 runserver [31;1mHTTP POST /api/products/13/reviews/ 400 [0.02, 127.0.0.1:62196][0m
+DEBUG 2025-07-10 11:19:18,705 selector_events Using selector: SelectSelector
+DEBUG 2025-07-10 11:19:19,581 selector_events Using selector: SelectSelector
+INFO 2025-07-10 11:19:19,817 autoreload Watching for file changes with StatReloader
+INFO 2025-07-10 11:19:29,686 content_moderation Loaded 8 blacklist words from C:\Users\FPT\Desktop\shop\backend\shop\blacklist_words.json
+DEBUG 2025-07-10 11:19:29,686 connectionpool Starting new HTTPS connection (1): huggingface.co:443
+DEBUG 2025-07-10 11:19:30,168 connectionpool https://huggingface.co:443 "HEAD /unitary/toxic-bert/resolve/main/config.json HTTP/1.1" 307 0
+DEBUG 2025-07-10 11:19:30,236 connectionpool https://huggingface.co:443 "HEAD /api/resolve-cache/models/unitary/toxic-bert/4d6c22e74ba2fdd26bc4f7238f50766b045a0d94/config.json HTTP/1.1" 200 0
+DEBUG 2025-07-10 11:19:30,951 connectionpool https://huggingface.co:443 "GET /api/models/unitary/toxic-bert/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+INFO 2025-07-10 11:19:31,510 server HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+INFO 2025-07-10 11:19:31,511 server Configuring endpoint tcp:port=8000:interface=127.0.0.1
+INFO 2025-07-10 11:19:31,514 server Listening on TCP address 127.0.0.1:8000
+DEBUG 2025-07-10 11:19:50,478 http_protocol HTTP b'GET' request for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:19:50,478 http_protocol HTTP b'GET' request for ['127.0.0.1', 52766]
+DEBUG 2025-07-10 11:19:50,527 http_protocol HTTP 200 response started for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:19:50,527 http_protocol HTTP close for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:19:50,527 http_protocol HTTP response complete for ['127.0.0.1', 52765]
+INFO 2025-07-10 11:19:50,527 runserver [mHTTP GET /api/categories/ 200 [0.05, 127.0.0.1:52765][0m
+DEBUG 2025-07-10 11:19:50,537 http_protocol HTTP b'GET' request for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:19:50,570 http_protocol HTTP 200 response started for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:19:50,570 http_protocol HTTP close for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:19:50,570 http_protocol HTTP response complete for ['127.0.0.1', 52765]
+INFO 2025-07-10 11:19:50,580 runserver [mHTTP GET /api/categories/ 200 [0.04, 127.0.0.1:52765][0m
+DEBUG 2025-07-10 11:19:50,621 http_protocol HTTP 200 response started for ['127.0.0.1', 52766]
+DEBUG 2025-07-10 11:19:50,621 http_protocol HTTP close for ['127.0.0.1', 52766]
+DEBUG 2025-07-10 11:19:50,621 http_protocol HTTP response complete for ['127.0.0.1', 52766]
+INFO 2025-07-10 11:19:50,621 runserver [mHTTP GET /api/products/ 200 [0.14, 127.0.0.1:52766][0m
+DEBUG 2025-07-10 11:19:50,621 http_protocol HTTP b'GET' request for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:19:50,687 http_protocol HTTP 200 response started for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:19:50,687 http_protocol HTTP close for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:19:50,687 http_protocol HTTP response complete for ['127.0.0.1', 52765]
+INFO 2025-07-10 11:19:50,687 runserver [mHTTP GET /api/products/ 200 [0.07, 127.0.0.1:52765][0m
+DEBUG 2025-07-10 11:20:07,610 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 52810]
+DEBUG 2025-07-10 11:20:07,610 http_protocol HTTP 200 response started for ['127.0.0.1', 52810]
+DEBUG 2025-07-10 11:20:07,610 http_protocol HTTP close for ['127.0.0.1', 52810]
+DEBUG 2025-07-10 11:20:07,610 http_protocol HTTP response complete for ['127.0.0.1', 52810]
+INFO 2025-07-10 11:20:07,615 runserver [mHTTP OPTIONS /api/auth/login/ 200 [0.00, 127.0.0.1:52810][0m
+DEBUG 2025-07-10 11:20:07,616 http_protocol HTTP b'POST' request for ['127.0.0.1', 52765]
+WARNING 2025-07-10 11:20:08,477 log Bad Request: /api/auth/login/
+DEBUG 2025-07-10 11:20:08,477 http_protocol HTTP 400 response started for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:20:08,477 http_protocol HTTP close for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:20:08,477 http_protocol HTTP response complete for ['127.0.0.1', 52765]
+WARNING 2025-07-10 11:20:08,477 runserver [31;1mHTTP POST /api/auth/login/ 400 [0.86, 127.0.0.1:52765][0m
+DEBUG 2025-07-10 11:20:12,695 http_protocol HTTP b'POST' request for ['127.0.0.1', 52765]
+WARNING 2025-07-10 11:20:13,429 log Bad Request: /api/auth/login/
+DEBUG 2025-07-10 11:20:13,436 http_protocol HTTP 400 response started for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:20:13,436 http_protocol HTTP close for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:20:13,436 http_protocol HTTP response complete for ['127.0.0.1', 52765]
+WARNING 2025-07-10 11:20:13,436 runserver [31;1mHTTP POST /api/auth/login/ 400 [0.74, 127.0.0.1:52765][0m
+DEBUG 2025-07-10 11:20:25,152 http_protocol HTTP b'POST' request for ['127.0.0.1', 52765]
+WARNING 2025-07-10 11:20:25,829 log Bad Request: /api/auth/login/
+DEBUG 2025-07-10 11:20:25,829 http_protocol HTTP 400 response started for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:20:25,829 http_protocol HTTP close for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:20:25,839 http_protocol HTTP response complete for ['127.0.0.1', 52765]
+WARNING 2025-07-10 11:20:25,839 runserver [31;1mHTTP POST /api/auth/login/ 400 [0.69, 127.0.0.1:52765][0m
+DEBUG 2025-07-10 11:20:48,070 http_protocol HTTP b'GET' request for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:20:48,071 http_protocol HTTP b'GET' request for ['127.0.0.1', 52766]
+DEBUG 2025-07-10 11:20:48,102 http_protocol HTTP 200 response started for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:20:48,103 http_protocol HTTP close for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:20:48,104 http_protocol HTTP response complete for ['127.0.0.1', 52765]
+INFO 2025-07-10 11:20:48,104 runserver [mHTTP GET /api/categories/ 200 [0.03, 127.0.0.1:52765][0m
+DEBUG 2025-07-10 11:20:48,110 http_protocol HTTP b'GET' request for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:20:48,135 http_protocol HTTP 200 response started for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:20:48,135 http_protocol HTTP close for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:20:48,135 http_protocol HTTP response complete for ['127.0.0.1', 52765]
+INFO 2025-07-10 11:20:48,135 runserver [mHTTP GET /api/categories/ 200 [0.03, 127.0.0.1:52765][0m
+DEBUG 2025-07-10 11:20:48,145 http_protocol HTTP 200 response started for ['127.0.0.1', 52766]
+DEBUG 2025-07-10 11:20:48,145 http_protocol HTTP close for ['127.0.0.1', 52766]
+DEBUG 2025-07-10 11:20:48,145 http_protocol HTTP response complete for ['127.0.0.1', 52766]
+INFO 2025-07-10 11:20:48,145 runserver [mHTTP GET /api/products/ 200 [0.07, 127.0.0.1:52766][0m
+DEBUG 2025-07-10 11:20:48,152 http_protocol HTTP b'GET' request for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:20:48,196 http_protocol HTTP 200 response started for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:20:48,196 http_protocol HTTP close for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:20:48,196 http_protocol HTTP response complete for ['127.0.0.1', 52765]
+INFO 2025-07-10 11:20:48,196 runserver [mHTTP GET /api/products/ 200 [0.04, 127.0.0.1:52765][0m
+DEBUG 2025-07-10 11:20:56,503 http_protocol HTTP b'POST' request for ['127.0.0.1', 52765]
+WARNING 2025-07-10 11:20:57,183 log Bad Request: /api/auth/login/
+DEBUG 2025-07-10 11:20:57,183 http_protocol HTTP 400 response started for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:20:57,189 http_protocol HTTP close for ['127.0.0.1', 52765]
+DEBUG 2025-07-10 11:20:57,190 http_protocol HTTP response complete for ['127.0.0.1', 52765]
+WARNING 2025-07-10 11:20:57,190 runserver [31;1mHTTP POST /api/auth/login/ 400 [0.69, 127.0.0.1:52765][0m
+DEBUG 2025-07-10 11:26:56,861 selector_events Using selector: SelectSelector
+DEBUG 2025-07-10 11:26:59,165 selector_events Using selector: SelectSelector
+INFO 2025-07-10 11:26:59,339 autoreload Watching for file changes with StatReloader
+INFO 2025-07-10 11:27:24,830 content_moderation Loaded 304 blacklist words from C:\Users\FPT\Desktop\shop\backend\shop\blacklist_words.json
+DEBUG 2025-07-10 11:27:24,830 connectionpool Starting new HTTPS connection (1): huggingface.co:443
+DEBUG 2025-07-10 11:27:25,228 connectionpool https://huggingface.co:443 "HEAD /unitary/toxic-bert/resolve/main/config.json HTTP/1.1" 307 0
+DEBUG 2025-07-10 11:27:25,259 connectionpool https://huggingface.co:443 "HEAD /api/resolve-cache/models/unitary/toxic-bert/4d6c22e74ba2fdd26bc4f7238f50766b045a0d94/config.json HTTP/1.1" 200 0
+DEBUG 2025-07-10 11:27:27,786 connectionpool https://huggingface.co:443 "GET /api/models/unitary/toxic-bert/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+INFO 2025-07-10 11:27:28,942 server HTTP/2 support not enabled (install the http2 and tls Twisted extras)
+INFO 2025-07-10 11:27:28,942 server Configuring endpoint tcp:port=8000:interface=127.0.0.1
+INFO 2025-07-10 11:27:28,942 server Listening on TCP address 127.0.0.1:8000
+DEBUG 2025-07-10 11:27:31,989 http_protocol HTTP b'GET' request for ['127.0.0.1', 52921]
+DEBUG 2025-07-10 11:27:31,989 http_protocol HTTP b'GET' request for ['127.0.0.1', 52920]
+DEBUG 2025-07-10 11:27:32,051 http_protocol HTTP 200 response started for ['127.0.0.1', 52920]
+DEBUG 2025-07-10 11:27:32,051 http_protocol HTTP close for ['127.0.0.1', 52920]
+DEBUG 2025-07-10 11:27:32,051 http_protocol HTTP response complete for ['127.0.0.1', 52920]
+INFO 2025-07-10 11:27:32,051 runserver [mHTTP GET /api/categories/ 200 [0.06, 127.0.0.1:52920][0m
+DEBUG 2025-07-10 11:27:32,051 http_protocol HTTP b'GET' request for ['127.0.0.1', 52920]
+DEBUG 2025-07-10 11:27:32,068 http_protocol HTTP 200 response started for ['127.0.0.1', 52920]
+DEBUG 2025-07-10 11:27:32,068 http_protocol HTTP close for ['127.0.0.1', 52920]
+DEBUG 2025-07-10 11:27:32,069 http_protocol HTTP response complete for ['127.0.0.1', 52920]
+INFO 2025-07-10 11:27:32,070 runserver [mHTTP GET /api/categories/ 200 [0.02, 127.0.0.1:52920][0m
+DEBUG 2025-07-10 11:27:32,144 http_protocol HTTP 200 response started for ['127.0.0.1', 52921]
+DEBUG 2025-07-10 11:27:32,144 http_protocol HTTP close for ['127.0.0.1', 52921]
+DEBUG 2025-07-10 11:27:32,145 http_protocol HTTP response complete for ['127.0.0.1', 52921]
+INFO 2025-07-10 11:27:32,145 runserver [mHTTP GET /api/products/ 200 [0.16, 127.0.0.1:52921][0m
+DEBUG 2025-07-10 11:27:32,148 http_protocol HTTP b'GET' request for ['127.0.0.1', 52920]
+DEBUG 2025-07-10 11:27:32,204 http_protocol HTTP 200 response started for ['127.0.0.1', 52920]
+DEBUG 2025-07-10 11:27:32,205 http_protocol HTTP close for ['127.0.0.1', 52920]
+DEBUG 2025-07-10 11:27:32,205 http_protocol HTTP response complete for ['127.0.0.1', 52920]
+INFO 2025-07-10 11:27:32,206 runserver [mHTTP GET /api/products/ 200 [0.06, 127.0.0.1:52920][0m
+DEBUG 2025-07-10 11:27:37,096 http_protocol HTTP b'POST' request for ['127.0.0.1', 52920]
+DEBUG 2025-07-10 11:27:37,781 http_protocol HTTP 200 response started for ['127.0.0.1', 52920]
+DEBUG 2025-07-10 11:27:37,783 http_protocol HTTP close for ['127.0.0.1', 52920]
+DEBUG 2025-07-10 11:27:37,783 http_protocol HTTP response complete for ['127.0.0.1', 52920]
+INFO 2025-07-10 11:27:37,783 runserver [mHTTP POST /api/auth/login/ 200 [0.69, 127.0.0.1:52920][0m
+DEBUG 2025-07-10 11:27:38,097 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:38,101 http_protocol HTTP 200 response started for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:38,101 http_protocol HTTP close for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:38,101 http_protocol HTTP response complete for ['127.0.0.1', 52925]
+INFO 2025-07-10 11:27:38,101 runserver [mHTTP OPTIONS /api/auth/user/ 200 [0.00, 127.0.0.1:52925][0m
+DEBUG 2025-07-10 11:27:38,101 http_protocol HTTP b'GET' request for ['127.0.0.1', 52920]
+DEBUG 2025-07-10 11:27:38,114 http_protocol HTTP 200 response started for ['127.0.0.1', 52920]
+DEBUG 2025-07-10 11:27:38,114 http_protocol HTTP close for ['127.0.0.1', 52920]
+DEBUG 2025-07-10 11:27:38,114 http_protocol HTTP response complete for ['127.0.0.1', 52920]
+INFO 2025-07-10 11:27:38,114 runserver [mHTTP GET /api/auth/user/ 200 [0.01, 127.0.0.1:52920][0m
+DEBUG 2025-07-10 11:27:38,129 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:38,131 http_protocol HTTP 200 response started for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:38,131 http_protocol HTTP close for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:38,132 http_protocol HTTP response complete for ['127.0.0.1', 52925]
+INFO 2025-07-10 11:27:38,132 runserver [mHTTP OPTIONS /api/orders/ 200 [0.00, 127.0.0.1:52925][0m
+DEBUG 2025-07-10 11:27:38,135 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:38,135 http_protocol HTTP b'GET' request for ['127.0.0.1', 52920]
+DEBUG 2025-07-10 11:27:38,139 http_protocol HTTP 200 response started for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:38,139 http_protocol HTTP close for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:38,140 http_protocol HTTP response complete for ['127.0.0.1', 52925]
+INFO 2025-07-10 11:27:38,140 runserver [mHTTP OPTIONS /api/cart/ 200 [0.00, 127.0.0.1:52925][0m
+DEBUG 2025-07-10 11:27:38,143 http_protocol HTTP b'GET' request for ['127.0.0.1', 52921]
+DEBUG 2025-07-10 11:27:38,158 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:38,161 http_protocol HTTP 200 response started for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:38,161 http_protocol HTTP close for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:38,161 http_protocol HTTP response complete for ['127.0.0.1', 52925]
+INFO 2025-07-10 11:27:38,161 runserver [mHTTP OPTIONS /api/categories/ 200 [0.00, 127.0.0.1:52925][0m
+DEBUG 2025-07-10 11:27:38,165 http_protocol HTTP b'GET' request for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:38,165 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:38,183 http_protocol HTTP 200 response started for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:38,183 http_protocol HTTP close for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:38,183 http_protocol HTTP response complete for ['127.0.0.1', 52925]
+INFO 2025-07-10 11:27:38,189 runserver [mHTTP OPTIONS /api/products/ 200 [0.02, 127.0.0.1:52925][0m
+DEBUG 2025-07-10 11:27:38,195 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:38,211 http_protocol HTTP 200 response started for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:38,211 http_protocol HTTP close for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:38,211 http_protocol HTTP response complete for ['127.0.0.1', 52925]
+INFO 2025-07-10 11:27:38,211 runserver [mHTTP OPTIONS /api/categories/ 200 [0.02, 127.0.0.1:52925][0m
+DEBUG 2025-07-10 11:27:38,216 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:38,216 http_protocol HTTP 200 response started for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:38,216 http_protocol HTTP close for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:38,226 http_protocol HTTP response complete for ['127.0.0.1', 52925]
+INFO 2025-07-10 11:27:38,226 runserver [mHTTP OPTIONS /api/products/ 200 [0.01, 127.0.0.1:52925][0m
+DEBUG 2025-07-10 11:27:38,235 http_protocol HTTP 200 response started for ['127.0.0.1', 52921]
+DEBUG 2025-07-10 11:27:38,235 http_protocol HTTP close for ['127.0.0.1', 52921]
+DEBUG 2025-07-10 11:27:38,235 http_protocol HTTP response complete for ['127.0.0.1', 52921]
+INFO 2025-07-10 11:27:38,235 runserver [mHTTP GET /api/cart/ 200 [0.09, 127.0.0.1:52921][0m
+DEBUG 2025-07-10 11:27:38,244 http_protocol HTTP b'GET' request for ['127.0.0.1', 52921]
+DEBUG 2025-07-10 11:27:38,258 http_protocol HTTP 200 response started for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:38,258 http_protocol HTTP close for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:38,258 http_protocol HTTP response complete for ['127.0.0.1', 52922]
+INFO 2025-07-10 11:27:38,258 runserver [mHTTP GET /api/categories/ 200 [0.09, 127.0.0.1:52922][0m
+DEBUG 2025-07-10 11:27:38,258 http_protocol HTTP b'GET' request for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:38,328 http_protocol HTTP 200 response started for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:38,328 http_protocol HTTP close for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:38,328 http_protocol HTTP response complete for ['127.0.0.1', 52922]
+INFO 2025-07-10 11:27:38,334 runserver [mHTTP GET /api/categories/ 200 [0.08, 127.0.0.1:52922][0m
+DEBUG 2025-07-10 11:27:38,397 http_protocol HTTP 200 response started for ['127.0.0.1', 52921]
+DEBUG 2025-07-10 11:27:38,404 http_protocol HTTP close for ['127.0.0.1', 52921]
+DEBUG 2025-07-10 11:27:38,404 http_protocol HTTP response complete for ['127.0.0.1', 52921]
+INFO 2025-07-10 11:27:38,404 runserver [mHTTP GET /api/products/ 200 [0.16, 127.0.0.1:52921][0m
+DEBUG 2025-07-10 11:27:38,404 http_protocol HTTP b'GET' request for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:38,463 http_protocol HTTP 200 response started for ['127.0.0.1', 52920]
+DEBUG 2025-07-10 11:27:38,463 http_protocol HTTP close for ['127.0.0.1', 52920]
+DEBUG 2025-07-10 11:27:38,463 http_protocol HTTP response complete for ['127.0.0.1', 52920]
+INFO 2025-07-10 11:27:38,474 runserver [mHTTP GET /api/orders/ 200 [0.34, 127.0.0.1:52920][0m
+DEBUG 2025-07-10 11:27:38,488 http_protocol HTTP 200 response started for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:38,488 http_protocol HTTP close for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:38,488 http_protocol HTTP response complete for ['127.0.0.1', 52922]
+INFO 2025-07-10 11:27:38,488 runserver [mHTTP GET /api/products/ 200 [0.08, 127.0.0.1:52922][0m
+DEBUG 2025-07-10 11:27:42,947 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:42,949 http_protocol HTTP 200 response started for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:42,949 http_protocol HTTP close for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:42,949 http_protocol HTTP response complete for ['127.0.0.1', 52925]
+INFO 2025-07-10 11:27:42,949 runserver [mHTTP OPTIONS /api/auth/logout/ 200 [0.00, 127.0.0.1:52925][0m
+DEBUG 2025-07-10 11:27:42,951 http_protocol HTTP b'POST' request for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:42,963 http_protocol HTTP 200 response started for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:42,963 http_protocol HTTP close for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:42,963 http_protocol HTTP response complete for ['127.0.0.1', 52922]
+INFO 2025-07-10 11:27:42,963 runserver [mHTTP POST /api/auth/logout/ 200 [0.01, 127.0.0.1:52922][0m
+DEBUG 2025-07-10 11:27:42,963 http_protocol HTTP b'OPTIONS' request for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:42,963 http_protocol HTTP 200 response started for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:42,963 http_protocol HTTP close for ['127.0.0.1', 52925]
+DEBUG 2025-07-10 11:27:42,963 http_protocol HTTP response complete for ['127.0.0.1', 52925]
+INFO 2025-07-10 11:27:42,963 runserver [mHTTP OPTIONS /api/cart/clear/ 200 [0.00, 127.0.0.1:52925][0m
+DEBUG 2025-07-10 11:27:42,963 http_protocol HTTP b'DELETE' request for ['127.0.0.1', 52922]
+WARNING 2025-07-10 11:27:42,978 log Unauthorized: /api/cart/clear/
+DEBUG 2025-07-10 11:27:42,978 http_protocol HTTP 401 response started for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:42,978 http_protocol HTTP close for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:42,978 http_protocol HTTP response complete for ['127.0.0.1', 52922]
+WARNING 2025-07-10 11:27:42,978 runserver [31;1mHTTP DELETE /api/cart/clear/ 401 [0.02, 127.0.0.1:52922][0m
+DEBUG 2025-07-10 11:27:42,978 http_protocol HTTP b'POST' request for ['127.0.0.1', 52922]
+WARNING 2025-07-10 11:27:42,990 log Unauthorized: /api/auth/logout/
+DEBUG 2025-07-10 11:27:42,991 http_protocol HTTP 401 response started for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:42,991 http_protocol HTTP close for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:42,992 http_protocol HTTP response complete for ['127.0.0.1', 52922]
+WARNING 2025-07-10 11:27:42,992 runserver [31;1mHTTP POST /api/auth/logout/ 401 [0.01, 127.0.0.1:52922][0m
+DEBUG 2025-07-10 11:27:44,081 http_protocol HTTP b'POST' request for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:44,767 http_protocol HTTP 200 response started for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:44,767 http_protocol HTTP close for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:44,767 http_protocol HTTP response complete for ['127.0.0.1', 52922]
+INFO 2025-07-10 11:27:44,767 runserver [mHTTP POST /api/auth/login/ 200 [0.69, 127.0.0.1:52922][0m
+DEBUG 2025-07-10 11:27:44,772 http_protocol HTTP b'GET' request for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:44,780 http_protocol HTTP 200 response started for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:44,780 http_protocol HTTP close for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:44,780 http_protocol HTTP response complete for ['127.0.0.1', 52922]
+INFO 2025-07-10 11:27:44,780 runserver [mHTTP GET /api/auth/user/ 200 [0.01, 127.0.0.1:52922][0m
+DEBUG 2025-07-10 11:27:44,795 http_protocol HTTP b'GET' request for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:44,796 http_protocol HTTP b'GET' request for ['127.0.0.1', 52920]
+DEBUG 2025-07-10 11:27:44,830 http_protocol HTTP b'GET' request for ['127.0.0.1', 52921]
+DEBUG 2025-07-10 11:27:44,836 http_protocol HTTP b'GET' request for ['127.0.0.1', 52938]
+DEBUG 2025-07-10 11:27:44,851 http_protocol HTTP 200 response started for ['127.0.0.1', 52920]
+DEBUG 2025-07-10 11:27:44,853 http_protocol HTTP close for ['127.0.0.1', 52920]
+DEBUG 2025-07-10 11:27:44,854 http_protocol HTTP response complete for ['127.0.0.1', 52920]
+INFO 2025-07-10 11:27:44,855 runserver [mHTTP GET /api/cart/ 200 [0.06, 127.0.0.1:52920][0m
+DEBUG 2025-07-10 11:27:44,886 http_protocol HTTP 200 response started for ['127.0.0.1', 52921]
+DEBUG 2025-07-10 11:27:44,886 http_protocol HTTP close for ['127.0.0.1', 52921]
+DEBUG 2025-07-10 11:27:44,886 http_protocol HTTP response complete for ['127.0.0.1', 52921]
+INFO 2025-07-10 11:27:44,886 runserver [mHTTP GET /api/categories/ 200 [0.06, 127.0.0.1:52921][0m
+DEBUG 2025-07-10 11:27:44,886 http_protocol HTTP b'GET' request for ['127.0.0.1', 52921]
+DEBUG 2025-07-10 11:27:44,950 http_protocol HTTP 200 response started for ['127.0.0.1', 52921]
+DEBUG 2025-07-10 11:27:44,950 http_protocol HTTP close for ['127.0.0.1', 52921]
+DEBUG 2025-07-10 11:27:44,950 http_protocol HTTP response complete for ['127.0.0.1', 52921]
+INFO 2025-07-10 11:27:44,950 runserver [mHTTP GET /api/categories/ 200 [0.06, 127.0.0.1:52921][0m
+DEBUG 2025-07-10 11:27:44,970 http_protocol HTTP 200 response started for ['127.0.0.1', 52938]
+DEBUG 2025-07-10 11:27:44,970 http_protocol HTTP close for ['127.0.0.1', 52938]
+DEBUG 2025-07-10 11:27:44,970 http_protocol HTTP response complete for ['127.0.0.1', 52938]
+INFO 2025-07-10 11:27:44,970 runserver [mHTTP GET /api/products/ 200 [0.13, 127.0.0.1:52938][0m
+DEBUG 2025-07-10 11:27:44,970 http_protocol HTTP b'GET' request for ['127.0.0.1', 52921]
+DEBUG 2025-07-10 11:27:45,071 http_protocol HTTP 200 response started for ['127.0.0.1', 52921]
+DEBUG 2025-07-10 11:27:45,071 http_protocol HTTP close for ['127.0.0.1', 52921]
+DEBUG 2025-07-10 11:27:45,071 http_protocol HTTP response complete for ['127.0.0.1', 52921]
+INFO 2025-07-10 11:27:45,072 runserver [mHTTP GET /api/products/ 200 [0.10, 127.0.0.1:52921][0m
+DEBUG 2025-07-10 11:27:45,075 http_protocol HTTP 200 response started for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:45,075 http_protocol HTTP close for ['127.0.0.1', 52922]
+DEBUG 2025-07-10 11:27:45,075 http_protocol HTTP response complete for ['127.0.0.1', 52922]
+INFO 2025-07-10 11:27:45,075 runserver [mHTTP GET /api/orders/ 200 [0.28, 127.0.0.1:52922][0m
